@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="{% static '/assets/style.css' %}">
+    <title>Login</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
+    <style>
+        body{
+            font-family: 'Poppins', sans-serif;
+            background-image: url('{% static '/assets/img/loginBG2.jpg' %}'); /* Replace with the path to your background image */
+            background-size: cover;
+            background-position: center;
+        }
+</style>
+</head>
+
+<body>
+
+    <!----------------------- Main Container -------------------------->
+
+     <div class="container d-flex justify-content-center align-items-center min-vh-100">
+
+    <!----------------------- Login Container -------------------------->
+
+       <div class="row border rounded-5 p-3 bg-white shadow box-area">
+
+    <!--------------------------- Left Box ----------------------------->
+
+       <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style="background: #ffffff;">
+           <div class="featured-image mb-3">
+            {% comment %} <img src="{% static '/assets/images/findmynestlogo.jpg' %}" class="img-fluid" style="width: 250px;"> {% endcomment %}
+           </div>
+           <!-- <img src="{% static '/assets/images/safety_8399977.png' %}" class="img-fluid" style="width: 250px;"> -->
+           
+           <p class="text-white fs-8" style="font-size: 50px; font-weight: bold; color: rgb(89, 171, 110) !important;">Step Guide</p>
+           <img src="{% static '/assets/img/ICON1.jpg' %}" class="img-fluid" style="width: 230px;">
+       </div> 
+    <!-------------------------- Right Box ---------------------------->
+        
+       <div class="col-md-6 right-box">
+          <div class="row align-items-center">
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="header-text mb-4">
+                     <h2>Welcome back!</h2>
+                     <p>You can sign in to access with your existing account.</p>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Email" name="username" required>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password" name="password" required>
+                </div>
+                {% comment %} <div class="input-group mb-3">
+                <div class="g-recaptcha" data-sitekey="6LcJj44nAAAAAM_NCztnb4EgTD6QHnfAgix5P25k"></div>
+                </div>
+                {% if error %}
+                <div class="error-message">{{ error }}</div>
+                {% endif %}  {% endcomment %}
+                 <div class="input-group mb-5 d-flex justify-content-between">
+                    <div class="forgot">
+                        {% comment %} <small><a href="{% url 'reset_password' %}">Forgot Password?</a></small> {% endcomment %}
+                    </div>
+                </div> 
+
+                <div class="input-group mb-3">
+                    <button class="btn btn-lg btn-success w-100 fs-6" type="submit">Login</button>
+                </div>
+                {% comment %} {% load socialaccount %}
+                <div class="input-group mb-3">
+                    <button class="btn btn-lg btn-light w-100 fs-6"><img src="{% static '/assets/images/google.png' %}" style="width:20px"  class="me-2"><small><a href="{% provider_login_url 'google' method='oauth2' %}">Sign In with Google</a></small></button>
+                </div>  {% endcomment %}
+                <div class="row">
+                    <small>Don't have account? <a href="{% url "register" %}">Sign Up as a Client</a> /<a href="{% url "m_register" %}">Sign Up as a Merchant</a> </small>
+                </div>
+                
+            </form>
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% endif %}
+          </div>
+       </div> 
+
+      </div>
+    </div>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</body>
+</html>

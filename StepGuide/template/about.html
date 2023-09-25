@@ -1,408 +1,399 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-
+<head>
+    <title>Zay Shop - About Page</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Hexashop - About Page</title>
+    <link rel="apple-touch-icon" href="{% static "assets/img/apple-icon.png" %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.ico" %}">
 
+    <link rel="stylesheet" href="{% static "assets/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/templatemo.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/custom.css" %}">
 
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-
-    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
-
-    <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
-
-    <link rel="stylesheet" href="assets/css/owl-carousel.css">
-
-    <link rel="stylesheet" href="assets/css/lightbox.css">
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="{% static "assets/css/fontawesome.min.css" %}">
 <!--
+    
+TemplateMo 559 Zay Shop
 
-TemplateMo 571 Hexashop
-
-https://templatemo.com/tm-571-hexashop
+https://templatemo.com/tm-559-zay-shop
 
 -->
-    </head>
-    
-    <body>
-    
-    <!-- ***** Preloader Start ***** -->
-    <div id="preloader">
-        <div class="jumper">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>  
-    <!-- ***** Preloader End ***** -->
-    
-    
-    <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="index.html" class="logo">
-                            <img src="assets/images/logo.png">
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
-                            <li class="scroll-to-section"><a href="index.html" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="index.html">Men's</a></li>
-                            <li class="scroll-to-section"><a href="index.html">Women's</a></li>
-                            <li class="scroll-to-section"><a href="index.html">Kid's</a></li>
-                            <li class="submenu">
-                                <a href="javascript:;">Pages</a>
-                                <ul>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="products.html">Products</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="javascript:;">Features</a>
-                                <ul>
-                                    <li><a href="#">Features Page 1</a></li>
-                                    <li><a href="#">Features Page 2</a></li>
-                                    <li><a href="#">Features Page 3</a></li>
-                                    <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
-                                </ul>
-                            </li>
-                            <li class="scroll-to-section"><a href="index.html">Explore</a></li>
-                        </ul>        
-                        <a class='menu-trigger'>
-                            <span>Menu</span>
-                        </a>
-                        <!-- ***** Menu End ***** -->
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- ***** Header Area End ***** -->
+</head>
 
-    <!-- ***** Main Banner Area Start ***** -->
-    <div class="page-heading about-page-heading" id="top">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="inner-content">
-                        <h2>About Our Company</h2>
-                        <span>Awesome, clean &amp; creative HTML5 Template</span>
-                    </div>
+<body>
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@company.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                </div>
+                <div>
+                    <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
                 </div>
             </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <a class="navbar-brand text-success logo h1 align-self-center" href="index.html">
+                Zay
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="shop.html">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                            <div class="input-group-text">
+                                <i class="fa fa-fw fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                        <i class="fa fa-fw fa-search text-dark mr-2"></i>
+                    </a>
+                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                        <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span>
+                    </a>
+                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                        <i class="fa fa-fw fa-user text-dark mr-3"></i>
+                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+    <!-- Close Header -->
+
+    <!-- Modal -->
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="w-100 pt-1 mb-5 text-right">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-    <!-- ***** Main Banner Area End ***** -->
 
-    <!-- ***** About Area Starts ***** -->
-    <div class="about-us">
+
+
+    <section class="bg-success py-5">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="left-image">
-                        <img src="assets/images/about-left-image.jpg" alt="">
-                    </div>
+            <div class="row align-items-center py-5">
+                <div class="col-md-8 text-white">
+                    <h1>About Us</h1>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </p>
                 </div>
-                <div class="col-lg-6">
-                    <div class="right-content">
-                        <h4>About Us &amp; Our Skills</h4>
-                        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod kon tempor incididunt ut labore.</span>
-                        <div class="quote">
-                            <i class="fa fa-quote-left"></i><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiuski smod kon tempor incididunt ut labore.</p>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod kon tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
-                        <ul>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                        </ul>
-                    </div>
+                <div class="col-md-4">
+                    <img src="{% static "assets/img/about-hero.svg" %}" alt="About Hero">
                 </div>
             </div>
         </div>
-    </div>
-    <!-- ***** About Area Ends ***** -->
+    </section>
+    <!-- Close Banner -->
 
-    <!-- ***** Our Team Area Starts ***** -->
-    <section class="our-team">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-heading">
-                        <h2>Our Amazing Team</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
-                    </div>
+    <!-- Start Section -->
+    <section class="container py-5">
+        <div class="row text-center pt-5 pb-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">Our Services</h1>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    Lorem ipsum dolor sit amet.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6 col-lg-3 pb-5">
+                <div class="h-100 py-5 services-icon-wap shadow">
+                    <div class="h1 text-success text-center"><i class="fa fa-truck fa-lg"></i></div>
+                    <h2 class="h5 mt-4 text-center">Delivery Services</h2>
                 </div>
-                <div class="col-lg-4">
-                    <div class="team-item">
-                        <div class="thumb">
-                            <div class="hover-effect">
-                                <div class="inner-content">
-                                    <ul>
-                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <img src="assets/images/team-member-01.jpg">
-                        </div>
-                        <div class="down-content">
-                            <h4>Ragnar Lodbrok</h4>
-                            <span>Product Caretaker</span>
-                        </div>
-                    </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 pb-5">
+                <div class="h-100 py-5 services-icon-wap shadow">
+                    <div class="h1 text-success text-center"><i class="fas fa-exchange-alt"></i></div>
+                    <h2 class="h5 mt-4 text-center">Shipping & Return</h2>
                 </div>
-                <div class="col-lg-4">
-                    <div class="team-item">
-                        <div class="thumb">
-                            <div class="hover-effect">
-                                <div class="inner-content">
-                                    <ul>
-                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <img src="assets/images/team-member-02.jpg">
-                        </div>
-                        <div class="down-content">
-                            <h4>Ragnar Lodbrok</h4>
-                            <span>Product Caretaker</span>
-                        </div>
-                    </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 pb-5">
+                <div class="h-100 py-5 services-icon-wap shadow">
+                    <div class="h1 text-success text-center"><i class="fa fa-percent"></i></div>
+                    <h2 class="h5 mt-4 text-center">Promotion</h2>
                 </div>
-                <div class="col-lg-4">
-                    <div class="team-item">
-                        <div class="thumb">
-                            <div class="hover-effect">
-                                <div class="inner-content">
-                                    <ul>
-                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                                    </ul>
+            </div>
+
+            <div class="col-md-6 col-lg-3 pb-5">
+                <div class="h-100 py-5 services-icon-wap shadow">
+                    <div class="h1 text-success text-center"><i class="fa fa-user"></i></div>
+                    <h2 class="h5 mt-4 text-center">24 Hours Service</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Section -->
+
+    <!-- Start Brands -->
+    <section class="bg-light py-5">
+        <div class="container my-4">
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">Our Brands</h1>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        Lorem ipsum dolor sit amet.
+                    </p>
+                </div>
+                <div class="col-lg-9 m-auto tempaltemo-carousel">
+                    <div class="row d-flex flex-row">
+                        <!--Controls-->
+                        <div class="col-1 align-self-center">
+                            <a class="h1" href="{% static "#templatemo-slide-brand" %}" role="button" data-bs-slide="prev">
+                                <i class="text-light fas fa-chevron-left"></i>
+                            </a>
+                        </div>
+                        <!--End Controls-->
+
+                        <!--Carousel Wrapper-->
+                        <div class="col">
+                            <div class="carousel slide carousel-multi-item pt-2 pt-md-0" id="templatemo-slide-brand" data-bs-ride="carousel">
+                                <!--Slides-->
+                                <div class="carousel-inner product-links-wap" role="listbox">
+
+                                    <!--First slide-->
+                                    <div class="carousel-item active">
+                                        <div class="row">
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_01.png"" %} alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_02.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_03.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_04.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End First slide-->
+
+                                    <!--Second slide-->
+                                    <div class="carousel-item">
+                                        <div class="row">
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_01.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_02.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_03.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_04.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End Second slide-->
+
+                                    <!--Third slide-->
+                                    <div class="carousel-item">
+                                        <div class="row">
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_01.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_02.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_03.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_04.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End Third slide-->
+
                                 </div>
+                                <!--End Slides-->
                             </div>
-                            <img src="assets/images/team-member-03.jpg">
                         </div>
-                        <div class="down-content">
-                            <h4>Ragnar Lodbrok</h4>
-                            <span>Product Caretaker</span>
+                        <!--End Carousel Wrapper-->
+
+                        <!--Controls-->
+                        <div class="col-1 align-self-center">
+                            <a class="h1" href="{% static "#templatemo-slide-brand" %}" role="button" data-bs-slide="next">
+                                <i class="text-light fas fa-chevron-right"></i>
+                            </a>
                         </div>
+                        <!--End Controls-->
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- ***** Our Team Area Ends ***** -->
+    <!--End Brands-->
 
-    <!-- ***** Services Area Starts ***** -->
-    <section class="our-services">
+
+    <!-- Start Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-heading">
-                        <h2>Our Services</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
-                    </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">Zay Shop</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li>
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                            123 Consectetur at ligula 10660
+                        </li>
+                        <li>
+                            <i class="fa fa-phone fa-fw"></i>
+                            <a class="text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="mailto:info@company.com">info@company.com</a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="col-lg-4">
-                    <div class="service-item">
-                        <h4>Synther Vaporware</h4>
-                        <p>Lorem ipsum dolor sit amet, consecteturti adipiscing elit, sed do eiusmod temp incididunt ut labore, et dolore quis ipsum suspend.</p>
-                        <img src="assets/images/service-01.jpg" alt="">
-                    </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="#">Luxury</a></li>
+                        <li><a class="text-decoration-none" href="#">Sport Wear</a></li>
+                        <li><a class="text-decoration-none" href="#">Men's Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Women's Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Popular Dress</a></li>
+                        <li><a class="text-decoration-none" href="#">Gym Accessories</a></li>
+                        <li><a class="text-decoration-none" href="#">Sport Shoes</a></li>
+                    </ul>
                 </div>
-                <div class="col-lg-4">
-                    <div class="service-item">
-                        <h4>Locavore Squidward</h4>
-                        <p>Lorem ipsum dolor sit amet, consecteturti adipiscing elit, sed do eiusmod temp incididunt ut labore, et dolore quis ipsum suspend.</p>
-                        <img src="assets/images/service-02.jpg" alt="">
-                    </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="#">Home</a></li>
+                        <li><a class="text-decoration-none" href="#">About Us</a></li>
+                        <li><a class="text-decoration-none" href="#">Shop Locations</a></li>
+                        <li><a class="text-decoration-none" href="#">FAQs</a></li>
+                        <li><a class="text-decoration-none" href="#">Contact</a></li>
+                    </ul>
                 </div>
-                <div class="col-lg-4">
-                    <div class="service-item">
-                        <h4>Health Gothfam</h4>
-                        <p>Lorem ipsum dolor sit amet, consecteturti adipiscing elit, sed do eiusmod temp incididunt ut labore, et dolore quis ipsum suspend.</p>
-                        <img src="assets/images/service-03.jpg" alt="">
+
+            </div>
+
+            <div class="row text-light mb-4">
+                <div class="col-12 mb-3">
+                    <div class="w-100 my-3 border-top border-light"></div>
+                </div>
+                <div class="col-auto me-auto">
+                    <ul class="list-inline text-left footer-icons">
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a rel="nofollow" class="text-light text-decoration-none" target="_blank" href="http://fb.com/templatemo"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://twitter.com/"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    <label class="sr-only" for="subscribeEmail">Email address</label>
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control bg-dark border-light" id="subscribeEmail" placeholder="Email address">
+                        <div class="input-group-text btn-success text-light">Subscribe</div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- ***** Services Area Ends ***** -->
 
-    <!-- ***** Subscribe Area Starts ***** -->
-    <div class="subscribe">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="section-heading">
-                        <h2>By Subscribing To Our Newsletter You Can Get 30% Off</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
-                    </div>
-                    <form id="subscribe" action="" method="get">
-                        <div class="row">
-                          <div class="col-lg-5">
-                            <fieldset>
-                              <input name="name" type="text" id="name" placeholder="Your Name" required="">
-                            </fieldset>
-                          </div>
-                          <div class="col-lg-5">
-                            <fieldset>
-                              <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email Address" required="">
-                            </fieldset>
-                          </div>
-                          <div class="col-lg-2">
-                            <fieldset>
-                              <button type="submit" id="form-submit" class="main-dark-button"><i class="fa fa-paper-plane"></i></button>
-                            </fieldset>
-                          </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-lg-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <ul>
-                                <li>Store Location:<br><span>Sunny Isles Beach, FL 33160, United States</span></li>
-                                <li>Phone:<br><span>010-020-0340</span></li>
-                                <li>Office Location:<br><span>North Miami Beach</span></li>
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <ul>
-                                <li>Work Hours:<br><span>07:30 AM - 9:30 PM Daily</span></li>
-                                <li>Email:<br><span>info@company.com</span></li>
-                                <li>Social Media:<br><span><a href="#">Facebook</a>, <a href="#">Instagram</a>, <a href="#">Behance</a>, <a href="#">Linkedin</a></span></li>
-                            </ul>
-                        </div>
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            Copyright &copy; 2021 Company Name 
+                            | Designed by <a rel="sponsored" href="https://templatemo.com/page/1" target="_blank">TemplateMo</a>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- ***** Subscribe Area Ends ***** -->
 
-    <!-- ***** Footer Start ***** -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="first-item">
-                        <div class="logo">
-                            <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
-                        </div>
-                        <ul>
-                            <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
-                            <li><a href="#">hexashop@company.com</a></li>
-                            <li><a href="#">010-020-0340</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Shopping &amp; Categories</h4>
-                    <ul>
-                        <li><a href="#">Men’s Shopping</a></li>
-                        <li><a href="#">Women’s Shopping</a></li>
-                        <li><a href="#">Kid's Shopping</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Useful Links</h4>
-                    <ul>
-                        <li><a href="#">Homepage</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Help</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Help &amp; Information</h4>
-                    <ul>
-                        <li><a href="#">Help</a></li>
-                        <li><a href="#">FAQ's</a></li>
-                        <li><a href="#">Shipping</a></li>
-                        <li><a href="#">Tracking ID</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-12">
-                    <div class="under-footer">
-                        <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
-                        
-                        <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
-                        <ul>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
     </footer>
-    
+    <!-- End Footer -->
 
-    <!-- jQuery -->
-    <script src="assets/js/jquery-2.1.0.min.js"></script>
-
-    <!-- Bootstrap -->
-    <script src="assets/js/popper.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-
-    <!-- Plugins -->
-    <script src="assets/js/owl-carousel.js"></script>
-    <script src="assets/js/accordions.js"></script>
-    <script src="assets/js/datepicker.js"></script>
-    <script src="assets/js/scrollreveal.min.js"></script>
-    <script src="assets/js/waypoints.min.js"></script>
-    <script src="assets/js/jquery.counterup.min.js"></script>
-    <script src="assets/js/imgfix.min.js"></script> 
-    <script src="assets/js/slick.js"></script> 
-    <script src="assets/js/lightbox.js"></script> 
-    <script src="assets/js/isotope.js"></script> 
-    
-    <!-- Global Init -->
-    <script src="assets/js/custom.js"></script>
-
-    <script>
-
-        $(function() {
-            var selectedClass = "";
-            $("p").click(function(){
-            selectedClass = $(this).attr("data-rel");
-            $("#portfolio").fadeTo(50, 0.1);
-                $("#portfolio div").not("."+selectedClass).fadeOut();
-            setTimeout(function() {
-              $("."+selectedClass).fadeIn();
-              $("#portfolio").fadeTo(50, 1);
-            }, 500);
-                
-            });
-        });
-
-    </script>
-
-  </body>
+    <!-- Start Script -->
+    <script src="{% static "assets/js/jquery-1.11.0.min.js" %}"></script>
+    <script src="{% static "assets/js/jquery-migrate-1.2.1.min.js" %}"></script>
+    <script src="{% static "assets/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "assets/js/templatemo.js" %}"></script>
+    <script src="{% static "assets/js/custom.js" %}"></script>
+    <!-- End Script -->
+</body>
 
 </html>

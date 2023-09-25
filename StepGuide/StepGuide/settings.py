@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-t_$s$m((&5qyd8c)^-_zdabnnoupg$kl(d=2nc18$0bwzsrhj7
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL='StepGuideApp.CustomUser'
 
 # Application definition
 
@@ -121,6 +121,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS= [os.path.join(BASE_DIR,'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+MEDIA_ROOT = os.path.join(BASE_DIR,'')
+
+MEDIA_URL=''
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

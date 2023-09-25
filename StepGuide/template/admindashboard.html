@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 250px;
+            background-color: #d67724;
+            color: #fff;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            transition: 0.3s;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            background-color: #222;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
+            text-decoration: none;
+            color: #fff;
+            display: block;
+            padding: 10px 20px;
+            transition: 0.2s;
+        }
+
+        .sidebar-menu a:hover {
+            background-color: #555;
+        }
+
+        /* Content styles */
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: 0.3s;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 20px;
+            color: #333;
+        }
+
+        /* Media queries for responsive design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                max-width: 250px;
+                position: static;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            header {
+                padding-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h1>Admin Dashboard</h1>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#clients">Manage Clients</a></li>
+            <li><a href="#merchants">Manage Merchants</a></li>
+            <li><a href="#products">Manage Products</a></li>
+            <a class="nav-link fw-bold" href="">Welcome,{{user.username}}</a>
+            <a class="nav-link fw-bold" href="{% url "logout" %}">Logout</a>
+        </ul>
+    </nav>
+    <main class="content">
+        <header>
+            <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+            <h2>Welcome to the Admin Dashboard</h2>
+        </header>
+        <section id="clients">
+            <h3>Manage Clients</h3>
+            <!-- Client management content goes here -->
+        </section>
+        <section id="merchants">
+            <h3>Manage Merchants</h3>
+            <!-- Merchant management content goes here -->
+        </section>
+        <section id="products">
+            <h3>Manage Products</h3>
+            <!-- Product management content goes here -->
+        </section>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
