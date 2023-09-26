@@ -20,14 +20,19 @@ def about(request):
     return render(request,'about.html',)
 def contact(request):
     return render(request,'contact.html',)
-def shop(request):
-    return render(request,'shop.html',)
-def shopsingle(request):
-    return render(request,'shopsingle.html',)
+# def shop(request):
+#     return render(request,'shop.html',)
+# def shopsingle(request):
+#     return render(request,'shopsingle.html',)
 def admindashboard(request):
     return render(request,'admindashboard.html',)
 def merchant_dashbord(request):
     return render(request,'merchant_dashbord.html',)
+def buy(request):
+    return render(request,'buy.html',)
+def purchase(request):
+    return render(request,'purchase.html',)
+
 
 #login & Registration
 # def userlogin(request):
@@ -98,7 +103,7 @@ def merchant_dashbord(request):
 #                 return redirect('login')  
             
 #     return render(request, 'register2.html')
-
+# login
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')

@@ -17,13 +17,6 @@
     <!-- Load fonts style after rendering the layout styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="{% static "assets/css/fontawesome.min.css" %}">
-<!--
-    
-TemplateMo 559 Zay Shop
-
-https://templatemo.com/tm-559-zay-shop
-
--->
 </head>
 
 <body>
@@ -53,7 +46,7 @@ https://templatemo.com/tm-559-zay-shop
     <nav class="navbar navbar-expand-lg navbar-light shadow">
         <div class="container d-flex justify-content-between align-items-center">
 
-            <a class="navbar-brand text-success logo h1 align-self-center" href="index.html">
+            <a class="navbar-brand text-success logo h1 align-self-center" href="{% url "index" %}">
                 StepGuide
             </a>
 
@@ -65,13 +58,13 @@ https://templatemo.com/tm-559-zay-shop
                 <div class="flex-fill">
                     <ul class="nav navbar-nav d-flex justify-content-center align-items-center mx-lg-auto fs-4 py-0" >
                         <li class="nav-item">
-                            <a class="nav-link fs-4 mx-3 fw-bold" href="index.html">Home</a>
+                            <a class="nav-link fs-4 mx-3 fw-bold" href="{% url "index" %}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link fs-4 mx-3 fw-bold" href="{% url "about" %}">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fs-4 mx-3 fw-bold" href="{% url "shop" %}">Shop</a>
+                            <a class="nav-link fs-4 mx-3 fw-bold" href="{% url "buy" %}">Shop</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link fs-4 mx-3 fw-bold" href="{% url "contact" %}">Contact</a>
@@ -217,26 +210,26 @@ https://templatemo.com/tm-559-zay-shop
             <div class="col-lg-6 m-auto">
                 <h1 class="h1">Categories of The Month</h1>
                 <p>
-                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.
+                    Discover our Categories of The Month! Explore the latest trends and 
+                    must-have footwear collections that will elevate your shoe game to new heights
                 </p>
             </div>
         </div>
         <div class="row">
             <div class="col-12 col-md-4 p-5 mt-3">
-                <a href="#"><img src="{% static "./assets/img/category_img_01.jpg" %}" class="rounded-circle img-fluid border"></a>
-                <h5 class="text-center mt-3 mb-3">Watches</h5>
-                <p class="text-center"><a class="btn btn-success">Go Shop</a></p>
+                <a href="#"><img src="{% static "./assets/img/category_img_01.png" %}" class="rounded-circle img-fluid border"></a>
+                <h5 class="text-center mt-3 mb-3">Nike Dunk High</h5>
+                <p class="text-center"><a class="btn btn-success">Go buy</a></p>
             </div>
             <div class="col-12 col-md-4 p-5 mt-3">
-                <a href="#"><img src="{% static "./assets/img/category_img_02.jpg" %}" class="rounded-circle img-fluid border"></a>
-                <h2 class="h5 text-center mt-3 mb-3">Shoes</h2>
-                <p class="text-center"><a class="btn btn-success">Go Shop</a></p>
+                <a href="#"><img src="{% static "./assets/img/category_img_02.png" %}" class="rounded-circle img-fluid border"></a>
+                <h2 class="h5 text-center mt-3 mb-3">Nike Women's Shoes</h2>
+                <p class="text-center"><a class="btn btn-success">Go buy</a></p>
             </div>
             <div class="col-12 col-md-4 p-5 mt-3">
-                <a href="#"><img src="{% static "./assets/img/category_img_03.jpg" %}" class="rounded-circle img-fluid border"></a>
-                <h2 class="h5 text-center mt-3 mb-3">Accessories</h2>
-                <p class="text-center"><a class="btn btn-success">Go Shop</a></p>
+                <a href="#"><img src="{% static "./assets/img/category_img_03.png" %}" class="rounded-circle img-fluid border"></a>
+                <h2 class="h5 text-center mt-3 mb-3">Nike Men's Slides</h2>
+                <p class="text-center"><a class="btn btn-success">Go buy</a></p>
             </div>
         </div>
     </section>
@@ -250,16 +243,16 @@ https://templatemo.com/tm-559-zay-shop
                 <div class="col-lg-6 m-auto">
                     <h1 class="h1">Featured Product</h1>
                     <p>
-                        Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        Excepteur sint occaecat cupidatat non proident.
+                        Meet Our Featured Product of the Month. This is the footwear everyone's talking about, and 
+                        it's ready to take you on a stylish journey
                     </p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 col-md-4 mb-4">
                     <div class="card h-100">
-                        <a href="shop-single.html">
-                            <img src="{% static "./assets/img/feature_prod_01.jpg" %}" class="card-img-top" alt="...">
+                        <a href="purchase.html">
+                            <img src="{% static "./assets/img/feature_prod_01.png" %}" class="card-img-top" alt="...">
                         </a>
                         <div class="card-body">
                             <ul class="list-unstyled d-flex justify-content-between">
@@ -270,11 +263,12 @@ https://templatemo.com/tm-559-zay-shop
                                     <i class="text-muted fa fa-star"></i>
                                     <i class="text-muted fa fa-star"></i>
                                 </li>
-                                <li class="text-muted text-right">$240.00</li>
+                                <li class="text-muted text-right">MRP:₹ 1395.00</li>
                             </ul>
-                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">Gym Weight</a>
+                            <a href="purchase.html" class="h2 text-decoration-none text-dark">Nike Kawa</a>
                             <p class="card-text">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt in culpa qui officia deserunt.
+                                The Nike Kawa Slide has a soft strap and plush cushioning for comfort that lasts all day.
+                                Hidden seams help prevent rubbing
                             </p>
                             <p class="text-muted">Reviews (24)</p>
                         </div>
@@ -282,8 +276,8 @@ https://templatemo.com/tm-559-zay-shop
                 </div>
                 <div class="col-12 col-md-4 mb-4">
                     <div class="card h-100">
-                        <a href="shop-single.html">
-                            <img src="{% static "./assets/img/feature_prod_02.jpg" %}" class="card-img-top" alt="...">
+                        <a href="purchase.html">
+                            <img src="{% static "./assets/img/feature_prod_02.png" %}" class="card-img-top" alt="...">
                         </a>
                         <div class="card-body">
                             <ul class="list-unstyled d-flex justify-content-between">
@@ -294,11 +288,11 @@ https://templatemo.com/tm-559-zay-shop
                                     <i class="text-muted fa fa-star"></i>
                                     <i class="text-muted fa fa-star"></i>
                                 </li>
-                                <li class="text-muted text-right">$480.00</li>
+                                <li class="text-muted text-right">MRP:₹ 5695.00</li>
                             </ul>
-                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">Cloud Nike Shoes</a>
+                            <a href="purchase.html" class="h2 text-decoration-none text-dark">Nike Oneonta Next Nature</a>
                             <p class="card-text">
-                                Aenean gravida dignissim finibus. Nullam ipsum diam, posuere vitae pharetra sed, commodo ullamcorper.
+                                From trails to rivers and trees, these lightweight, durable sandals are ready to make adventuring fun, with special thanks to their rugged tread. 
                             </p>
                             <p class="text-muted">Reviews (48)</p>
                         </div>
@@ -306,8 +300,8 @@ https://templatemo.com/tm-559-zay-shop
                 </div>
                 <div class="col-12 col-md-4 mb-4">
                     <div class="card h-100">
-                        <a href="shop-single.html">
-                            <img src="{% static "./assets/img/feature_prod_03.jpg" %}" class="card-img-top" alt="...">
+                        <a href="purchase.html">
+                            <img src="{% static "./assets/img/feature_prod_03.png" %}" class="card-img-top" alt="...">
                         </a>
                         <div class="card-body">
                             <ul class="list-unstyled d-flex justify-content-between">
@@ -318,11 +312,12 @@ https://templatemo.com/tm-559-zay-shop
                                     <i class="text-warning fa fa-star"></i>
                                     <i class="text-warning fa fa-star"></i>
                                 </li>
-                                <li class="text-muted text-right">$360.00</li>
+                                <li class="text-muted text-right">MRP:₹ 4195.00</li>
                             </ul>
-                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">Summer Addides Shoes</a>
+                            <a href="purchase.html" class="h2 text-decoration-none text-dark">Nike Vista</a>
                             <p class="card-text">
-                                Curabitur ac mi sit amet diam luctus porta. Phasellus pulvinar sagittis diam, et scelerisque ipsum lobortis nec.
+                                With all the elements you need for a day outdoors, these sandals deliver big—without weighing you down.
+                                 They're light and airy, with tough tread and responsive cushioning. 
                             </p>
                             <p class="text-muted">Reviews (74)</p>
                         </div>

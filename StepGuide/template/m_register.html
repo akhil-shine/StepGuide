@@ -208,7 +208,7 @@
       
 
       function validatePhoneNumber() {
-        const phoneNumberPattern = /^(?!.*0{10})[6-9][0-9]{9}$/;
+        const phoneNumberPattern = /^(?!.*0{10})(?!(\d)\1{9})[6-9][0-9]{9}$/;
         if (!phoneNumberPattern.test(phoneInput.value)) {
             phoneInput.classList.add('is-invalid');
             phoneInput.classList.remove('is-valid');
