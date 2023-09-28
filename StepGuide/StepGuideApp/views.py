@@ -24,28 +24,11 @@ def index(request):
             return redirect(reverse('index'))
         elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('merchant_dashbord'):
             return redirect(reverse('merchant_dashbord'))
-    
-    # if request.user.is_authenticated:
-    #     messages.warning(request, 'You are already logged in!')
-    #     user=request.user
-    #     if user.user_type == CustomUser.ADMIN:
-    #         messages.success(request, 'Success! Your action was completed.')
-    #         return redirect(reverse('admindashboard'))
-    #     elif user.user_type == CustomUser.CLIENT:   
-    #         return redirect(reverse('index'))
-    #     elif user.user_type == CustomUser.MERCHANT:
-    #         return redirect(reverse('merchant_dashbord'))
-    #     else:
-    #         return redirect('/')    
     return render(request,'index.html',)
 def about(request):
     return render(request,'about.html',)
 def contact(request):
     return render(request,'contact.html',)
-# def shop(request):
-#     return render(request,'shop.html',)
-# def shopsingle(request):
-#     return render(request,'shopsingle.html',)
 def admindashboard(request):
     user=request.user
     if request.user.is_authenticated:
@@ -149,7 +132,6 @@ def login_view(request):
         messages.warning(request, 'You are already logged in!')
         user=request.user
         if user.user_type == CustomUser.ADMIN:
-            messages.success(request, 'Success! Your action was completed.')
             return redirect(reverse('admindashboard'))
         elif user.user_type == CustomUser.CLIENT:   
             return redirect(reverse('index'))
@@ -169,12 +151,13 @@ def login_view(request):
                     login(request, user)
                     # Redirect based on user_type
                     if user.user_type == CustomUser.ADMIN:
-                        messages.success(request, 'Success! Your action was completed.')
+                        messages.success(request, 'Login Success!!')
                         return redirect(reverse('admindashboard'))
                     elif user.user_type == CustomUser.CLIENT:
-                        
+                        messages.success(request, 'Login Success!!')
                         return redirect(reverse('index'))
                     elif user.user_type == CustomUser.MERCHANT:
+                        messages.success(request, 'Login Success!!')
                         return redirect(reverse('merchant_dashbord'))
                     else:
                         return redirect('/')
@@ -242,7 +225,7 @@ def send_welcome_email(email, user_name):
     # login_button = f'Click here to log in: {login_url}'
 
 
-    subject = 'SoulCure - Step Guide Registration'
+    subject = 'Step Guide-Registration Sucess'
     message = f"Hello {user_name},\n\n"
     message += f"Welcome to StepGuide! We are thrilled to have you as a part of our community. Your journey towards [briefly describe what your platform offers] starts now.\n\n"
     message += f"Your registration is complete, and we're excited to have you join us. Here are your login credentials:\n\n"

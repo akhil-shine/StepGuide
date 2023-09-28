@@ -114,7 +114,8 @@
     </style>
 </head>
 <body>
-    {% comment %} {% if messages %}
+{% comment %} Welcome message {% endcomment %}
+    {% if messages %}
     <script>
         {% for message in messages %}
             var alertMessage = '{{ message|safe }}';
@@ -129,7 +130,7 @@
             }, 3000); // 3000 milliseconds = 3 seconds
         {% endfor %}
     </script>
-{% endif %} {% endcomment %}
+{% endif %}
     <nav class="sidebar">
         <div class="sidebar-header">
             <h1>Admin Dashboard</h1>

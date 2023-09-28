@@ -17,13 +17,26 @@
     <!-- Load fonts style after rendering the layout styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="{% static "assets/css/fontawesome.min.css" %}">
+    <style>
+        .custom-alert {
+            position: fixed;
+            top: 20px; /* Adjust as needed for desired vertical position */
+            right: 20px; /* Adjust as needed for desired horizontal position */
+            background-color: #4CAF50; /* Green background color */
+            color: white; /* White text color */
+            padding: 10px; /* Padding */
+            text-align: center; /* Center text */
+            font-weight: bold; /* Bold text */
+            z-index: 9999; /* Set a high z-index to ensure it appears above other content */
+    }
+    </style>
 </head>
 
 <body>
     <!-- Start Top Nav -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
         <div class="container text-light">
-            <div class="w-100 d-flex justify-content-between">
+            <div class="w-100 d-flex justify-content-between" >
                 <div>
                     <i class="fa fa-envelope mx-2"></i>
                     <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@stepguide.com</a>
@@ -43,38 +56,36 @@
 
 
     <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-light shadow">
+    <nav class="navbar navbar-expand-lg navbar-light shadow" style="padding: 1px 0;">
         <div class="container d-flex justify-content-between align-items-center">
-
-            <a class="navbar-brand text-success logo h1 align-self-center" href="{% url "index" %}">
+    
+            <a class="navbar-brand text-success logo h2 align-self-center" href="{% url "index" %}">
                 StepGuide
             </a>
-
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="templatemo_main_nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+    
+            <div class="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
                 <div class="flex-fill">
-                    <ul class="nav navbar-nav d-flex justify-content-center align-items-center mx-lg-auto fs-4 py-0" >
+                    <ul class="nav navbar-nav d-flex justify-content-center align-items-center mx-lg-auto fs-5 py-0">
                         <li class="nav-item">
-                            <a class="nav-link fs-4 mx-3 fw-bold" href="{% url "index" %}">Home</a>
+                            <a class="nav-link mx-2 fw-bold" href="{% url "index" %}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fs-4 mx-3 fw-bold" href="{% url "about" %}">About</a>
+                            <a class="nav-link mx-2 fw-bold" href="{% url "about" %}">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fs-4 mx-3 fw-bold" href="{% url "buy" %}">Shop</a>
+                            <a class="nav-link mx-2 fw-bold" href="{% url "buy" %}">Shop</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fs-4 mx-3 fw-bold" href="{% url "contact" %}">Contact</a>
+                            <a class="nav-link mx-2 fw-bold" href="{% url "contact" %}">Contact</a>
                         </li>
-                        
-                        
                     </ul>
                 </div>
                 <div class="navbar align-self-center d-flex">
-                    <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
+                    <div class="d-lg-none flex-sm-fill mt-2 mb-2 col-7 col-sm-auto pr-3">
                         <div class="input-group">
                             <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
                             <div class="input-group-text">
@@ -83,35 +94,31 @@
                         </div>
                     </div>
                     <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
-                        <i class="fa fa-fw fa-search text-dark mr-2"></i>
+                        <i class="fa fa-fw fa-search text-dark mx-2"></i>
                     </a>
                     <a class="nav-icon position-relative text-decoration-none" href="#">
-                        <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                        {% comment %} <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span> {% endcomment %}
+                        <i class="fa fa-fw fa-cart-arrow-down text-dark mx-2"></i>
+                        <!-- <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span> -->
                     </a>
-                    {% comment %} <a class="nav-icon position-relative text-decoration-none" href="#">
-                        <i class="fa fa-fw fa-user text-dark mr-3"></i>
-                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
-                    </a> {% endcomment %}
-
-                     {% comment %} Login Button {% endcomment %}
-                    <div class="ml-3">
-                     {% if user.is_authenticated %}
-            
-                         <a class="nav-link fw-bold" href="">Welcome,{{user.username}}</a>
-                         <a class="nav-link fw-bold" href="{% url "logout" %}">Logout</a>
-                         <a class="nav-link fw-bold " href="{% url "edit_profile" %}">Edit</a>
-                     
-                     {% else %}
-                     
-                         <a class="nav-link fw-bold " href="{% url "login" %}">Login</a>
-                     
-                     {% endif %}
+                    <div class="ml-2 dropdown">
+                        {% if user.is_authenticated %}
+                            <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Welcome, {{ user.username }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
+                            </ul>
+                        {% else %}
+                            <a class="nav-link fw-bold" href="{% url "login" %}">Login</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </nav>
+    
+    
     <!-- Close Header -->
 
     <!-- Modal -->
@@ -431,6 +438,25 @@
     <script src="{% static "assets/js/bootstrap.bundle.min.js" %}"></script>
     <script src="{% static "assets/js/templatemo.js" %}"></script>
     <script src="{% static "assets/js/custom.js" %}"></script>
+
+   {% comment %} Welcome message {% endcomment %}
+   {% if messages %}
+   <script>
+       {% for message in messages %}
+           var alertMessage = '{{ message|safe }}';
+           var customAlert = document.createElement('div');
+           customAlert.classList.add('custom-alert');
+           customAlert.textContent = alertMessage;
+           document.body.appendChild(customAlert);
+
+           // Automatically close the alert after 3 seconds
+           setTimeout(function() {
+               customAlert.style.display = 'none';
+           }, 3000); // 3000 milliseconds = 3 seconds
+       {% endfor %}
+   </script>
+{% endif %}
+
     <!-- End Script -->
 </body>
 
