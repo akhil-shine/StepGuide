@@ -100,6 +100,7 @@
             
                          <a class="nav-link fw-bold" href="">Welcome,{{user.username}}</a>
                          <a class="nav-link fw-bold" href="{% url "logout" %}">Logout</a>
+                         <a class="nav-link fw-bold " href="{% url "edit_profile" %}">Edit</a>
                      
                      {% else %}
                      
@@ -208,7 +209,7 @@
     <section class="container py-5">
         <div class="row text-center pt-3">
             <div class="col-lg-6 m-auto">
-                <h1 class="h1">Categories of The Month</h1>
+                <h1 class="h1" style="font-weight: bold;">Categories of The Month</h1>
                 <p>
                     Discover our Categories of The Month! Explore the latest trends and 
                     must-have footwear collections that will elevate your shoe game to new heights

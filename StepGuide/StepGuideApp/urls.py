@@ -17,4 +17,6 @@ urlpatterns = [
     path('merchant_dashbord/',views.merchant_dashbord,name='merchant_dashbord'),
     path('buy/',views.buy,name='buy'),
     path('purchase/',views.purchase,name='purchase'),
+    path('admindashboard/dashboard.html/',views.dashboard,name='dashboard'),
+    path('edit_profile.html/',views.edit_profile,name='edit_profile'),
 ]

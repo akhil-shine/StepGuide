@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <!-- Add Bootstrap CSS link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add custom CSS here -->
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Edit Profile</h1>
+        
+        <!-- Display any alerts or error messages here, if needed -->
+        {% if alert %}
+            <div class="alert alert-danger">{{ alert }}</div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- User Information -->
+            <div class="mb-3">
+                <label for="first_name" class="form-label">First Name:</label>
+                <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="last_name" class="form-label">Last Name:</label>
+                <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="phone_no" class="form-label">Phone Number:</label>
+                <input type="text" class="form-control" name="phone_no" value="{{ user.phone_no }}" required>
+            </div>
+            
+            <!-- User Profile Information -->
+            <div class="mb-3">
+                <label for="country" class="form-label">Country:</label>
+                <input type="text" class="form-control" name="country" value="{{ user_profile.country }}">
+            </div>
+            
+            <div class="mb-3">
+                <label for="state" class="form-label">State:</label>
+                <input type="text" class="form-control" name="state" value="{{ user_profile.state }}">
+            </div>
+            
+            <div class="mb-3">
+                <label for="city" class="form-label">City:</label>
+                <input type="text" class="form-control" name="city" value="{{ user_profile.city }}">
+            </div>
+            
+            <div class="mb-3">
+                <label for="pin_code" class="form-label">Pin Code:</label>
+                <input type="text" class="form-control" name="pin_code" value="{{ user_profile.pin_code }}">
+            </div>
+            
+            <!-- Profile Picture -->
+            <div class="mb-3">
+                <label for="profile_pic" class="form-label">Profile Picture:</label>
+                <input type="file" class="form-control" name="profile_pic">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+
+    <!-- Add Bootstrap JS script link -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const errorMessage = document.getElementById('error-message');
+      
+            if (errorMessage) {
+                // Show the error message
+                errorMessage.style.display = 'block';
+      
+                // Set a timer to hide the error message after, for example, 5 seconds (5000 milliseconds)
+                setTimeout(function() {
+                    errorMessage.style.display = 'none';
+                }, 5000); // Adjust the time as needed (5 seconds in this example)
+            }
+      });
+      </script>
+</body>
+</html>

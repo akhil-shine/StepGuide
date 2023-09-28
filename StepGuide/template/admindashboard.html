@@ -1,9 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         /* Reset some default styles */
@@ -22,8 +24,8 @@
         /* Sidebar styles */
         .sidebar {
             width: 250px;
-            background-color: #d67724;
-            color: #fff;
+            background-color: #904de8;
+            color: #59ab6e;
             position: fixed;
             height: 100%;
             overflow-y: auto;
@@ -54,7 +56,7 @@
         }
 
         .sidebar-menu a:hover {
-            background-color: #555;
+            background-color: #fff;
         }
 
         /* Content styles */
@@ -97,8 +99,37 @@
             }
         }
     </style>
+    <style>
+        .custom-alert {
+            position: fixed;
+            top: 20px; /* Adjust as needed for desired vertical position */
+            right: 20px; /* Adjust as needed for desired horizontal position */
+            background-color: #4CAF50; /* Green background color */
+            color: white; /* White text color */
+            padding: 10px; /* Padding */
+            text-align: center; /* Center text */
+            font-weight: bold; /* Bold text */
+            z-index: 9999; /* Set a high z-index to ensure it appears above other content */
+    }
+    </style>
 </head>
 <body>
+    {% comment %} {% if messages %}
+    <script>
+        {% for message in messages %}
+            var alertMessage = '{{ message|safe }}';
+            var customAlert = document.createElement('div');
+            customAlert.classList.add('custom-alert');
+            customAlert.textContent = alertMessage;
+            document.body.appendChild(customAlert);
+
+            // Automatically close the alert after 3 seconds
+            setTimeout(function() {
+                customAlert.style.display = 'none';
+            }, 3000); // 3000 milliseconds = 3 seconds
+        {% endfor %}
+    </script>
+{% endif %} {% endcomment %}
     <nav class="sidebar">
         <div class="sidebar-header">
             <h1>Admin Dashboard</h1>
@@ -107,14 +138,27 @@
             <li><a href="#clients">Manage Clients</a></li>
             <li><a href="#merchants">Manage Merchants</a></li>
             <li><a href="#products">Manage Products</a></li>
-            <a class="nav-link fw-bold" href="">Welcome,{{user.username}}</a>
+            <li><a href="http://127.0.0.1:8000/admin/">More Options</a></li>
+            <li><a href="dashboard.html">More</a></li>
+            {% comment %} <a class="nav-link fw-bold" href="{% url "logout" %}">Logout</a> {% endcomment %}
+            {% if user.is_authenticated %}
+            
+            {% comment %} <a class="nav-link fw-bold" href="">Welcome,{{user.username}}</a> {% endcomment %}
             <a class="nav-link fw-bold" href="{% url "logout" %}">Logout</a>
+        
+        {% else %}
+        
+            <a class="nav-link fw-bold " href="{% url "login" %}">Login</a>
+        
+        {% endif %}
         </ul>
     </nav>
     <main class="content">
         <header>
             <button class="menu-toggle" id="menu-toggle">&#9776;</button>
-            <h2>Welcome to the Admin Dashboard</h2>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+            <h2 style="text-align: center; font-weight: bold;">Welcome to the Admin Dashboard</h2>
+
         </header>
         <section id="clients">
             <h3>Manage Clients</h3>

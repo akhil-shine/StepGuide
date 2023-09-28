@@ -44,6 +44,6 @@ class UserProfile(models.Model):
     
     def _str_(self):
         if self.user:
-            return self.user.username
+            return self.user
         else:
             return "UserProfile with no associated user"
