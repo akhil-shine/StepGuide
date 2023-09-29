@@ -17,7 +17,7 @@
         .sidebar {
             width: 250px;
             background-color: #1fb897;
-            color: #fff;
+            color: #59ab6e;
             position: fixed;
             height: 100%;
             overflow-y: auto;
@@ -27,7 +27,7 @@
         .sidebar-header {
             padding: 20px;
             text-align: center;
-            background-color: #222;
+            background-color: #ffff;
         }
 
         .sidebar-menu {
@@ -109,7 +109,7 @@
 
     <nav class="sidebar">
         <div class="sidebar-header">
-            <h1>Merchant Dashboard</h1>
+            <h2>Step Guide</h2>
         </div>
         <ul class="sidebar-menu">
             <li><a href="#">Dashboard</a></li>
@@ -118,6 +118,7 @@
             <li><a href="#">Customers</a></li>
             <li><a href="#">Reports</a></li>
             <li><a href="#">Settings</a></li>
+            <li><a href="http://127.0.0.1:8000/admin/">More Options</a></li>
             {% comment %} <a class="nav-link fw-bold" href="">Welcome,{{user.username}}</a> {% endcomment %}
             {% comment %} <a class="nav-link fw-bold" href="{% url "logout" %}">Logout</a> {% endcomment %}
             {% if user.is_authenticated %}
@@ -134,10 +135,10 @@
             <h2>Welcome to the Merchant Dashboard</h2>
         </header>
         <!-- Your dashboard content goes here -->
-        <section>
+        {% comment %} <section>
             <h3>Dashboard Section</h3>
             <p>This is the main content of the dashboard.</p>
-        </section>
+        </section> {% endcomment %}
     </main>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

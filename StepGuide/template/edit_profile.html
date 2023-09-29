@@ -15,11 +15,17 @@
             font-family: Arial, sans-serif;
         }
         .container {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #ffffff;
+            margin-top: 5px;
+            padding: 5px; /* Reduced padding */
+            background-color: #bbc4bd;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 500px; /* Adjust the maximum width of the container */
+            margin: 0 auto; /* Center the container horizontally */
+        }
+        /* Smaller form fields */
+        .form-control-sm {
+            max-width: 450px; /* Adjust the maximum width of the form fields */
         }
     </style>
 </head>
@@ -38,47 +44,48 @@
             <!-- User Information -->
             <div class="mb-3">
                 <label for="first_name" class="form-label">First Name:</label>
-                <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}" required>
+                <input type="text" class="form-control form-control-sm" name="first_name" value="{{ user.first_name }}" required>
             </div>
             
             <div class="mb-3">
                 <label for="last_name" class="form-label">Last Name:</label>
-                <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}" required>
+                <input type="text" class="form-control form-control-sm" name="last_name" value="{{ user.last_name }}" required>
             </div>
             
             <div class="mb-3">
                 <label for="phone_no" class="form-label">Phone Number:</label>
-                <input type="text" class="form-control" name="phone_no" value="{{ user.phone_no }}" required>
+                <input type="text" class="form-control form-control-sm" name="phone_no" value="{{ user.phone_no }}" required>
             </div>
             
             <!-- User Profile Information -->
             <div class="mb-3">
                 <label for="country" class="form-label">Country:</label>
-                <input type="text" class="form-control" name="country" value="{{ user_profile.country }}">
+                <input type="text" class="form-control form-control-sm" name="country" value="{{ user_profile.country }}">
             </div>
             
             <div class="mb-3">
                 <label for="state" class="form-label">State:</label>
-                <input type="text" class="form-control" name="state" value="{{ user_profile.state }}">
+                <input type="text" class="form-control form-control-sm" name="state" value="{{ user_profile.state }}">
+                                <label for="city" class="form-label">City:</label>
+                <input type="text" class="form-control form-control-sm" name="city" value="{{ user_profile.city }}">
             </div>
             
             <div class="mb-3">
-                <label for="city" class="form-label">City:</label>
-                <input type="text" class="form-control" name="city" value="{{ user_profile.city }}">
+
             </div>
             
             <div class="mb-3">
                 <label for="pin_code" class="form-label">Pin Code:</label>
-                <input type="text" class="form-control" name="pin_code" value="{{ user_profile.pin_code }}">
+                <input type="text" class="form-control form-control-sm" name="pin_code" value="{{ user_profile.pin_code }}">
             </div>
             
             <!-- Profile Picture -->
             <div class="mb-3">
                 <label for="profile_pic" class="form-label">Profile Picture:</label>
-                <input type="file" class="form-control" name="profile_pic">
+                <input type="file" class="form-control form-control-sm" name="profile_pic">
             </div>
             
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="submit" class="btn btn-success">Save Changes</button>
         </form>
     </div>
 
