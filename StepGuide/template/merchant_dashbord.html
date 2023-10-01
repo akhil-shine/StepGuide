@@ -118,7 +118,7 @@
             <li><a href="#">Customers</a></li>
             <li><a href="#">Reports</a></li>
             <li><a href="#">Settings</a></li>
-            <li><a href="http://127.0.0.1:8000/admin/">More Options</a></li>
+            <li><a href="{% url "dashboard2" %}">More Options</a></li>
             {% comment %} <a class="nav-link fw-bold" href="">Welcome,{{user.username}}</a> {% endcomment %}
             {% comment %} <a class="nav-link fw-bold" href="{% url "logout" %}">Logout</a> {% endcomment %}
             {% if user.is_authenticated %}

@@ -140,7 +140,7 @@
             <li><a href="#merchants">Manage Merchants</a></li>
             <li><a href="#products">Manage Products</a></li>
             <li><a href="http://127.0.0.1:8000/admin/">More Options</a></li>
-            <li><a href="dashboard.html">More</a></li>
+            <li><a href={% url "dashboard1" %}>More</a></li>
             {% comment %} <a class="nav-link fw-bold" href="{% url "logout" %}">Logout</a> {% endcomment %}
             {% if user.is_authenticated %}
             

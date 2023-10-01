@@ -18,8 +18,8 @@ User = get_user_model()
 def index(request):
     user=request.user
     if request.user.is_authenticated:
-        if user.user_type == CustomUser.ADMIN and not request.path == reverse('admindashboard'):
-            return redirect(reverse('admindashboard'))
+        if user.user_type == CustomUser.ADMIN and not request.path == reverse('dashboard1'):
+            return redirect(reverse('dashboard1'))
         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
             return redirect(reverse('index'))
         elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('merchant_dashbord'):
@@ -29,23 +29,23 @@ def about(request):
     return render(request,'about.html',)
 def contact(request):
     return render(request,'contact.html',)
-def admindashboard(request):
-    if request.user.is_authenticated:
-        user=request.user
-        if user.user_type == CustomUser.ADMIN and not request.path == reverse('admindashboard'):
-            return redirect(reverse('admindashboard'))
-        elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
-            return redirect(reverse('index'))
-        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('merchant_dashbord'):
-            return redirect(reverse('merchant_dashbord'))
-    else:
-        return redirect(reverse('index'))   
-    return render(request,'admindashboard.html',)
+# def admindashboard(request):
+#     if request.user.is_authenticated:
+#         user=request.user
+#         if user.user_type == CustomUser.ADMIN and not request.path == reverse('admindashboard'):
+#             return redirect(reverse('admindashboard'))
+#         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
+#             return redirect(reverse('index'))
+#         elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('merchant_dashbord'):
+#             return redirect(reverse('merchant_dashbord'))
+#     else:
+#         return redirect(reverse('index'))   
+#     return render(request,'admindashboard.html',)
 def merchant_dashbord(request):
     user=request.user
     if request.user.is_authenticated:
-        if user.user_type == CustomUser.ADMIN and not request.path == reverse('admindashboard'):
-            return redirect(reverse('admindashboard'))
+        if user.user_type == CustomUser.ADMIN and not request.path == reverse('dashboard1'):
+            return redirect(reverse('dashboard1'))
         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
             return redirect(reverse('index'))
         elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('merchant_dashbord'):
@@ -57,9 +57,20 @@ def buy(request):
     return render(request,'buy.html',)
 def purchase(request):
     return render(request,'purchase.html',)
-def dashboard(request):
-    return render(request,'dashboard.html',)
-
+def dashboard1(request):
+    if request.user.is_authenticated:
+        user=request.user
+        if user.user_type == CustomUser.ADMIN and not request.path == reverse('dashboard1'):
+            return redirect(reverse('dashboard1'))
+        elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
+            return redirect(reverse('index'))
+        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('merchant_dashbord'):
+            return redirect(reverse('merchant_dashbord'))
+    else:
+        return redirect(reverse('index'))   
+    return render(request,'dashboard1.html',)
+def dashboard2(request):
+    return render(request,'dashboard2.html',)
 
 #login & Registration
 # def userlogin(request):
@@ -136,7 +147,7 @@ def login_view(request):
         messages.warning(request, 'You are already logged in!')
         user=request.user
         if user.user_type == CustomUser.ADMIN:
-            return redirect(reverse('admindashboard'))
+            return redirect(reverse('dashboard1'))
         elif user.user_type == CustomUser.CLIENT:   
             return redirect(reverse('index'))
         elif user.user_type == CustomUser.MERCHANT:
@@ -156,7 +167,7 @@ def login_view(request):
                     # Redirect based on user_type
                     if user.user_type == CustomUser.ADMIN:
                         messages.success(request, 'Login Success!!')
-                        return redirect(reverse('admindashboard'))
+                        return redirect(reverse('dashboard1'))
                     elif user.user_type == CustomUser.CLIENT:
                         messages.success(request, 'Login Success!!')
                         return redirect(reverse('index'))
