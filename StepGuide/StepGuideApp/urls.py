@@ -20,9 +20,12 @@ urlpatterns = [
     path('dashboard1.html/',views.dashboard1,name='dashboard1'),
     path('dashboard2.html/',views.dashboard2,name='dashboard2'),
     path('edit_profile.html/',views.edit_profile,name='edit_profile'),
-    
+    # Forget Password
     path('password_reset/',auth_views.PasswordResetView.as_view(),name='password_reset'),
     path('password_reset/done/',auth_views.PasswordResetDoneView.as_view(),name='password_reset_done'),
     path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
     path('reset/done/',auth_views.PasswordResetCompleteView.as_view(),name='password_reset_complete'),
+    # 
+    path('userview.html/',views.userview,name='userview'),
+
 ]

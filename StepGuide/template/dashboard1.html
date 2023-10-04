@@ -9,9 +9,39 @@
   <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
   {% comment %} <link rel="shortcut icon" type="image/png" href="{% static "dashboard1/assets/img/favicon.png" %}" /> {% endcomment %}
   <link rel="stylesheet" href="{% static "dashboard1/css/styles.min.css" %}" />
+
+  <style>
+    .custom-alert {
+        position: fixed;
+        top: 20px; /* Adjust as needed for desired vertical position */
+        right: 20px; /* Adjust as needed for desired horizontal position */
+        background-color: #4CAF50; /* Green background color */
+        color: white; /* White text color */
+        padding: 10px; /* Padding */
+        text-align: center; /* Center text */
+        font-weight: bold; /* Bold text */
+        z-index: 9999; /* Set a high z-index to ensure it appears above other content */
+}
+</style>
 </head>
 
 <body>
+  {% if messages %}
+  <script>
+      {% for message in messages %}
+          var alertMessage = '{{ message|safe }}';
+          var customAlert = document.createElement('div');
+          customAlert.classList.add('custom-alert');
+          customAlert.textContent = alertMessage;
+          document.body.appendChild(customAlert);
+
+          // Automatically close the alert after 3 seconds
+          setTimeout(function() {
+              customAlert.style.display = 'none';
+          }, 3000); // 3000 milliseconds = 3 seconds
+      {% endfor %}
+  </script>
+{% endif %}
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
@@ -38,17 +68,18 @@
               <span class="hide-menu">Home</span>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="http://127.0.0.1:8000/admin/" aria-expanded="false">
+              {% comment %} <a class="sidebar-link" href="http://127.0.0.1:8000/admin/" aria-expanded="false"> {% endcomment %}
+              <a class="sidebar-link" href="{% url "userview" %}" aria-expanded="false">
                 <span>
                   <i class="ti ti-layout-dashboard"></i>
                 </span>
-                <span class="hide-menu">Dashboard</span>
+                <span class="hide-menu">Users List</span>
               </a>
             </li>
-            <li class="nav-small-cap">
+            {% comment %} <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">UI COMPONENTS</span>
-            </li>
+            </li> {% endcomment %}
             {% comment %} <li class="sidebar-item">
               <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
                 <span>

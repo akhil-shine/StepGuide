@@ -17,6 +17,16 @@
             background-size: cover;
             background-position: center;
         }
+
+        .alert-top {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 500px; /* Adjust this width as needed */
+            z-index: 1000; /* Ensure the alert is on top of other content */
+        }
 </style>
 </head>
 
@@ -54,7 +64,7 @@
                      <p>You can sign in to access with your existing account.</p>
                 </div>
                 <div class="input-group mb-1">
-                    <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Email" name="username" required>
+                    <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Username" name="username" required>
                 </div>
                 <div class="input-group mb-1">
                     <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password" name="password" required>
@@ -91,6 +101,36 @@
 
       </div>
     </div>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    {% comment %} <script src="https://www.google.com/recaptcha/api.js" async defer></script> {% endcomment %}
+   
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const alertType = urlParams.get('alert');
+    
+            if (alertType === 'invalid_captcha') {
+                showAlert('Invalid login Captcha', 'danger');
+            } else if (alertType === 'invalid_credentials') {
+                showAlert('Invalid login credentials.', 'danger');
+            } else if (alertType === 'fill_fields') {
+                showAlert('Please fill out all fields.', 'warning');
+            }
+    
+            function showAlert(message, alertType) {
+                const alertDiv = document.createElement('div');
+                alertDiv.classList.add('alert', `alert-${alertType}`, 'alert-top');
+                alertDiv.textContent = message;
+    
+                const container = document.querySelector('.container');
+                container.insertBefore(alertDiv, container.firstChild);
+    
+                setTimeout(function() {
+                    alertDiv.remove();
+                }, 5000);  // Remove after 5 seconds
+            }
+        });
+    </script>
+    
+
 </body>
 </html>

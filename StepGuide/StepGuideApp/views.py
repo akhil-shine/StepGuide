@@ -141,14 +141,14 @@ def dashboard2(request):
 #                 return redirect('login')  
             
 #     return render(request, 'register2.html')
-# login
+
+# Login View
 def login_view(request):
     if request.user.is_authenticated:
-        messages.warning(request, 'You are already logged in!')
-        user=request.user
+        user = request.user
         if user.user_type == CustomUser.ADMIN:
             return redirect(reverse('dashboard1'))
-        elif user.user_type == CustomUser.CLIENT:   
+        elif user.user_type == CustomUser.CLIENT:
             return redirect(reverse('index'))
         elif user.user_type == CustomUser.MERCHANT:
             return redirect(reverse('merchant_dashbord'))
@@ -252,8 +252,7 @@ def send_welcome_email(email, user_name):
     message += "Warm regards,\nThe Step Guide Team\n\n"
     
 
-
-    from_email='akhilshine14@gmail.com'
+    from_email='stepguidee@gmail.com'
       # Replace with your actual email
     recipient_list = [email]
     
@@ -303,7 +302,7 @@ def mregister(request):
     return render(request, 'm_register.html')
 
 
-# Edit Profil
+# Edit Profile
 def edit_profile(request):
     user = request.user
     user_profile = UserProfile.objects.get(user=user)
@@ -345,4 +344,25 @@ def edit_profile(request):
         'user_profile': user_profile,
     }
     return render(request, 'edit_profile.html',context)
+
+
+# def userview(request):
+#     # Query all UserProfile objects from the database
+#     CustomUser = CustomUser.objects.all()
     
+#     # Pass the data to the template
+#     context = {'CustomUser': CustomUser}
+    
+#     # Render the HTML template
+#     return render(request, 'userview.html', context)
+
+# def userview(request):
+#     # Fetch data from the database
+#     users = UserProfile.objects.all()
+#     return render(request, 'userview.html', {'users': users})
+    
+    
+def userview(request):
+    # Fetch data from the database, including user roles
+    users = UserProfile.objects.select_related('user').all()
+    return render(request, 'userview.html', {'users': users})
