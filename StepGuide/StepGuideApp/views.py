@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
+from django.db.models import Q
 
 User = get_user_model()
 
@@ -67,8 +68,10 @@ def dashboard1(request):
         elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('merchant_dashbord'):
             return redirect(reverse('merchant_dashbord'))
     else:
-        return redirect(reverse('index'))   
-    return render(request,'dashboard1.html',)
+        return redirect(reverse('index')) 
+    user_count = User.objects.exclude(is_superuser=True).count() 
+    context = {'user_count': user_count} 
+    return render(request,'dashboard1.html',context)
 def dashboard2(request):
     return render(request,'dashboard2.html',)
 
@@ -364,5 +367,22 @@ def edit_profile(request):
     
 def userview(request):
     # Fetch data from the database, including user roles
-    users = UserProfile.objects.select_related('user').all()
-    return render(request, 'userview.html', {'users': users})
+    users = CustomUser.objects.filter(~Q(is_superuser=True), is_active=True)
+    inactive_users = CustomUser.objects.filter(~Q(is_superuser=True), is_active=False)
+    return render(request, 'userview.html', {'users': users,'inactive_users':inactive_users})
+
+# Active Status
+def updateStatus(request,update_id):
+    updateUser=User.objects.get(id=update_id)
+    if updateUser.is_active==True:
+        updateUser.is_active=False
+    else:
+        updateUser.is_active=True
+    updateUser.save()
+    return redirect('userview')
+
+# Delete User
+def deleteUser(request, delete_id):
+    delUser=User.objects.get(id=delete_id)
+    delUser.delete()
+    return redirect('userview')
