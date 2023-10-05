@@ -50,42 +50,54 @@
                         </div>
                         <div class="input-group mb-3">
                             <input type="text" class="form-control form-control-lg bg-light fs-6" onkeyup="validateFirst_Name()" placeholder="First Name" id="first_name" name="first_name" required><br>
-                            <div class="invalid-feedback"></div>
-                            <div class="valid-feedback"></div>
+                            <div class="invalid-feedback" id="fnamevalid">Numbers and special characters are not allowed</div>
+                            <div class="valid-feedback" id="fnvalid">Looks good!</div>
                         </div>
 
                         <div class="input-group mb-3">
                           <input type="text" class="form-control form-control-lg bg-light fs-6" onkeyup="validateLast_Name()" placeholder="Last Name" id="last_name" name="last_name" required><br>
-                          <div class="invalid-feedback"></div>
-                          <div class="valid-feedback"></div>
+                          <div class="invalid-feedback" id="lnamevalid">Numbers and special characters are not allowed</div>
+                          <div class="valid-feedback" id="lnvalid">Looks good!</div>
                       </div>
 
                         <div class="input-group mb-3">
                           <input type="text" class="form-control form-control-lg bg-light fs-6" onkeyup="validateUser_Name()" placeholder="Username" id="username" name="username" required><br>
-                          <div class="invalid-feedback"></div>
-                          <div class="valid-feedback"></div>
+                          <div class="invalid-feedback" id="unamevalid">Username not allowed Space</div>
+                          <div class="valid-feedback" id="unvalid">Looks good!</div>
                       </div>
 
                         <div class="input-group mb-3">
                             <input type="text" class="form-control form-control-lg bg-light fs-6" onkeyup="validateEmail()" placeholder="Email Address" id="email" name="email" required><br>
-                            <div class="invalid-feedback"></div>
-                            <div class="valid-feedback"></div>
+                            <div class="invalid-feedback" id="emailvalid">Email not allow Space</div>
+                            <div class="valid-feedback" id="evalid">Looks good!</div>
                         </div>
                         <div class="input-group mb-3">
                             <input type="text" class="form-control form-control-lg bg-light fs-6" onkeyup="validatePhoneNumber()" placeholder="Phone no" id="phone" name="phone" required><br>
-                            <div class="invalid-feedback"></div>
-                            <div class="valid-feedback"></div>
+                            <div class="invalid-feedback" id="phonevalid">Phone number not allow characters and must have 10 digits</div>
+                            <div class="valid-feedback" id="pvalid">Looks good!</div>
                         </div>
                         <div class="input-group mb-3">
                             <input type="password" class="form-control form-control-lg bg-light fs-6" onkeyup="validatePassword()" placeholder="Password" id="password" name="password" required><br>
-                            <span id="pw" class="text-danger"></span>
-                            <div class="invalid-feedback"></div>
-                            <div class="valid-feedback"></div>
+                            {% comment %} <span id="pw" class="text-danger"></span> {% endcomment %}
+                            <div id="passValidation" class="invalid-feedback">
+                              Password must be at least 8 characters long and contain at least one
+                              uppercase
+                              letter, one lowercase letter, one number, and one special character.
+                          </div>
+                          <div id="passValid" class="valid-feedback">
+                              Looks good!
+                        </div>
                         </div>
                         <div class="input-group mb-3">
                             <input type="password" class="form-control form-control-lg bg-light fs-6" onkeyup="validateConfirmPassword()" placeholder="Confirm Password" id="confirmPassword" name="confirmPassword" required><br>
-                            <div class="invalid-feedback"></div>
-                            <div class="valid-feedback"></div>
+                            <div  id="cpassValidation" class="invalid-feedback">
+                              Password must be at least 8 characters long and contain at least one
+                              uppercase
+                              letter, one lowercase letter, one number, and one special character.
+                            </div>
+                            <div id="cpassValid" class="valid-feedback">
+                            Looks good!
+                          </div>  
                         </div>
                         <div class="input-group mb-3">
                             <button class="btn btn-lg btn-success w-100 fs-6" type="submit" onclick="return checkall()" >Register</button>
@@ -109,51 +121,63 @@
         const passwordInput = document.getElementById('password');
         const confirmPasswordInput = document.getElementById('confirmPassword');
   
-        first_nameInput.addEventListener('blur', function(event) { validateFirst_Name(); });
-        last_nameInput.addEventListener('blur', function(event) { validateLast_Name(); });
-        usernameInput.addEventListener('blur', function(event) { validateUser_Name(); });
-        emailInput.addEventListener('blur', function(event) { validateEmail(); });
-        phoneInput.addEventListener('blur', function(event) { validatePhoneNumber(); });
-        passwordInput.addEventListener('blur', function(event) { validatePassword(); });
-        confirmPasswordInput.addEventListener('blur', function(event) { validateConfirmPassword(); });
+        first_nameInput.addEventListener('keyup', function(event) { validateFirst_Name(); });
+        last_nameInput.addEventListener('keyup', function(event) { validateLast_Name(); });
+        usernameInput.addEventListener('keyup', function(event) { validateUser_Name(); });
+        emailInput.addEventListener('keyup', function(event) { validateEmail(); });
+        phoneInput.addEventListener('keyup', function(event) { validatePhoneNumber(); });
+        passwordInput.addEventListener('keyup', function(event) { validatePassword(); });
+        confirmPasswordInput.addEventListener('keyup', function(event) { validateConfirmPassword(); });
 
 
         function validateFirst_Name() {
           const namePattern = /^[A-Za-z ]+$/;
+          const fnamevalid = document.getElementById('fnamevalid');
+          const fnvalid = document.getElementById('fnvalid');
           if (!namePattern.test(first_nameInput.value)) {
             first_nameInput.classList.add('is-invalid');
             first_nameInput.classList.remove('is-valid');
-            return false;
+            fnamevalid.style.display = 'block';
+            fnvalid.style.display = 'none';
           } else {
             first_nameInput.classList.remove('is-invalid');
             first_nameInput.classList.add('is-valid');
-            return true;
+            fnamevalid.style.display = 'none';
+            fnvalid.style.display = 'block';
           }
         }
 
         function validateLast_Name() {
           const namePattern = /^[A-Za-z]+$/;
+          const lnamevalid = document.getElementById('lnamevalid');
+          const lnvalid = document.getElementById('lnvalid');
           if (!namePattern.test(last_nameInput.value)) {
             last_nameInput.classList.add('is-invalid');
             last_nameInput.classList.remove('is-valid');
-            return false;
+            lnamevalid.style.display = 'block';
+            lnvalid.style.display = 'none';
           } else {
             last_nameInput.classList.remove('is-invalid');
             last_nameInput.classList.add('is-valid');
-            return true;
+            lnamevalid.style.display = 'none';
+            lnvalid.style.display = 'block';
           }
         }
 
         function validateUser_Name() {
           const namePattern = /^[A-Za-z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\/\-\\]+$/;
+          const unamevalid = document.getElementById('unamevalid');
+          const unvalid = document.getElementById('unvalid');
           if (!namePattern.test(usernameInput.value)) {
             usernameInput.classList.add('is-invalid');
             usernameInput.classList.remove('is-valid');
-            return false;
+            unamevalid.style.display = 'block';
+            unvalid.style.display = 'none';
           } else {
             usernameInput.classList.remove('is-invalid');
             usernameInput.classList.add('is-valid');
-            return true;
+            unamevalid.style.display = 'none';
+            unvalid.style.display = 'block';
           }
         }
 
@@ -196,56 +220,73 @@
       
       function validateEmail() {
           const emailInput = document.getElementById('email');
+          const emailvalid = document.getElementById('emailvalid');
+          const evalid = document.getElementById('evalid');
           if (!isValidEmail(emailInput.value)) {
               emailInput.classList.add('is-invalid');
               emailInput.classList.remove('is-valid');
-              return false;
+              emailvalid.style.display = 'block';
+              evalid.style.display = 'none';
           } else {
               emailInput.classList.remove('is-invalid');
               emailInput.classList.add('is-valid');
-              return true;
+              emailvalid.style.display = 'none';
+              evalid.style.display = 'block';
           }
       }
       
 
       function validatePhoneNumber() {
         const phoneNumberPattern = /^(?!.*0{10})(?!(\d)\1{9})[6-9][0-9]{9}$/;
+        const phonevalid = document.getElementById('phonevalid');
+        const pvalid = document.getElementById('pvalid');
         if (!phoneNumberPattern.test(phoneInput.value)) {
             phoneInput.classList.add('is-invalid');
             phoneInput.classList.remove('is-valid');
-            return false;
+            phonevalid.style.display = 'block';
+            pvalid.style.display = 'none';
         } else {
             phoneInput.classList.remove('is-invalid');
             phoneInput.classList.add('is-valid');
-            return true;
+            phonevalid.style.display = 'none';
+            pvalid.style.display = 'block';
         }
     }
 
-        function validatePassword() {
-          const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+[\]{}|;:'",.<>?/~`]).{8,}$/;
-          if (!passwordPattern.test(passwordInput.value)) {
-            passwordInput.classList.add('is-invalid');
-            passwordInput.classList.remove('is-valid');
-            return false;
-          } else {
-            passwordInput.classList.remove('is-invalid');
-            passwordInput.classList.add('is-valid');
-            return true;
-          }
-        }
+    function validatePassword() {
+      const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+[\]{}|;:'",.<>?/~`]).{8,}$/;
+      const passValidation = document.getElementById('passValidation');
+      const passValid = document.getElementById('passValid');
 
-        function validateConfirmPassword() {
-          if (passwordInput.value !== confirmPasswordInput.value) {
-            confirmPasswordInput.classList.add('is-invalid');
-            confirmPasswordInput.classList.remove('is-valid');
-            return false;
-          } else {
-            confirmPasswordInput.classList.remove('is-invalid');
-            confirmPasswordInput.classList.add('is-valid');
-            return true;
-          }
-        }
+      if (!passwordPattern.test(passwordInput.value)) {
+          passwordInput.classList.add('is-invalid');
+          passwordInput.classList.remove('is-valid');
+          passValidation.style.display = 'block';
+          passValid.style.display = 'none';
+      } else {
+          passwordInput.classList.remove('is-invalid');
+          passwordInput.classList.add('is-valid');
+          passValidation.style.display = 'none';
+          passValid.style.display = 'block';
+      }
+  }
 
+  function validateConfirmPassword() {
+      const confirmPasswordValidation = document.getElementById('cpassValidation');
+      const confirmPasswordValid = document.getElementById('cpassValid');
+
+      if (passwordInput.value !== confirmPasswordInput.value) {
+          confirmPasswordInput.classList.add('is-invalid');
+          confirmPasswordInput.classList.remove('is-valid');
+          confirmPasswordValidation.style.display = 'block';
+          confirmPasswordValid.style.display = 'none';
+      } else {
+          confirmPasswordInput.classList.remove('is-invalid');
+          confirmPasswordInput.classList.add('is-valid');
+          confirmPasswordValidation.style.display = 'none';
+          confirmPasswordValid.style.display = 'block';
+      }
+  }
         function checkall() {
           if (validateFirst_Name() && validateLast_Name() && validateUser_Name() && validateEmail() && validatePassword() && validateConfirmPassword() && validatePhoneNumber()) {
             return true;
