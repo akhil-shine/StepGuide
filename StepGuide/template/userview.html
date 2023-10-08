@@ -5,11 +5,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Step Guide</title>
+  <title>User List</title>
   <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
   <link rel="stylesheet" href="{% static "dashboard1/css/styles.min.css" %}" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.17.0/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
   <style>
     .custom-alert {
@@ -75,7 +77,7 @@
       <!-- Sidebar scroll-->
       <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-          <a class=" logo h2 align-self-center text-decoration-none" href="{% url "index" %}" style="color: #59ab6e;"> StepGuide </a>
+          <a class=" logo h2 align-self-center text-decoration-none" style="color: #59ab6e;"> StepGuide </a>
 
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             <i class="ti ti-x fs-8"></i>
@@ -230,10 +232,10 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="message-body">
-                    <a href="http://127.0.0.1:8000/admin/StepGuideApp/customuser/1/change/" class="d-flex align-items-center gap-2 dropdown-item">
+                    {% comment %} <a href="http://127.0.0.1:8000/admin/StepGuideApp/customuser/1/change/" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-user fs-6"></i>
                       <p  class="mb-0 fs-3" >My Profile</p>
-                    </a>
+                    </a> {% endcomment %}
                     {% comment %} <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-mail fs-6"></i>
                       <p class="mb-0 fs-3">My Account</p>
@@ -265,8 +267,8 @@
                     <th>Role</th>
                     {% comment %} <th>Created At</th> {% endcomment %}
                     <th>Status</th>
-                    <th>Update Status</th>
-                    <th>Delete User</th>
+                    <th>Action</th>
+                    {% comment %} <th>Delete User</th> {% endcomment %}
                 </tr>
             </thead>
             <tbody>
@@ -297,13 +299,15 @@
                     </td>
                     <td class="cell" style="border: .5px solid rgb(186, 240, 186); ">
                         <a href="{% url 'updateStatus' user.id %}"><button
-                        class="btn btn-warning">Inactive</button></a>
+                        class="btn btn-warning">Disable</button></a>
                     </td>
-                    <td class="cell" style="border: .5px solid rgb(186, 240, 186); ">
+
+                    {% comment %} <td class="cell" style="border: .5px solid rgb(186, 240, 186); ">
                         <a href="{% url 'deleteUser' user.id %}" data-delete-url="{% url 'deleteUser' user.id %}" class="delete-user-link">
                           <button class="btn btn-danger" id="deleteButton">Delete</button>
                         </a>
-                    </td>
+                    </td> {% endcomment %}
+
                 </tr>
                 {% endfor %}
             </tbody>
@@ -323,8 +327,8 @@
                     <th>Role</th>
                     {% comment %} <th>Created At</th> {% endcomment %}
                     <th>Status</th>
-                    <th>Update Status</th>
-                    <th>Delete User</th>
+                    <th>Action</th>
+                    {% comment %} <th>Delete User</th> {% endcomment %}
                 </tr>
             </thead>
             <tbody>
@@ -355,13 +359,13 @@
                     </td>
                     <td class="cell" style="border: .5px solid rgb(186, 240, 186); ">
                         <a href="{% url 'updateStatus' user.id %}"><button
-                        class="btn btn-success">Activate</button></a>
+                        class="btn btn-success">Enable</button></a>
                     </td>
-                    <td class="cell" style="border: .5px solid rgb(186, 240, 186); ">
+                    {% comment %} <td class="cell" style="border: .5px solid rgb(186, 240, 186); ">
                         <a href="{% url 'deleteUser' user.id %}" data-delete-url="{% url 'deleteUser' user.id %}" class="delete-user-link">
                           <button class="btn btn-danger" id="deleteButton">Delete</button>
                         </a>
-                    </td>
+                    </td> {% endcomment %}
                 </tr>
                 {% endfor %}
             </tbody>

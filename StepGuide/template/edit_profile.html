@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
     <!-- Add Bootstrap CSS link -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Add custom CSS here -->
@@ -17,7 +18,7 @@
         .container {
             margin-top: 5px;
             padding: 5px; /* Reduced padding */
-            background-color: #bbc4bd;
+            background-color: #f4f4f4;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             max-width: 500px; /* Adjust the maximum width of the container */
@@ -30,8 +31,15 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="mb-4">Edit Profile</h1>
+    <body class="p-5 p-lg-5">
+        <!-- <div class="dcontainer align-items-center p-5 card shadow"> -->
+        <h1 class="text-center text-success fw-bold ">Edit Profile</h1>
+        <hr class="mx-5">
+        <form class="w-100" method="post" enctype="multipart/form-data" id="pictureForm">
+          <div class="container">
+            <div class="d flex ">
+              <div>
+        {% comment %} <p class="text-success logo h1 align-self-center" style="font-size: 28px;">Edit Profile</p> {% endcomment %}
         
         <!-- Display any alerts or error messages here, if needed -->
         {% if alert %}
@@ -42,52 +50,207 @@
             {% csrf_token %}
             
             <!-- User Information -->
+            <div class="container">
             <div class="mb-3">
-                <label for="first_name" class="form-label">First Name:</label>
-                <input type="text" class="form-control form-control-sm" name="first_name" value="{{ user.first_name }}" required>
+                <label for="first_name" class="form-label">First Name:</label> 
+                <input type="text" class="form-control form-control-sm" onkeyup="validateFirst_Name()" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+                <div class="invalid-feedback" id="fnamevalid">Numbers and special characters are not allowed</div>
+                <div class="valid-feedback" id="fnvalid">Looks good!</div>
             </div>
-            
+
             <div class="mb-3">
                 <label for="last_name" class="form-label">Last Name:</label>
-                <input type="text" class="form-control form-control-sm" name="last_name" value="{{ user.last_name }}" required>
-            </div>
-            
+                <input type="text" class="form-control form-control-sm" onkeyup="validateLast_Name()"  id="last_name" name="last_name" value="{{ user.last_name }}" required>
+                <div class="invalid-feedback" id="lnamevalid">Numbers and special characters are not allowed</div>
+                <div class="valid-feedback" id="lnvalid">Looks good!</div>
+            </div>            
+
             <div class="mb-3">
                 <label for="phone_no" class="form-label">Phone Number:</label>
-                <input type="text" class="form-control form-control-sm" name="phone_no" value="{{ user.phone_no }}" required>
+                <input type="text" class="form-control form-control-sm" onkeyup="validatePhoneNumber()" id="phone" name="phone" value="{{ user.phone_no }}" required>
+                <div class="invalid-feedback" id="phonevalid">Phone number not allow characters and must have 10 digits</div>
+                <div class="valid-feedback" id="pvalid">Looks good!</div>
             </div>
+
             
             <!-- User Profile Information -->
+
             <div class="mb-3">
                 <label for="country" class="form-label">Country:</label>
-                <input type="text" class="form-control form-control-sm" name="country" value="{{ user_profile.country }}">
+                <input type="text" class="form-control form-control-sm" onkeyup="validateCountry()"  id="country" name="country" value="{{ user_profile.country }}" required>
+                <div class="invalid-feedback" id="countryvalid">Numbers and special characters are not allowed</div>
+                <div class="valid-feedback" id="countrynvalid">Looks good!</div>
             </div>
-            
+
             <div class="mb-3">
                 <label for="state" class="form-label">State:</label>
-                <input type="text" class="form-control form-control-sm" name="state" value="{{ user_profile.state }}">
-                                <label for="city" class="form-label">City:</label>
-                <input type="text" class="form-control form-control-sm" name="city" value="{{ user_profile.city }}">
+                <input type="text" class="form-control form-control-sm" onkeyup="validateState()" id="state" name="state" value="{{ user_profile.state }}">
+                <div class="invalid-feedback" id="snamevalid">Numbers and special characters are not allowed</div>
+                <div class="valid-feedback" id="snvalid">Looks good!</div>
             </div>
-            
-            <div class="mb-3">
 
+            <div class="mb-3">
+                <label for="city" class="form-label">City:</label>
+                <input type="text" class="form-control form-control-sm" onkeyup="validateCity()" id="city" name="city" value="{{ user_profile.city }}">
+                <div class="invalid-feedback" id="cinamevalid">Numbers and special characters are not allowed</div>
+                <div class="valid-feedback" id="cinvalid">Looks good!</div>
             </div>
-            
+
             <div class="mb-3">
                 <label for="pin_code" class="form-label">Pin Code:</label>
-                <input type="text" class="form-control form-control-sm" name="pin_code" value="{{ user_profile.pin_code }}">
+                <input type="text" class="form-control form-control-sm" onkeyup="validatePin()" id="pin_code" name="pin_code" value="{{ user_profile.pin_code }}">
+                <div class="invalid-feedback" id="pinvalid">Invalid pin code</div>
+                <div class="valid-feedback" id="pivalid">Looks good!</div>
             </div>
             
             <!-- Profile Picture -->
-            <div class="mb-3">
+            {% comment %} <div class="mb-3">
                 <label for="profile_pic" class="form-label">Profile Picture:</label>
                 <input type="file" class="form-control form-control-sm" name="profile_pic">
-            </div>
+            </div> {% endcomment %}
             
             <button type="submit" class="btn btn-success">Save Changes</button>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const first_nameInput = document.getElementById('first_name');
+            const last_nameInput = document.getElementById('last_name');
+            const phoneInput = document.getElementById('phone');
+            const countryInput = document.getElementById('country');
+            const stateInput = document.getElementById('state');
+            const cityInput = document.getElementById('city');
+            const pinInput = document.getElementById('pin_code');
+
+            first_nameInput.addEventListener('keyup', function(event) { validateFirst_Name(); });
+            last_nameInput.addEventListener('keyup', function(event) { validateLast_Name(); });
+            phoneInput.addEventListener('keyup', function(event) { validatePhoneNumber(); });
+            countryInput.addEventListener('keyup', function(event) { validateCountry(); });
+            stateInput.addEventListener('keyup', function(event) { validateState(); });
+            cityInput.addEventListener('keyup', function(event) { validateCity(); });
+            pinInput.addEventListener('keyup', function(event) { validatePin(); });
+
+            function validateFirst_Name() {
+                const namePattern = /^[A-Za-z ]+$/;
+                const fnamevalid = document.getElementById('fnamevalid');
+                const fnvalid = document.getElementById('fnvalid');
+                if (!namePattern.test(first_nameInput.value)) {
+                    first_nameInput.classList.add('is-invalid');
+                    first_nameInput.classList.remove('is-valid');
+                    fnamevalid.style.display = 'block';
+                    fnvalid.style.display = 'none';
+                } else {
+                    first_nameInput.classList.remove('is-invalid');
+                    first_nameInput.classList.add('is-valid');
+                    fnamevalid.style.display = 'none';
+                    fnvalid.style.display = 'block';
+                }
+            }
+
+            function validateLast_Name() {
+                const namePattern = /^[A-Za-z]+$/;
+                const lnamevalid = document.getElementById('lnamevalid');
+                const lnvalid = document.getElementById('lnvalid');
+                if (!namePattern.test(last_nameInput.value)) {
+                    last_nameInput.classList.add('is-invalid');
+                    last_nameInput.classList.remove('is-valid');
+                    lnamevalid.style.display = 'block';
+                    lnvalid.style.display = 'none';
+                } else {
+                    last_nameInput.classList.remove('is-invalid');
+                    last_nameInput.classList.add('is-valid');
+                    lnamevalid.style.display = 'none';
+                    lnvalid.style.display = 'block';
+                }
+            }
+
+            function validatePhoneNumber() {
+                const phoneNumberPattern = /^(?!.*0{10})(?!(\d)\1{9})[6-9][0-9]{9}$/;
+                const phonevalid = document.getElementById('phonevalid');
+                const pvalid = document.getElementById('pvalid');
+                if (!phoneNumberPattern.test(phoneInput.value)) {
+                    phoneInput.classList.add('is-invalid');
+                    phoneInput.classList.remove('is-valid');
+                    phonevalid.style.display = 'block';
+                    pvalid.style.display = 'none';
+                } else {
+                    phoneInput.classList.remove('is-invalid');
+                    phoneInput.classList.add('is-valid');
+                    phonevalid.style.display = 'none';
+                    pvalid.style.display = 'block';
+                }
+            }
+
+            function validateCountry() {
+                const namePattern = /^[A-Za-z]+$/;
+                const countryvalid = document.getElementById('countryvalid');
+                const countrynvalid = document.getElementById('countrynvalid');
+                if (!namePattern.test(countryInput.value)) {
+                    countryInput.classList.add('is-invalid');
+                    countryInput.classList.remove('is-valid');
+                    countryvalid.style.display = 'block';
+                    countrynvalid.style.display = 'none';
+                } else {
+                    countryInput.classList.remove('is-invalid');
+                    countryInput.classList.add('is-valid');
+                    countryvalid.style.display = 'none';
+                    countrynvalid.style.display = 'block';
+                }
+            }
+
+            function validateState() {
+                const namePattern = /^[A-Za-z]+$/;
+                const snamevalid = document.getElementById('snamevalid');
+                const snvalid = document.getElementById('snvalid');
+                if (!namePattern.test(stateInput.value)) {
+                    stateInput.classList.add('is-invalid');
+                    stateInput.classList.remove('is-valid');
+                    snamevalid.style.display = 'block';
+                    snvalid.style.display = 'none';
+                } else {
+                    stateInput.classList.remove('is-invalid');
+                    stateInput.classList.add('is-valid');
+                    snamevalid.style.display = 'none';
+                    snvalid.style.display = 'block';
+                }
+            }
+
+            function validateCity() {
+                const namePattern = /^[A-Za-z]+$/;
+                const cinamevalid = document.getElementById('cinamevalid');
+                const cinvalid = document.getElementById('cinvalid');
+                if (!namePattern.test(cityInput.value)) {
+                    cityInput.classList.add('is-invalid');
+                    cityInput.classList.remove('is-valid');
+                    cinamevalid.style.display = 'block';
+                    cinvalid.style.display = 'none';
+                } else {
+                    cityInput.classList.remove('is-invalid');
+                    cityInput.classList.add('is-valid');
+                    cinamevalid.style.display = 'none';
+                    cinvalid.style.display = 'block';
+                }
+            }
+
+            function validatePin() {
+                const pinNumberPattern = /^\d{6}$/;
+                const pinvalid = document.getElementById('pinvalid');
+                const pivalid = document.getElementById('pivalid');
+                if (!pinNumberPattern.test(pinInput.value)) {
+                    pinInput.classList.add('is-invalid');
+                    pinInput.classList.remove('is-valid');
+                    pinvalid.style.display = 'block';
+                    pivalid.style.display = 'none';
+                } else {
+                    pinInput.classList.remove('is-invalid');
+                    pinInput.classList.add('is-valid');
+                    pinvalid.style.display = 'none';
+                    pivalid.style.display = 'block';
+                }
+            }
+        });
+    </script>
 
     <!-- Add Bootstrap JS script link -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -105,6 +268,6 @@
                 }, 5000); // Adjust the time as needed (5 seconds in this example)
             }
       });
-      </script>
+    </script>
 </body>
 </html>

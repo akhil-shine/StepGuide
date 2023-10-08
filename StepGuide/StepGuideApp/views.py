@@ -366,6 +366,16 @@ def edit_profile(request):
     
     
 def userview(request):
+    if request.user.is_authenticated:
+        user=request.user
+        if user.user_type == CustomUser.ADMIN and not request.path == reverse('userview'):
+            return redirect(reverse('userview'))
+        elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
+            return redirect(reverse('index'))
+        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('merchant_dashbord'):
+            return redirect(reverse('merchant_dashbord'))
+    else:
+        return redirect(reverse('index'))
     # Fetch data from the database, including user roles
     users = CustomUser.objects.filter(~Q(is_superuser=True), is_active=True)
     inactive_users = CustomUser.objects.filter(~Q(is_superuser=True), is_active=False)
