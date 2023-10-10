@@ -12,6 +12,7 @@ from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
 from django.db.models import Q
+from django.http import JsonResponse
 
 User = get_user_model()
 
@@ -261,7 +262,12 @@ def send_welcome_email(email, user_name):
     
     send_mail(subject, message, from_email, recipient_list)
 
-
+def check_user_email(request):
+    userd = request.GET.get('email')
+    data = {
+        "exists": User.objects.filter(email=userd).exists()
+    }
+    return JsonResponse(data)
 # Mearchant Registration
 def mregister(request):
     if request.user.is_authenticated:
