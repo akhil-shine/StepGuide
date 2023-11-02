@@ -8,6 +8,7 @@
   <title>Step Guide</title>
   <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
   <link rel="stylesheet" href="{% static "dashboard1/css/styles.min.css" %}" />
+  
 
   <style>
     .custom-alert {
@@ -61,6 +62,7 @@
       <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
           <a class="font-weight-bold logo h1 align-self-center text-decoration-none" href="{% url "index" %}" style="color: #59ab6e;"> StepGuide </a>
+          
 
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             <i class="ti ti-x fs-8"></i>
@@ -69,9 +71,17 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
           <ul id="sidebarnav">
-            <li class="nav-small-cap">
+            {% comment %} <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">Home</span>
+              <span class="hide-menu"></span>
+            </li> {% endcomment %}
+            <li class="sidebar-item">
+              <a class="sidebar-link" href={% url "dashboard1" %} aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                <span class="hide-menu">Home</span>
+              </a>
             </li>
             <li class="sidebar-item">
               {% comment %} <a class="sidebar-link" href="http://127.0.0.1:8000/admin/" aria-expanded="false"> {% endcomment %}
@@ -86,14 +96,22 @@
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">UI COMPONENTS</span>
             </li> {% endcomment %}
-            {% comment %} <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "add_category" %}" aria-expanded="false">
                 <span>
                   <i class="ti ti-article"></i>
                 </span>
-                <span class="hide-menu">Buttons</span>
+                <span class="hide-menu">Add Category</span>
               </a>
-            </li> {% endcomment %}
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "add_subcategory" %}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                <span class="hide-menu">Add Sub Category</span>
+              </a>
+            </li>
             {% comment %} <li class="sidebar-item">
               <a class="sidebar-link" href="./ui-alerts.html" aria-expanded="false">
                 <span>
@@ -206,6 +224,11 @@
               </a>
             </li> {% endcomment %}
           </ul>
+
+          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Admin!</p>
+          </div>
+
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
               {% comment %} <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary">Download Free</a> {% endcomment %}
@@ -251,63 +274,6 @@
               </div>
             </div>
           </div>
-
-
-        
-
-                {% comment %} <ul class="timeline-widget mb-0 position-relative mb-n5">
-                  <li class="timeline-item d-flex position-relative overflow-hidden">
-                    <div class="timeline-time text-dark flex-shrink-0 text-end">09:30</div>
-                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                      <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                      <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                    </div>
-                    <div class="timeline-desc fs-3 text-dark mt-n1">Payment received from John Doe of $385.90</div>
-                  </li>
-                  <li class="timeline-item d-flex position-relative overflow-hidden">
-                    <div class="timeline-time text-dark flex-shrink-0 text-end">10:00 am</div>
-                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                      <span class="timeline-badge border-2 border border-info flex-shrink-0 my-8"></span>
-                      <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                    </div>
-                    <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New sale recorded <a
-                        href="javascript:void(0)" class="text-primary d-block fw-normal">#ML-3467</a>
-                    </div>
-                  </li>
-                  <li class="timeline-item d-flex position-relative overflow-hidden">
-                    <div class="timeline-time text-dark flex-shrink-0 text-end">12:00 am</div>
-                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                      <span class="timeline-badge border-2 border border-success flex-shrink-0 my-8"></span>
-                      <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                    </div>
-                    <div class="timeline-desc fs-3 text-dark mt-n1">Payment was made of $64.95 to Michael</div>
-                  </li>
-                  <li class="timeline-item d-flex position-relative overflow-hidden">
-                    <div class="timeline-time text-dark flex-shrink-0 text-end">09:30 am</div>
-                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                      <span class="timeline-badge border-2 border border-warning flex-shrink-0 my-8"></span>
-                      <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                    </div>
-                    <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New sale recorded <a
-                        href="javascript:void(0)" class="text-primary d-block fw-normal">#ML-3467</a>
-                    </div>
-                  </li>
-                  <li class="timeline-item d-flex position-relative overflow-hidden">
-                    <div class="timeline-time text-dark flex-shrink-0 text-end">09:30 am</div>
-                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                      <span class="timeline-badge border-2 border border-danger flex-shrink-0 my-8"></span>
-                      <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                    </div>
-                    <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New arrival recorded 
-                    </div>
-                  </li>
-                  <li class="timeline-item d-flex position-relative overflow-hidden">
-                    <div class="timeline-time text-dark flex-shrink-0 text-end">12:00 am</div>
-                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                      <span class="timeline-badge border-2 border border-success flex-shrink-0 my-8"></span>
-                    </div>
-                    <div class="timeline-desc fs-3 text-dark mt-n1">Payment Done</div>
-                  </li> {% endcomment %}
                
   <script src="{% static "dashboard1/libs/jquery/dist/jquery.min.js" %}"></script>
   <script src="{% static "dashboard1/libs/bootstrap/dist/js/bootstrap.bundle.min.js" %}"></script>

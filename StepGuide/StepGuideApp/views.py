@@ -1,21 +1,25 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth import login as auth_login ,authenticate, logout
 from django.shortcuts import render, redirect
-from .models import CustomUser
+from .models import CustomUser, Product
 from .decorators import user_not_authenticated
-from .models import CustomUser,UserProfile
+from .models import CustomUser,UserProfile,Category,Subcategory,Image
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
 from django.db.models import Q
+from django.core.mail import send_mail
+from django.template.loader import get_template
+
 
 User = get_user_model()
 
-# Create your views here.
+
+# Index Page
 def index(request):
     user=request.user
     if request.user.is_authenticated:
@@ -23,41 +27,40 @@ def index(request):
             return redirect(reverse('dashboard1'))
         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
             return redirect(reverse('index'))
-        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('merchant_dashbord'):
-            return redirect(reverse('merchant_dashbord'))
+        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('dashboard2'):
+            return redirect(reverse('dashboard2'))
     return render(request,'index.html',)
 def about(request):
     return render(request,'about.html',)
 def contact(request):
     return render(request,'contact.html',)
-# def admindashboard(request):
-#     if request.user.is_authenticated:
-#         user=request.user
-#         if user.user_type == CustomUser.ADMIN and not request.path == reverse('admindashboard'):
-#             return redirect(reverse('admindashboard'))
-#         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
-#             return redirect(reverse('index'))
-#         elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('merchant_dashbord'):
-#             return redirect(reverse('merchant_dashbord'))
-#     else:
-#         return redirect(reverse('index'))   
-#     return render(request,'admindashboard.html',)
-def merchant_dashbord(request):
+
+# Merchant Dashboard
+def dashboard2(request):
     user=request.user
+    stdata = Category.objects.filter(status=False)
     if request.user.is_authenticated:
         if user.user_type == CustomUser.ADMIN and not request.path == reverse('dashboard1'):
             return redirect(reverse('dashboard1'))
         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
             return redirect(reverse('index'))
-        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('merchant_dashbord'):
-            return redirect(reverse('merchant_dashbord'))  
+        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('dashboard2'):
+            return redirect(reverse('dashboard2'))  
     else:
-        return redirect(reverse('index'))
-    return render(request,'merchant_dashbord.html',)
-def buy(request):
-    return render(request,'buy.html',)
-def purchase(request):
-    return render(request,'purchase.html',)
+        return redirect(reverse('index'),{'stdata': stdata})
+    return render(request,'dashboard2.html',{'stdata': stdata})
+
+def get_subcategories(request, category_id):
+    try:
+        category = Category.objects.get(pk=category_id)
+        subcategories = Subcategory.objects.filter(category=category)
+        data = [{'id': subcategory.id, 'name': subcategory.name} for subcategory in subcategories]
+        return JsonResponse(data, safe=False)
+    except Exception as e:
+        return JsonResponse([], safe=False)
+
+
+# Admin Dashboard
 def dashboard1(request):
     if request.user.is_authenticated:
         user=request.user
@@ -65,15 +68,14 @@ def dashboard1(request):
             return redirect(reverse('dashboard1'))
         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
             return redirect(reverse('index'))
-        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('merchant_dashbord'):
-            return redirect(reverse('merchant_dashbord'))
+        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('dashboard2'):
+            return redirect(reverse('dashboard2'))
     else:
         return redirect(reverse('index')) 
     user_count = User.objects.exclude(is_superuser=True).count() 
     context = {'user_count': user_count} 
     return render(request,'dashboard1.html',context)
-def dashboard2(request):
-    return render(request,'dashboard2.html',)
+
 
 #login & Registration
 # def userlogin(request):
@@ -154,7 +156,7 @@ def login_view(request):
         elif user.user_type == CustomUser.CLIENT:
             return redirect(reverse('index'))
         elif user.user_type == CustomUser.MERCHANT:
-            return redirect(reverse('merchant_dashbord'))
+            return redirect(reverse('dashboard2'))
         else:
             return redirect('/')
     elif request.method == 'POST':
@@ -176,7 +178,7 @@ def login_view(request):
                         return redirect(reverse('index'))
                     elif user.user_type == CustomUser.MERCHANT:
                         messages.success(request, 'Login Success!!')
-                        return redirect(reverse('merchant_dashbord'))
+                        return redirect(reverse('dashboard2'))
                     else:
                         return redirect('/')
                 else:
@@ -237,17 +239,13 @@ def register(request):
 
     return render(request, 'register2.html')
 
+# Email Note to Client
 def send_welcome_email(email, user_name):
-
-    # login_url = 'http://127.0.0.1:8000/accounts/login/'  # Update with your actual login URL
-    # login_button = f'Click here to log in: {login_url}'
-
-
     subject = 'Step Guide-Registration Sucess'
     message = f"Hello {user_name},\n\n"
     message += f"Welcome to StepGuide! We are thrilled to have you as a part of our community. Your journey towards [briefly describe what your platform offers] starts now.\n\n"
     message += f"Your registration is complete, and we're excited to have you join us. Here are your login credentials:\n\n"
-    message += f"Email: {email}\n\n"
+    message += f"Your username is: {user_name}\n\n"
     # message += "Please take a moment to log in to your account using the provided credentials. Once you've logged in, we encourage you to reset your password to something more secure and memorable.\n\n"
     # message += login_button
     # message += "\n\nSoulCure is committed to providing a safe and supportive environment for both therapists and clients. Together, we can make a positive impact on the lives of those seeking healing and guidance.\n"
@@ -255,7 +253,7 @@ def send_welcome_email(email, user_name):
     message += "Warm regards,\nThe Step Guide Team\n\n"
     
 
-    from_email='stepguidee@gmail.com'
+    from_email='stepguide0@gmail.com'
       # Replace with your actual email
     recipient_list = [email]
     
@@ -309,7 +307,7 @@ def mregister(request):
 def edit_profile(request):
     user = request.user
     user_profile = UserProfile.objects.get(user=user)
-    # user_properties = Property.objects.filter(user=request.user)
+    # user_properties = product.objects.filter(user=request.user)
 
     if request.method == 'POST':
         # Get the phone number entered by the user
@@ -365,21 +363,21 @@ def edit_profile(request):
 #     return render(request, 'userview.html', {'users': users})
     
     
-def userview(request):
-    if request.user.is_authenticated:
-        user=request.user
-        if user.user_type == CustomUser.ADMIN and not request.path == reverse('userview'):
-            return redirect(reverse('userview'))
-        elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
-            return redirect(reverse('index'))
-        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('merchant_dashbord'):
-            return redirect(reverse('merchant_dashbord'))
-    else:
-        return redirect(reverse('index'))
-    # Fetch data from the database, including user roles
-    users = CustomUser.objects.filter(~Q(is_superuser=True), is_active=True)
-    inactive_users = CustomUser.objects.filter(~Q(is_superuser=True), is_active=False)
-    return render(request, 'userview.html', {'users': users,'inactive_users':inactive_users})
+# def userview(request):
+#     if request.user.is_authenticated:
+#         user=request.user
+#         if user.user_type == CustomUser.ADMIN and not request.path == reverse('userview'):
+#             return redirect(reverse('userview'))
+#         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
+#             return redirect(reverse('index'))
+#         elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('dashboard2'):
+#             return redirect(reverse('dashboard2'))
+#     else:
+#         return redirect(reverse('index'))
+#     # Fetch data from the database, including user roles
+#     users = CustomUser.objects.filter(~Q(is_superuser=True), is_active=True)
+#     inactive_users = CustomUser.objects.filter(~Q(is_superuser=True), is_active=False)
+#     return render(request, 'userview.html', {'users': users,'inactive_users':inactive_users})
 
 # Active Status
 def updateStatus(request,update_id):
@@ -396,3 +394,316 @@ def deleteUser(request, delete_id):
     delUser=User.objects.get(id=delete_id)
     delUser.delete()
     return redirect('userview')
+
+# User List
+def userview(request):
+    if request.user.is_authenticated:
+        user = request.user
+        if user.user_type == CustomUser.ADMIN and not request.path == reverse('userview'):
+            return redirect(reverse('userview'))
+        elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
+            return redirect(reverse('index'))
+        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('dashboard2'):
+            return redirect(reverse('dashboard2'))
+    else:
+        return redirect(reverse('index'))
+
+    # Fetch data from the database, including user roles and whether they are active or not
+    users = CustomUser.objects.filter(~Q(is_superuser=True))
+    return render(request, 'userview.html', {'users': users})
+
+
+
+#Active & Deactive Mail 
+def disableAccount(request, update_id):
+    updateUser = User.objects.get(id=update_id)
+    
+    # Check if the user is being disabled
+    if updateUser.is_active:
+        updateUser.is_active = False
+        
+        # Send an email to the user
+        subject = 'Your Account Has Been Deactivated'
+        message = 'Your account has been disabled by an administrator.'
+        from_email = 'stepguide0@gmail.com'
+        recipient_list = [updateUser.email]
+
+        # Load the email template
+        email_template = get_template('disable_notification.html')
+        email_content = email_template.render()
+
+        send_mail(subject, message, from_email, recipient_list, html_message=email_content)
+        
+    else:
+        updateUser.is_active = True
+
+    updateUser.save()
+    return redirect('userview')
+
+
+
+def enableAccount(request, update_id):
+    updateUser = User.objects.get(id=update_id)
+    
+    # Check if the user is being enabled
+    if not updateUser.is_active:
+        updateUser.is_active = True
+        
+        # Send an email to the user
+        subject = 'Your Account Has Been Activated'
+        message = 'Your account has been activated by an administrator.'
+        from_email = 'stepguide0@gmail.com'
+        recipient_list = [updateUser.email]
+
+        # Load the email template for activation
+        email_template = get_template('enable_notification.html')
+        email_content = email_template.render()
+
+        send_mail(subject, message, from_email, recipient_list, html_message=email_content)
+        
+    else:
+        updateUser.is_active = False
+
+    updateUser.save()
+    return redirect('userview')
+
+# add category
+def newcategory(request):
+
+    error_message = ''
+    new_category = Category.objects.filter(status=False)
+
+    if request.method == 'POST':
+
+        # Create a new Category instance and assign values
+            new_category = Category()
+            new_category.category_name = request.POST.get('category_name')
+            new_category.descriptioncat = request.POST.get('descriptioncat')
+            new_category.save()
+            
+            return redirect("add_category")
+    return render(request, "add_category.html")
+
+# sub
+def newsubcategory(request):
+
+    error_message = ''
+    new_category = Category.objects.filter(status=False)
+
+    if request.method == 'POST':
+            categories = Category.objects.filter(status=False)
+            print('Entered')
+            name = request.POST['name']
+            category_id = request.POST['category_id']
+
+            print(category_id)
+            description = request.POST['description']
+            
+            category = Category.objects.get(id=category_id)
+            subcategory = Subcategory.objects.create(
+            name=name,
+            description = description,
+            category=category,
+            )  
+
+
+    context = {
+            'new_category': new_category,
+        
+            }
+    return render(request, "add_subcategory.html",context)
+
+# add product in merchant page
+# def sellerindex(request):
+#     stdata = Category.objects.filter(status=False)
+#     user = request.user
+#     userid = user.id
+
+#     if request.method == 'POST':
+#         product_name = request.POST.get('product_name')
+#         brand_name = request.POST.get('brand_name')
+#         product_description = request.POST.get('product_description')
+#         material_description = request.POST.get('material_description')
+#         measurements = request.POST.get('measurements')
+#         maintenance = request.POST.get('maintenance')
+#         price = request.POST.get('price')
+#         quantity = request.POST.get('quantity')
+#         category_name = request.POST.get('category')
+#         subcategory_name = request.POST.get('subcategory')
+#         gender = request.POST.get('gender')
+        
+#         # Check if the category and subcategory exist
+#         stdata1 = Category.objects.get(name__iexact=category_name)
+#         stdata2 = Subcategory.objects.get(name__iexact=subcategory_name)
+
+#         # Create a new Product instance and assign values
+#         new_product = Product(
+#             product_name=product_name,
+#             brand_name=brand_name,
+#             product_description=product_description,
+#             material_description=material_description,
+#             measurements=measurements,
+#             maintenance=maintenance,
+#             price=price,
+#             quantity=quantity,
+#             category_name=stdata1,
+#             subcategory_name=stdata2,
+#             gender=gender,
+            
+#             stock_16_18=request.POST.get('stock16-18'),
+#             stock_20_24=request.POST.get('stock20-24'),
+#             stock_25_29=request.POST.get('stock25-29'),
+#             stock_30_35=request.POST.get('stock30-35'),
+
+#             product_image=request.FILES.get('product_image'),
+#             user_id=userid
+#         )
+#         new_product.save()
+
+#         return redirect("product")
+    
+#     return render(request, "sellerindex.html", {'stdata': stdata})
+
+# def sellerindex(request):
+    
+#     stdata = Category.objects.filter(status=False)
+#     category_name = request.POST.get('category')
+#     sub = request.POST.get('subcategory')
+#     stdata1 = Category.objects.filter(pk__iexact=category_name)
+#     stdata2 = Subcategory.objects.filter(pk__iexact=sub)
+#     user = request.user
+#     userid = user.id
+#     if request.method == 'POST':
+#         print(request.POST.get('brand_name'))
+#         print(request.POST.get('category'))
+#         print(request.POST.get('subcategory'))
+#         # Create a new Category instance and assign values
+#         newproduct =    Product(
+#         brand_name = request.POST.get('brand_name'),
+#         product_description= request.POST.get('product_description'),
+#         material_description= request.POST.get('material_description'),
+#         stock_16_18= request.POST.get('stock1'),
+#         stock_20_24= request.POST.get('stock2'),
+#         stock_25_29= request.POST.get('stock3'),
+#         stock_30_35= request.POST.get('stock4'),
+#         price= request.POST.get('price'),
+#         price_16_19= request.POST.get('price1'),
+#         male = request.POST.get('male') == 'male',
+#         female = request.POST.get('female') == 'female',
+#         thumbnail= request.FILES.get('thumbnail'),
+
+
+#         category = stdata1[0],
+#         subcategory = stdata2[0],
+
+
+#         user_id=userid
+#         )
+#         newproduct.save() 
+
+        
+#         images = request.FILES.getlist('product_images1')
+#         for image in images:
+#             Image.objects.create(product=newproduct,images=image)
+            
+#         return redirect("dashboard2")
+#     return render(request, "dashboard2.html",{'stdata':stdata})
+
+
+def sellerindex(request):
+    stdata = Category.objects.filter(status=False)
+    category_name = request.POST.get('category')
+    sub = request.POST.get('subcategory')
+    stdata1 = Category.objects.filter(pk__iexact=category_name)
+    stdata2 = Subcategory.objects.filter(pk__iexact=sub)
+    user = request.user
+    userid = user.id
+
+    if request.method == 'POST':
+        brand_name = request.POST.get('brand_name')
+        product_description = request.POST.get('product_description')
+        material_description = request.POST.get('material_description')
+        stock_16_18 = request.POST.get('stock1')
+        stock_20_24 = request.POST.get('stock2')
+        stock_25_29 = request.POST.get('stock3')
+        stock_30_35 = request.POST.get('stock4')
+        price = request.POST.get('price')
+        price_16_19 = request.POST.get('price1')
+        thumbnail = request.FILES.get('thumbnail')
+
+        # Check if 'male' and 'female' checkboxes are selected
+        is_male = request.POST.get('male') == 'male'
+        is_female = request.POST.get('female') == 'female'
+
+        # Get the selected category and subcategory objects
+        category = stdata1[0]
+        subcategory = stdata2[0]
+
+        # Create a new Product instance and assign values
+        newproduct = Product(
+            user=user,
+            brand_name=brand_name,
+            category=category.category_name,  # Save category name
+            subcategory=subcategory.name,  # Save subcategory name
+            product_description=product_description,
+            material_description=material_description,
+            male=is_male,
+            female=is_female,
+            stock_16_18=stock_16_18,
+            stock_20_24=stock_20_24,
+            stock_25_29=stock_25_29,
+            stock_30_35=stock_30_35,
+            price=price,
+            price_16_19=price_16_19,
+            thumbnail=thumbnail,
+        )
+
+        newproduct.save()
+
+        images = request.FILES.getlist('product_images1')
+        for image in images:
+            Image.objects.create(product=newproduct, images=image)
+
+        return redirect("productlist")
+
+    return render(request, "dashboard2.html", {'stdata': stdata})
+
+
+def categoryajax(request, category):
+    stdata1 = Subcategory.objects.filter(category_id=category).values('name')
+
+    # Extract the values from the queryset and add them to the data list
+    data = []
+    for item in stdata1:
+        data.extend(item.values())
+
+    # Print the data for debugging (optional)
+    print(data)
+    
+    # Return the data as a JSON response
+    return JsonResponse(data,safe=False)
+
+# for display product
+def productlist(request):
+    products = Product.objects.all() 
+        
+    return render(request,'buy.html', {'products': products})
+
+# display in single page
+def purchase(request, product_id):
+    # Retrieve tips from URL parameters
+
+
+    user = request.user
+    product = get_object_or_404(Product, id=product_id)
+
+
+    images = Image.objects.filter(product=product)
+
+    context = {
+        'product': product,
+        'images': images,
+        'user': user,
+    }
+
+    return render(request, 'purchase.html',context)

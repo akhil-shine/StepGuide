@@ -1,4 +1,5 @@
 {% load static %}
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,10 +85,14 @@
                 <div class="input-group mb-1">
                     <button class="btn btn-lg btn-success w-100 fs-6" type="submit">Login</button>
                 </div>
-                {% comment %} {% load socialaccount %}
+                {% load socialaccount %}
                 <div class="input-group mb-3">
-                    <button class="btn btn-lg btn-light w-100 fs-6"><img src="{% static '/assets/images/google.png' %}" style="width:20px"  class="me-2"><small><a href="{% provider_login_url 'google' method='oauth2' %}">Sign In with Google</a></small></button>
-                </div>  {% endcomment %}
+                    <a href="{% provider_login_url 'google' %}" class="btn btn-lg btn-light w-100 fs-6">
+                        <img src="{% static 'assets/img/google.jpg' %}" style="width:20px" class="me-2">
+                        Sign In with Google
+                    </a>
+                </div>
+                
                 <div class="row">
                     <small>Don't have account? <a href="{% url "register" %}">Sign Up asClient</a>/<a href="{% url "m_register" %}">Sign Up as Merchant</a> </small>
                 </div>

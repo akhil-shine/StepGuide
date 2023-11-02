@@ -39,9 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',   
-    'StepGuideApp'
+    'StepGuideApp',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     
 ]
+
+SITE_ID = 1
+SOCIALACCOUNT_LOGIN_ON_GET=True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
@@ -138,8 +147,25 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'stepguidee@gmail.com'
-EMAIL_HOST_PASSWORD = 'npkhumennrgscclf'
-DEFAULT_FROM_EMAIL = 'stepguidee@gmail.com'
+EMAIL_HOST_USER = 'stepguide0@gmail.com'
+EMAIL_HOST_PASSWORD = 'bdyrvnyohagcwwtk'
+DEFAULT_FROM_EMAIL = 'stepguide0@gmail.com'
 PASSWORD_RESET_TIMEOUT = 14400
+
+AUTHENTICATION_BACKENDS = [
+    'allauth.account.auth_backends.AuthenticationBackend',
+    # 'users.backends.EmailBackend',
+    ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
 

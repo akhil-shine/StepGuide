@@ -43,12 +43,12 @@
                     <i class="fa fa-phone mx-2"></i>
                     <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
                 </div>
-                <div>
+                {% comment %} <div>
                     <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
                     <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
                     <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
                     <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
     </nav>
@@ -77,7 +77,7 @@
                             <a class="nav-link mx-2 fw-bold" href="{% url "about" %}">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-2 fw-bold" href="{% url "buy" %}">Shop</a>
+                            <a class="nav-link mx-2 fw-bold" href="{% url "productlist" %}">Shop</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mx-2 fw-bold" href="{% url "contact" %}">Contact</a>
@@ -103,7 +103,7 @@
                     <div class="ml-2 dropdown">
                         {% if user.is_authenticated %}
                             <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                Welcome, {{ user.username }}
+                                Welcome, {{ user.first_name }}
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
@@ -390,7 +390,7 @@
                 <div class="col-12 mb-3">
                     <div class="w-100 my-3 border-top border-light"></div>
                 </div>
-                <div class="col-auto me-auto">
+                {% comment %} <div class="col-auto me-auto">
                     <ul class="list-inline text-left footer-icons">
                         <li class="list-inline-item border border-light rounded-circle text-center">
                             <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
@@ -405,14 +405,14 @@
                             <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
                         </li>
                     </ul>
-                </div>
-                <div class="col-auto">
+                </div> {% endcomment %}
+                {% comment %} <div class="col-auto">
                     <label class="sr-only" for="subscribeEmail">Email address</label>
                     <div class="input-group mb-2">
                         <input type="text" class="form-control bg-dark border-light" id="subscribeEmail" placeholder="Email address">
                         <div class="input-group-text btn-success text-light">Subscribe</div>
                     </div>
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
 
