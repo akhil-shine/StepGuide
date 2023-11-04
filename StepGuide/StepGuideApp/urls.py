@@ -8,14 +8,10 @@ urlpatterns = [
     path('',views.index,name='index'),
     path('about/',views.about,name='about'),
     path('contact/',views.contact,name='contact'),
-    # path('shop/',views.shop,name='shop'),
-    # path('shopsingle/',views.shopsingle,name='shop1'),
     path('login/',views.login_view,name='login'),
     path('register/',views.register,name='register'),
     path('logout/',views.userLogout,name='logout'),
     path('m_register/',views.mregister,name='m_register'),
-    # path('admindashboard/',views.admindashboard,name='admindashboard'),
-    # path('merchant_dashbord/',views.merchant_dashbord,name='merchant_dashbord'),
     path('dashboard1.html/',views.dashboard1,name='dashboard1'),
     path('dashboard2.html/',views.dashboard2,name='dashboard2'),
     path('edit_profile.html/',views.edit_profile,name='edit_profile'),
@@ -41,6 +37,23 @@ urlpatterns = [
     # view product in page
     path('productlist/', views.productlist, name='productlist'),
     path('purchase/<int:product_id>/', views.purchase, name='purchase'),
+    # mend and women_only
+    path('menonly/', views.menonly, name='men_only'),
+    path('womenonly/', views.womenonly, name='women_only'),
+    path('kidsonly/', views.kidsonly, name='kids_only'),   
+    # wishlist
+    path('add_wishlist/<int:product_id>/', views.add_wishlist, name='add_wishlist'),
+    path('delete_wishlist/<int:product_id>/', views.delete_wishlist, name='delete_wishlist'),
+    path('wishlist_view/',views.wishlist_view,name='wishlist_view'),
+    # Cart
+    path('cart',views.cart,name="cart"), 
+    path('increase_item/<int:item_id>/', views.increase_item, name='increase_item'),
+    path('decrease_item/<int:item_id>/', views.decrease_item, name='decrease_item'),
+    path('add_cart1/<int:bookid2>/', views.add_cart1, name='add_cart1'),
+    path('delete_cart/<int:bookid2>/', views.delete_cart, name='delete_cart'),
+    path('add_cart/<int:bookid2>/', views.add_cart, name='add_cart'),
+    # search
+    path('search_product/',views.search_product,name='search_product'),
     
     
 ]

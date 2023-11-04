@@ -32,6 +32,48 @@
 .gray-background {
   background-color: #d1d0cf;
 }
+
+.form-container {
+  max-width: 700px;
+  margin: 0 auto;
+  
+  padding: 40px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  text-align: left;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input[type="submit"] {
+  background-color: #007BFF;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 </style>
 </head>
 
@@ -267,7 +309,8 @@
         </nav>
       </header>
       <!--  Header End -->
-      <div class="container-fluid">
+      <br> <br> <br> <br> <br>
+      <div class="form-container">
         <h1>Add Subcategory</h1>
         <form method="post" enctype="multipart/form-data" >
             {% csrf_token %}

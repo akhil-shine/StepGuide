@@ -33,6 +33,55 @@
 .gray-background {
   background-color: #d1d0cf;
 }
+
+/* Custom background styles */
+.custom-background-1 {
+    background-color: #FFA07A; /* Light gray background color */
+    color: #333; /* Dark text color */
+    border: 2px solid #ccc; /* Light gray border */
+}
+
+.custom-background-2 {
+    background-color: #87CEFA; /* Lighter gray background color */
+    color: #333;
+    border: 2px solid #ccc;
+}
+
+.custom-background-3 {
+    background-color: #EEDD82; /* Lightest gray background color */
+    color: #333;
+    border: 2px solid #ccc;
+}
+
+.custom-background-4 {
+  background-color: #EE3A8C; /* Lighter gray background color */
+  color: #333;
+  border: 2px solid #ccc;
+}
+
+.custom-background-5 {
+  background-color: #9F79EE; /* Lightest gray background color */
+  color: #333;
+  border: 2px solid #ccc;
+}
+
+/* Bold text styles */
+.white-text {
+    font-weight: bold;
+}
+
+/* Bold text styles with larger font size */
+.white-text {
+    font-weight: bold;
+    font-size: 18px; /* Adjust the font size as needed */
+}
+
+/* Larger font size for the card titles */
+.card-title {
+    font-size: 22px; /* Adjust the font size for card titles */
+    color: #000000; /* Adjust the title color (in this case, a green color) */
+}
+
 </style>
 </head>
 
@@ -263,17 +312,77 @@
       </header>
       <!--  Header End -->
       <div class="container-fluid">
-        <div class="row1">
-          <div class="col-lg-4 d-flex align-items-stretch">
-            <div class="card w-50 gray-background">
-              <div class="card-body p-4">
-                <div class="mb-6">
-                  <h5 class="card-title fw-bold green-text">Total Users</h5>
-                  <p class="white-text fw-bold">User Count: {{ user_count }}</p>
+        <div class="row">
+            <div class="col-lg-3 d-flex align-items-stretch">
+                <!-- Total Users Section -->
+                <div class="card w-100 custom-background-1">
+                    <div class="card-body p-4">
+                        <div class="mb-6">
+                            <h5 class="card-title fw-bold green-text">Total Users</h5>
+                            <p class="white-text fw-bold">User Count: <strong>{{ user_count }}</strong></p>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
+    
+            <div class="col-lg-3 d-flex align-items-stretch">
+                <!-- Client Users Section -->
+                <div class="card w-100 custom-background-2">
+                    <div class="card-body p-4">
+                        <div class="mb-6">
+                            <h5 class="card-title fw-bold green-text">Client Users</h5>
+                            <p class="white-text fw-bold">Client User Count: <strong>{{ client_count }}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-lg-3 d-flex align-items-stretch">
+                <!-- Merchant Users Section -->
+                <div class="card w-100 custom-background-3">
+                    <div class="card-body p-4">
+                        <div class="mb-6">
+                            <h5 class="card-title fw-bold green-text">Merchant Users</h5>
+                            <p class="white-text fw-bold">Merchant User Count: <strong>{{ merchant_count }}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Active Users Section -->
+        <div class="col-lg-3 d-flex align-items-stretch">
+          <div class="card w-100 custom-background-4">
+              <div class="card-body p-4">
+                  <div class="mb-6">
+                      <h5 class="card-title fw-bold green-text">Active Users</h5>
+                      <p class="white-text fw-bold">Active User Count: <strong>{{ active_user_count }}</strong></p>
+                  </div>
+              </div>
           </div>
+      </div>
+
+      <!-- Inactive Users Section -->
+      <div class="col-lg-3 d-flex align-items-stretch">
+          <div class="card w-100 custom-background-5">
+              <div class="card-body p-4">
+                  <div class="mb-6">
+                      <h5 class="card-title fw-bold green-text">Inactive Users</h5>
+                      <p class="white-text fw-bold">Inactive User Count: <strong>{{ inactive_user_count }}</strong></p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+
                
   <script src="{% static "dashboard1/libs/jquery/dist/jquery.min.js" %}"></script>
   <script src="{% static "dashboard1/libs/bootstrap/dist/js/bootstrap.bundle.min.js" %}"></script>

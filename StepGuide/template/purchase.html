@@ -22,13 +22,16 @@
     <!-- Slick -->
     <link rel="stylesheet" type="text/css" href="{% static "assets/css/slick.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "assets/css/slick-theme.css" %}">
-<!--
     
-TemplateMo 559 Zay Shop
-
-https://templatemo.com/tm-559-zay-shop
-
--->
+    <style>
+        #product-detail {
+            transition: transform 0.3s ease;
+        }
+    
+        #product-detail:hover {
+            transform: scale(1.2); /* Adjust the scale factor as needed */
+        }
+    </style>
 </head>
 
 <body>
@@ -92,10 +95,10 @@ https://templatemo.com/tm-559-zay-shop
                             </div>
                         </div>
                     </div>
-                    <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                    {% comment %} <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
                         <i class="fa fa-fw fa-search text-dark mx-2"></i>
-                    </a>
-                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                    </a> {% endcomment %}
+                    <a class="nav-icon position-relative text-decoration-none" href="{% url 'cart'  %}">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mx-2"></i>
                         <!-- <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span> -->
                     </a>
@@ -145,7 +148,7 @@ https://templatemo.com/tm-559-zay-shop
             <div class="row">
                 <div class="col-lg-5 mt-5">
                     <div class="card mb-3">
-                        <img class="card-img img-fluid" src="{{ product.thumbnail.url}}" alt="Card image cap" id="product-detail">
+                        <img class="card-img img-fluid" src="{{ product.thumbnail.url }}" alt="Card image cap" id="product-detail" style="width: 600px; height: 485px;">
                     </div>
                     <div class="row">
                         <!--Start Controls-->
@@ -246,7 +249,7 @@ https://templatemo.com/tm-559-zay-shop
                             <p>{{ product.product_description}}</p>
                             <ul class="list-inline">
                                 <li class="list-inline-item">
-                                    <h6>Product Details :</h6>
+                                    <h6>Product Material :</h6>
                                 </li>
                                 <li class="list-inline-item">
                                     <p class="text-muted"><strong>{{ product.material_description}}</strong></p>
@@ -257,7 +260,7 @@ https://templatemo.com/tm-559-zay-shop
 
                             <form action="" method="GET">
                                 <input type="hidden" name="product-title" value="Activewear">
-                                <div class="row">
+                                {% comment %} <div class="row">
                                     <div class="col-auto">
                                         <ul class="list-inline pb-3">
                                             <li class="list-inline-item">Size :
@@ -280,13 +283,13 @@ https://templatemo.com/tm-559-zay-shop
                                             <li class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div> {% endcomment %}
                                 <div class="row pb-3">
                                     <div class="col d-grid">
                                         <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Buy</button>
                                     </div>
                                     <div class="col d-grid">
-                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="addtocard">Add To Cart</button>
+                                        <a href="{% url 'add_cart1' product.id %}?bookid2={{ product.id }}"class="btn btn-success mr-3">Add Cart </a>
                                     </div>
                                 </div>
                             </form>
@@ -300,7 +303,7 @@ https://templatemo.com/tm-559-zay-shop
     <!-- Close Content -->
 
     <!-- Start Article -->
-    <section class="py-5">
+    {% comment %} <section class="py-5">
         <div class="container">
             <div class="row text-left p-2 pb-3">
                 <h4>Related Products</h4>
@@ -769,7 +772,7 @@ https://templatemo.com/tm-559-zay-shop
 
 
         </div>
-    </section>
+    </section> {% endcomment %}
     <!-- End Article -->
 
 

@@ -74,7 +74,7 @@ https://templatemo.com/tm-559-zay-shop
                             <a class="nav-link mx-2 fw-bold" href="{% url "about" %}">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-2 fw-bold" href="{% url "buy" %}">Shop</a>
+                            <a class="nav-link mx-2 fw-bold" href="{% url "productlist" %}">Shop</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mx-2 fw-bold" href="{% url "contact" %}">Contact</a>
@@ -90,10 +90,10 @@ https://templatemo.com/tm-559-zay-shop
                             </div>
                         </div>
                     </div>
-                    <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                    {% comment %} <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
                         <i class="fa fa-fw fa-search text-dark mx-2"></i>
-                    </a>
-                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                    </a> {% endcomment %}
+                    <a class="nav-icon position-relative text-decoration-none" href="{% url 'cart'  %}">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mx-2"></i>
                         <!-- <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span> -->
                     </a>
@@ -104,6 +104,7 @@ https://templatemo.com/tm-559-zay-shop
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
                                 <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
                             </ul>
                         {% else %}

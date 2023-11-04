@@ -87,10 +87,7 @@ class Product(models.Model):
     stock_30_35 = models.PositiveIntegerField(default=0)
     
      # Calculate total stock as the sum of individual stock fields
-    def calculate_total_stock(self):
-        return self.stock_16_18 + self.stock_20_24 + self.stock_25_29 + self.stock_30_35
-
-    total_stock = models.PositiveIntegerField(editable=False, default=0) # Make it non-editable
+    total_stock = models.PositiveIntegerField(default=0) # Make it non-editable
 
     price = models.DecimalField(max_digits=10, decimal_places=2)
     price_16_19 = models.DecimalField(max_digits=10, decimal_places=2)
@@ -98,11 +95,6 @@ class Product(models.Model):
     
     # Other fields you may want to add
     
-    def save(self, *args, **kwargs):
-        # Calculate and set the total_stock field before saving
-        self.total_stock = self.calculate_total_stock()
-        super(Product, self).save(*args, **kwargs)
-
     def __str__(self):
         return self.brand_name
     
@@ -112,4 +104,28 @@ class Image(models.Model):
 
     def _str_(self):
         return f"Image for {self.product.brand_name}"
+    
+    
+# wishlist
+class Wishlist(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'product')
+
+    def str(self):
+        return f'{self.user.username} - {self.product.brand_name}'
+    
+# Cart
+class BookCart(models.Model):
+    user=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE,null=True)
+    status=models.BooleanField(default=True)
+    quantity = models.PositiveIntegerField(default=1, null=True)
+    
+    def str(self):
+        # return self.book.title
+        return f"cart details {self.user.email}: {self.product.brand_name}"
     

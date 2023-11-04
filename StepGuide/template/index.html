@@ -93,10 +93,10 @@
                             </div>
                         </div>
                     </div>
-                    <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                    {% comment %} <a class="nav-icon d-none d-lg-inline" href="" data-bs-toggle="modal" data-bs-target="#templatemo_search">
                         <i class="fa fa-fw fa-search text-dark mx-2"></i>
-                    </a>
-                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                    </a> {% endcomment %}
+                    <a class="nav-icon position-relative text-decoration-none" href="{% url 'cart'  %}">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mx-2"></i>
                         <!-- <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span> -->
                     </a>
@@ -107,6 +107,7 @@
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
                                 <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
                             </ul>
                         {% else %}
@@ -227,17 +228,17 @@
             <div class="col-12 col-md-4 p-5 mt-3">
                 <a href="#"><img src="{% static "./assets/img/category_img_01.png" %}" class="rounded-circle img-fluid border"></a>
                 <h5 class="text-center mt-3 mb-3">Nike Dunk High</h5>
-                <p class="text-center"><a class="btn btn-success">Go buy</a></p>
+                {% comment %} <p class="text-center"><a class="btn btn-success">Go buy</a></p> {% endcomment %}
             </div>
             <div class="col-12 col-md-4 p-5 mt-3">
                 <a href="#"><img src="{% static "./assets/img/category_img_02.png" %}" class="rounded-circle img-fluid border"></a>
                 <h2 class="h5 text-center mt-3 mb-3">Nike Women's Shoes</h2>
-                <p class="text-center"><a class="btn btn-success">Go buy</a></p>
+                {% comment %} <p class="text-center"><a class="btn btn-success">Go buy</a></p> {% endcomment %}
             </div>
             <div class="col-12 col-md-4 p-5 mt-3">
                 <a href="#"><img src="{% static "./assets/img/category_img_03.png" %}" class="rounded-circle img-fluid border"></a>
                 <h2 class="h5 text-center mt-3 mb-3">Nike Men's Slides</h2>
-                <p class="text-center"><a class="btn btn-success">Go buy</a></p>
+                {% comment %} <p class="text-center"><a class="btn btn-success">Go buy</a></p> {% endcomment %}
             </div>
         </div>
     </section>
