@@ -102,17 +102,20 @@
                     </a>
                     <div class="ml-2 dropdown">
                         {% if user.is_authenticated %}
-                            <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                Welcome, {{ user.first_name }}
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
-                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
-                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
-                            </ul>
+                        {% if user_profile.profile_pic %}
+                        <img src="{{ user_profile.profile_pic.url }}" alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
                         {% else %}
-                            <a class="nav-link fw-bold" href="{% url "login" %}">Login</a>
+                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png"  alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
                         {% endif %}
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}"> {{ user.first_name }}</a></li>
+                            {% comment %} <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}"> Edit</a></li> {% endcomment %}
+                            <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
+                            <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
+                        </ul>
+                    {% else %}
+                        <a class="nav-link fw-bold" href="{% url "login" %}">Login</a>
+                    {% endif %}
                     </div>
                 </div>
             </div>

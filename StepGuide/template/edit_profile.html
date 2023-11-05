@@ -1,325 +1,590 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<title>Edit Profile</title>
-<link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.png' %}">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<style type="text/css">
-    body {
-        margin: 0;
-        padding-top: 40px;
-        color: #2e323c;
-        background: #f5f6fa;
-        position: relative;
-        height: 100%;
-    }
-    .account-settings .user-profile {
-        margin: 0 0 1rem 0;
-        padding-bottom: 1rem;
-        text-align: center;
-    }
-    .account-settings .user-profile .user-avatar {
-        margin: 0 0 1rem 0;
-    }
-    .account-settings .user-profile .user-avatar img {
-        width: 90px;
-        height: 90px;
-        -webkit-border-radius: 100px;
-        -moz-border-radius: 100px;
-        border-radius: 100px;
-    }
-    .account-settings .user-profile h5.user-name {
-        margin: 0 0 0.5rem 0;
-    }
-    .account-settings .user-profile h6.user-email {
-        margin: 0;
-        font-size: 0.8rem;
-        font-weight: 400;
-        color: #9fa8b9;
-    }
-    .account-settings .about {
-        margin: 2rem 0 0 0;
-        text-align: center;
-    }
-    .account-settings .about h5 {
-        margin: 0 0 15px 0;
-        color: #007ae1;
-    }
-    .account-settings .about p {
-        font-size: 0.825rem;
-    }
-    .form-control {
-        border: 1px solid #cfd1d8;
-        -webkit-border-radius: 2px;
-        -moz-border-radius: 2px;
-        border-radius: 2px;
-        font-size: .825rem;
-        background: #ffffff;
-        color: #2e323c;
-    }
+    <title>Profile</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="{% static "assets/img/apple-icon.png" %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.ico" %}">
+
+    <link rel="stylesheet" href="{% static "assets/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/templatemo.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/custom.css" %}">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="{% static "assets/css/fontawesome.min.css" %}">
+
+    <!-- Load map styles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding-top: 0;
+            color: #2e323c;
+            background: #f5f6fa;
+            position: relative;
+            height: 100%;
+        }
+        .account-settings .user-profile {
+            margin: 0 0 1rem 0;
+            padding-bottom: 1rem;
+            text-align: center;
+        }
+        .account-settings .user-profile .user-avatar {
+            margin: 0 0 1rem 0;
+        }
+        .account-settings .user-profile .user-avatar img {
+            width: 90px;
+            height: 90px;
+            -webkit-border-radius: 100px;
+            -moz-border-radius: 100px;
+            border-radius: 100px;
+        }
+        .account-settings .user-profile h5.user-name {
+            margin: 0 0 0.5rem 0;
+        }
+        .account-settings .user-profile h6.user-email {
+            margin: 0;
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #9fa8b9;
+        }
+        .account-settings .about {
+            margin: 2rem 0 0 0;
+            text-align: center;
+        }
+        .account-settings .about h5 {
+            margin: 0 0 15px 0;
+            color: #007ae1;
+        }
+        .account-settings .about p {
+            font-size: 0.825rem;
+        }
+        .form-control {
+            border: 1px solid #cfd1d8;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            font-size: .825rem;
+            background: #ffffff;
+            color: #2e323c;
+        }
+        
+        .card {
+            background: #ffffff;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            border: 0;
+            margin-bottom: 1rem;
+        }
     
-    .card {
-        background: #ffffff;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-        border: 0;
-        margin-bottom: 1rem;
-    }
-    
-    
-</style>
+        .profile-pic-wrapper {
+            position: relative;
+            width: 200px; /* Set the width and height to match your image size */
+            height: 200px;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+        
+        .profile-pic-container {
+            position: relative;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .profile-pic-container img {
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            object-fit: cover;
+        }
+        
+        .file-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .profile-pic-wrapper:hover .file-overlay {
+            opacity: 1;
+        }
+        
+        
+    </style>
 </head>
+
 <body>
-<div class="container">
-    <div class="row gutters">
-        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="account-settings">
-                        <div class="user-profile">
-                            <div class="user-avatar">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between" >
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@stepguide.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
+                </div>
+                <div>
+                    <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow" style="padding: 1px 0;">
+        <div class="container d-flex justify-content-between align-items-center">
+    
+            <a class="navbar-brand text-success logo h2 align-self-center" href="{% url "index" %}">
+                StepGuide
+            </a>
+    
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="templatemo_main_nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-center align-items-center mx-lg-auto fs-5 py-0">
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "index" %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "about" %}">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "productlist" %}">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "contact" %}">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <div class="d-lg-none flex-sm-fill mt-2 mb-2 col-7 col-sm-auto pr-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                            <div class="input-group-text">
+                                <i class="fa fa-fw fa-search"></i>
                             </div>
-                            <h5 class="user-name">{{ user.first_name }} {{ user.last_name }}</h5>
-                            <h7 class="user-phone">{{ user.phone_no }}</h7>
-                            <h6 class="user-email">{{ user.email }}</h6> 
                         </div>
+                    </div>
+                    {% comment %} <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                        <i class="fa fa-fw fa-search text-dark mx-2"></i>
+                    </a> {% endcomment %}
+                    <a class="nav-icon position-relative text-decoration-none" href="{% url 'cart'  %}">
+                        <i class="fa fa-fw fa-cart-arrow-down text-dark mx-2"></i>
+                        <!-- <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span> -->
+                    </a>
+                    <div class="ml-2 dropdown">
+                        {% if user.is_authenticated %}
+                        {% if user_profile.profile_pic %}
+                        <img src="{{ user_profile.profile_pic.url }}" alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
+                        {% else %}
+                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png"  alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
+                        {% endif %}
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
+                            </ul>
+                        {% else %}
+                            <a class="nav-link fw-bold" href="{% url "login" %}">Login</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-            <div class="card h-100">
-                <div class="card-body">
-                    <form method="post" enctype="multipart/form-data" id="pictureForm">
-                        {% csrf_token %}
-                        <div class="row gutters">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <h6 class="mb-2 text-primary">Personal Details</h6>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="first_name" class="form-label">First Name:</label> 
-                                    <input type="text" class="form-control form-control-sm" id="first_name" name="first_name" value="{{ user.first_name }}" required>
-                                    <div class="invalid-feedback" id="fnamevalid">Numbers and special characters are not allowed</div>
-                                    <div class="valid-feedback" id="fnvalid">Looks good!</div>
-                                    
-                                    <label for="last_name" class="form-label">Last Name:</label>
-                                    <input type="text" class="form-control form-control-sm" id="last_name" name="last_name" value="{{ user.last_name }}" required>
-                                    <div class="invalid-feedback" id="lnamevalid">Numbers and special characters are not allowed</div>
-                                    <div class="valid-feedback" id="lnvalid">Looks good!</div>
+    </nav>
+    
+    
+    <!-- Close Header -->
+
+    <!-- Modal -->
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="w-100 pt-1 mb-5 text-right">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <br> <br> <br>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data" id="pictureForm">
+            {% csrf_token %}
+        <div class="row gutters">
+            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="account-settings">
+                            <div class="user-profile">
+                                <div class="user-avatar">
+                            <div class="profile-pic-wrapper mt-3">
+                                <div class="profile-pic-container">
+                                    {% if user_profile.profile_pic %}
+                                        <img class="rounded-circle" src="{{ user_profile.profile_pic.url }}" alt="Profile Picture" style="width: 200px; height: 200px;" />
+                                    {% else %}
+                                        <div class="rounded-circle no-file-message">
+                                            <img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Profile Picture" style="width: 200px; height: 200px;" />
+                                        </div>
+                                    {% endif %}
+                                    <div class="file-overlay">
+                                        <div class="file btn btn-sm btn-primary mt-2" style="background-color: transparent; border: none; margin-left: 200px;">
+                                          <input type="file" name="profile_pic" id="images">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="phone" class="form-label">Phone Number:</label>
-                                    <input type="text" class="form-control form-control-sm" id="phone" name="phone" value="{{ user.phone_no }}" required>
-                                    <div class="invalid-feedback" id="phonevalid">Phone number must have 10 digits</div>
-                                    <div class="valid-feedback" id="pvalid">Looks good!</div>
                                 </div>
+                                <h5 class="user-name">{{ user.first_name }} {{ user.last_name }}</h5>
+                                <h7 class="user-phone">{{ user.phone_no }}</h7>
+                                <h6 class="user-email">{{ user.email }}</h6> 
                             </div>
                         </div>
-                        <div class="row gutters">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <h6 class="mt-3 mb-2 text-primary">Address</h6>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="country" class="form-label">Country:</label>
-                                    <input type="text" class="form-control form-control-sm" id="country" name="country" value="{{ user_profile.country }}" required>
-                                    <div class="invalid-feedback" id="countryvalid">Numbers and special characters are not allowed</div>
-                                    <div class="valid-feedback" id="countrynvalid">Looks good!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+    
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <h6 class="mb-2 text-primary">Personal Details</h6>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="first_name" class="form-label">First Name:</label> 
+                                        <input type="text" class="form-control form-control-sm" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+                                        <div class="invalid-feedback" id="fnamevalid">Numbers and special characters are not allowed</div>
+                                        <div class="valid-feedback" id="fnvalid">Looks good!</div>
+                                        
+                                        <label for="last_name" class="form-label">Last Name:</label>
+                                        <input type="text" class="form-control form-control-sm" id="last_name" name="last_name" value="{{ user.last_name }}" required>
+                                        <div class="invalid-feedback" id="lnamevalid">Numbers and special characters are not allowed</div>
+                                        <div class="valid-feedback" id="lnvalid">Looks good!</div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="phone" class="form-label">Phone Number:</label>
+                                        <input type="text" class="form-control form-control-sm" id="phone" name="phone" value="{{ user.phone_no }}" required>
+                                        <div class="invalid-feedback" id="phonevalid">Phone number must have 10 digits</div>
+                                        <div class="valid-feedback" id="pvalid">Looks good!</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="city" class="form-label">City:</label>
-                                    <input type="text" class="form-control form-control-sm" id="city" name="city" value="{{ user_profile.city }}">
-                                    <div class="invalid-feedback" id="cinamevalid">Numbers and special characters are not allowed</div>
-                                    <div class="valid-feedback" id="cinvalid">Looks good!</div>
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <h6 class="mt-3 mb-2 text-primary">Address</h6>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="country" class="form-label">Country:</label>
+                                        <input type="text" class="form-control form-control-sm" id="country" name="country" value="{{ user_profile.country }}" required>
+                                        <div class="invalid-feedback" id="countryvalid">Numbers and special characters are not allowed</div>
+                                        <div class="valid-feedback" id="countrynvalid">Looks good!</div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="city" class="form-label">City:</label>
+                                        <input type="text" class="form-control form-control-sm" id="city" name="city" value="{{ user_profile.city }}">
+                                        <div class="invalid-feedback" id="cinamevalid">Numbers and special characters are not allowed</div>
+                                        <div class="valid-feedback" id="cinvalid">Looks good!</div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="state" class="form-label">State:</label>
+                                        <input type="text" class="form-control form-control-sm" id="state" name="state" value="{{ user_profile.state }}">
+                                        <div class="invalid-feedback" id="snamevalid">Numbers and special characters are not allowed</div>
+                                        <div class="valid-feedback" id="snvalid">Looks good!</div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="pin_code" class="form-label">Pin Code:</label>
+                                        <input type="text" class="form-control form-control-sm" id="pin_code" name="pin_code" value="{{ user_profile.pin_code }}">
+                                        <div class="invalid-feedback" id="pinvalid">Invalid pin code</div>
+                                        <div class="valid-feedback" id="pivalid">Looks good!</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="state" class="form-label">State:</label>
-                                    <input type="text" class="form-control form-control-sm" id="state" name="state" value="{{ user_profile.state }}">
-                                    <div class="invalid-feedback" id="snamevalid">Numbers and special characters are not allowed</div>
-                                    <div class="valid-feedback" id="snvalid">Looks good!</div>
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="text-right">
+                                        <br>
+                                        <button type="button" id="cancel-button" name="cancel" class="btn btn-secondary" onclick="window.location.reload()">Cancel</button>
+                                        <button type="submit" id="update-button" name="update" class="btn btn-success">Update</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="pin_code" class="form-label">Pin Code:</label>
-                                    <input type="text" class="form-control form-control-sm" id="pin_code" name="pin_code" value="{{ user_profile.pin_code }}">
-                                    <div class="invalid-feedback" id="pinvalid">Invalid pin code</div>
-                                    <div class="valid-feedback" id="pivalid">Looks good!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row gutters">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <div class="text-right">
-                                    <button type="button" id="cancel-button" name="cancel" class="btn btn-secondary" onclick="window.location.reload()">Cancel</button>
-                                    <button type="submit" id="update-button" name="update" class="btn btn-success">Update</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const first_nameInput = document.getElementById('first_name');
-        const last_nameInput = document.getElementById('last_name');
-        const phoneInput = document.getElementById('phone');
-        const countryInput = document.getElementById('country');
-        const stateInput = document.getElementById('state');
-        const cityInput = document.getElementById('city');
-        const pinInput = document.getElementById('pin_code');
-
-        first_nameInput.addEventListener('keyup', function(event) { validateFirst_Name(); });
-        last_nameInput.addEventListener('keyup', function(event) { validateLast_Name(); });
-        phoneInput.addEventListener('keyup', function(event) { validatePhoneNumber(); });
-        countryInput.addEventListener('keyup', function(event) { validateCountry(); });
-        stateInput.addEventListener('keyup', function(event) { validateState(); });
-        cityInput.addEventListener('keyup', function(event) { validateCity(); });
-        pinInput.addEventListener('keyup', function(event) { validatePin(); });
-
-        function validateFirst_Name() {
-            const namePattern = /^[A-Za-z ]+$/;
-            const fnamevalid = document.getElementById('fnamevalid');
-            const fnvalid = document.getElementById('fnvalid');
-            if (!namePattern.test(first_nameInput.value)) {
-                first_nameInput.classList.add('is-invalid');
-                first_nameInput.classList.remove('is-valid');
-                fnamevalid.style.display = 'block';
-                fnvalid.style.display = 'none';
-            } else {
-                first_nameInput.classList.remove('is-invalid');
-                first_nameInput.classList.add('is-valid');
-                fnamevalid.style.display = 'none';
-                fnvalid.style.display = 'block';
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const first_nameInput = document.getElementById('first_name');
+            const last_nameInput = document.getElementById('last_name');
+            const phoneInput = document.getElementById('phone');
+            const countryInput = document.getElementById('country');
+            const stateInput = document.getElementById('state');
+            const cityInput = document.getElementById('city');
+            const pinInput = document.getElementById('pin_code');
+    
+            first_nameInput.addEventListener('keyup', function(event) { validateFirst_Name(); });
+            last_nameInput.addEventListener('keyup', function(event) { validateLast_Name(); });
+            phoneInput.addEventListener('keyup', function(event) { validatePhoneNumber(); });
+            countryInput.addEventListener('keyup', function(event) { validateCountry(); });
+            stateInput.addEventListener('keyup', function(event) { validateState(); });
+            cityInput.addEventListener('keyup', function(event) { validateCity(); });
+            pinInput.addEventListener('keyup', function(event) { validatePin(); });
+    
+            function validateFirst_Name() {
+                const namePattern = /^[A-Za-z ]+$/;
+                const fnamevalid = document.getElementById('fnamevalid');
+                const fnvalid = document.getElementById('fnvalid');
+                if (!namePattern.test(first_nameInput.value)) {
+                    first_nameInput.classList.add('is-invalid');
+                    first_nameInput.classList.remove('is-valid');
+                    fnamevalid.style.display = 'block';
+                    fnvalid.style.display = 'none';
+                } else {
+                    first_nameInput.classList.remove('is-invalid');
+                    first_nameInput.classList.add('is-valid');
+                    fnamevalid.style.display = 'none';
+                    fnvalid.style.display = 'block';
+                }
             }
-        }
-
-        function validateLast_Name() {
-            const namePattern = /^[A-Za-z]+$/;
-            const lnamevalid = document.getElementById('lnamevalid');
-            const lnvalid = document.getElementById('lnvalid');
-            if (!namePattern.test(last_nameInput.value)) {
-                last_nameInput.classList.add('is-invalid');
-                last_nameInput.classList.remove('is-valid');
-                lnamevalid.style.display = 'block';
-                lnvalid.style.display = 'none';
-            } else {
-                last_nameInput.classList.remove('is-invalid');
-                last_nameInput.classList.add('is-valid');
-                lnamevalid.style.display = 'none';
-                lnvalid.style.display = 'block';
+    
+            function validateLast_Name() {
+                const namePattern = /^[A-Za-z]+$/;
+                const lnamevalid = document.getElementById('lnamevalid');
+                const lnvalid = document.getElementById('lnvalid');
+                if (!namePattern.test(last_nameInput.value)) {
+                    last_nameInput.classList.add('is-invalid');
+                    last_nameInput.classList.remove('is-valid');
+                    lnamevalid.style.display = 'block';
+                    lnvalid.style.display = 'none';
+                } else {
+                    last_nameInput.classList.remove('is-invalid');
+                    last_nameInput.classList.add('is-valid');
+                    lnamevalid.style.display = 'none';
+                    lnvalid.style.display = 'block';
+                }
             }
-        }
-
-        function validatePhoneNumber() {
-            const phoneNumberPattern = /^(?!.*0{10})(?!(\d)\1{9})[6-9][0-9]{9}$/;
-            const phonevalid = document.getElementById('phonevalid');
-            const pvalid = document.getElementById('pvalid');
-            if (!phoneNumberPattern.test(phoneInput.value)) {
-                phoneInput.classList.add('is-invalid');
-                phoneInput.classList.remove('is-valid');
-                phonevalid.style.display = 'block';
-                pvalid.style.display = 'none';
-            } else {
-                phoneInput.classList.remove('is-invalid');
-                phoneInput.classList.add('is-valid');
-                phonevalid.style.display = 'none';
-                pvalid.style.display = 'block';
+    
+            function validatePhoneNumber() {
+                const phoneNumberPattern = /^(?!.*0{10})(?!(\d)\1{9})[6-9][0-9]{9}$/;
+                const phonevalid = document.getElementById('phonevalid');
+                const pvalid = document.getElementById('pvalid');
+                if (!phoneNumberPattern.test(phoneInput.value)) {
+                    phoneInput.classList.add('is-invalid');
+                    phoneInput.classList.remove('is-valid');
+                    phonevalid.style.display = 'block';
+                    pvalid.style.display = 'none';
+                } else {
+                    phoneInput.classList.remove('is-invalid');
+                    phoneInput.classList.add('is-valid');
+                    phonevalid.style.display = 'none';
+                    pvalid.style.display = 'block';
+                }
             }
-        }
-
-        function validateCountry() {
-            const namePattern = /^[A-Za-z]+$/;
-            const countryvalid = document.getElementById('countryvalid');
-            const countrynvalid = document.getElementById('countrynvalid');
-            if (!namePattern.test(countryInput.value)) {
-                countryInput.classList.add('is-invalid');
-                countryInput.classList.remove('is-valid');
-                countryvalid.style.display = 'block';
-                countrynvalid.style.display = 'none';
-            } else {
-                countryInput.classList.remove('is-invalid');
-                countryInput.classList.add('is-valid');
-                countryvalid.style.display = 'none';
-                countrynvalid.style.display = 'block';
+    
+            function validateCountry() {
+                const namePattern = /^[A-Za-z]+$/;
+                const countryvalid = document.getElementById('countryvalid');
+                const countrynvalid = document.getElementById('countrynvalid');
+                if (!namePattern.test(countryInput.value)) {
+                    countryInput.classList.add('is-invalid');
+                    countryInput.classList.remove('is-valid');
+                    countryvalid.style.display = 'block';
+                    countrynvalid.style.display = 'none';
+                } else {
+                    countryInput.classList.remove('is-invalid');
+                    countryInput.classList.add('is-valid');
+                    countryvalid.style.display = 'none';
+                    countrynvalid.style.display = 'block';
+                }
             }
-        }
-
-        function validateState() {
-            const namePattern = /^[A-Za-z]+$/;
-            const snamevalid = document.getElementById('snamevalid');
-            const snvalid = document.getElementById('snvalid');
-            if (!namePattern.test(stateInput.value)) {
-                stateInput.classList.add('is-invalid');
-                stateInput.classList.remove('is-valid');
-                snamevalid.style.display = 'block';
-                snvalid.style.display = 'none';
-            } else {
-                stateInput.classList.remove('is-invalid');
-                stateInput.classList.add('is-valid');
-                snamevalid.style.display = 'none';
-                snvalid.style.display = 'block';
+    
+            function validateState() {
+                const namePattern = /^[A-Za-z]+$/;
+                const snamevalid = document.getElementById('snamevalid');
+                const snvalid = document.getElementById('snvalid');
+                if (!namePattern.test(stateInput.value)) {
+                    stateInput.classList.add('is-invalid');
+                    stateInput.classList.remove('is-valid');
+                    snamevalid.style.display = 'block';
+                    snvalid.style.display = 'none';
+                } else {
+                    stateInput.classList.remove('is-invalid');
+                    stateInput.classList.add('is-valid');
+                    snamevalid.style.display = 'none';
+                    snvalid.style.display = 'block';
+                }
             }
-        }
-
-        function validateCity() {
-            const namePattern = /^[A-Za-z]+$/;
-            const cinamevalid = document.getElementById('cinamevalid');
-            const cinvalid = document.getElementById('cinvalid');
-            if (!namePattern.test(cityInput.value)) {
-                cityInput.classList.add('is-invalid');
-                cityInput.classList.remove('is-valid');
-                cinamevalid.style.display = 'block';
-                cinvalid.style.display = 'none';
-            } else {
-                cityInput.classList.remove('is-invalid');
-                cityInput.classList.add('is-valid');
-                cinamevalid.style.display = 'none';
-                cinvalid.style.display = 'block';
+    
+            function validateCity() {
+                const namePattern = /^[A-Za-z]+$/;
+                const cinamevalid = document.getElementById('cinamevalid');
+                const cinvalid = document.getElementById('cinvalid');
+                if (!namePattern.test(cityInput.value)) {
+                    cityInput.classList.add('is-invalid');
+                    cityInput.classList.remove('is-valid');
+                    cinamevalid.style.display = 'block';
+                    cinvalid.style.display = 'none';
+                } else {
+                    cityInput.classList.remove('is-invalid');
+                    cityInput.classList.add('is-valid');
+                    cinamevalid.style.display = 'none';
+                    cinvalid.style.display = 'block';
+                }
             }
-        }
-
-        function validatePin() {
-            const pinNumberPattern = /^\d{6}$/;
-            const pinvalid = document.getElementById('pinvalid');
-            const pivalid = document.getElementById('pivalid');
-            if (!pinNumberPattern.test(pinInput.value)) {
-                pinInput.classList.add('is-invalid');
-                pinInput.classList.remove('is-valid');
-                pinvalid.style.display = 'block';
-                pivalid.style.display = 'none';
-            } else {
-                pinInput.classList.remove('is-invalid');
-                pinInput.classList.add('is-valid');
-                pinvalid.style.display = 'none';
-                pivalid.style.display = 'block';
+    
+            function validatePin() {
+                const pinNumberPattern = /^\d{6}$/;
+                const pinvalid = document.getElementById('pinvalid');
+                const pivalid = document.getElementById('pivalid');
+                if (!pinNumberPattern.test(pinInput.value)) {
+                    pinInput.classList.add('is-invalid');
+                    pinInput.classList.remove('is-valid');
+                    pinvalid.style.display = 'block';
+                    pivalid.style.display = 'none';
+                } else {
+                    pinInput.classList.remove('is-invalid');
+                    pinInput.classList.add('is-valid');
+                    pinvalid.style.display = 'none';
+                    pivalid.style.display = 'block';
+                }
             }
-        }
-    });
-</script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript">
-</script>
+        });
+    </script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+    </script>
+    
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+ 
+
+<br> <br> <br> <br> <br> 
+    <!-- Start Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">Step Guide</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li>
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                            Kottayam, Kerala 686513
+                        </li>
+                        <li>
+                            <i class="fa fa-phone fa-fw"></i>
+                            <a class="text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="mailto:info@company.com">info@stepguide.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="#">Sandals</a></li>
+                        <li><a class="text-decoration-none" href="#">Formal Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Men's Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Women's Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Kids Footwears</a></li>
+                        <li><a class="text-decoration-none" href="#">Shoes Accessories</a></li>
+                        <li><a class="text-decoration-none" href="#">Casual Shoes</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="#">Home</a></li>
+                        <li><a class="text-decoration-none" href="#">About Us</a></li>
+                        <li><a class="text-decoration-none" href="#">Company Locations</a></li>
+                        <li><a class="text-decoration-none" href="#">FAQs</a></li>
+                        <li><a class="text-decoration-none" href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            Copyright &copy; 2023 Step Guide 
+                            | Designed by <a rel="sponsored" href="https://www.linkedin.com/in/akhil-shine-051233224" target="_blank">Akhil Shine</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    <!-- End Footer -->
+
+    <!-- Start Script -->
+    <script src="{% static "assets/js/jquery-1.11.0.min.js" %}"></script>
+    <script src="{% static "assets/js/jquery-migrate-1.2.1.min.js" %}"></script>
+    <script src="{% static "assets/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "assets/js/templatemo.js" %}"></script>
+    <script src="{% static "assets/js/custom.js" %}"></script>
+    <!-- End Script -->
 </body>
+
 </html>

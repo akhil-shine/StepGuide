@@ -74,26 +74,23 @@ input[type="submit"] {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.alert-top {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px; /* Adjust this width as needed */
+  z-index: 1000; /* Ensure the alert is on top of other content */
+}
 </style>
 </head>
 
 <body>
-  {% if messages %}
-  <script>
-      {% for message in messages %}
-          var alertMessage = '{{ message|safe }}';
-          var customAlert = document.createElement('div');
-          customAlert.classList.add('custom-alert');
-          customAlert.textContent = alertMessage;
-          document.body.appendChild(customAlert);
-
-          // Automatically close the alert after 3 seconds
-          setTimeout(function() {
-              customAlert.style.display = 'none';
-          }, 3000); // 3000 milliseconds = 3 seconds
-      {% endfor %}
-  </script>
-{% endif %}
+  <div class="containera">
+    <!-- Alerts will be inserted here -->
+</div>
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
@@ -216,6 +213,31 @@ input[type="submit"] {
   </div> 
 
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const alertType = urlParams.get('alert');
+
+        if (alertType === 'Error') {
+            showAlert('Category Already Exists.', 'danger');
+        } else if (alertType === 'Success') {
+            showAlert('Category Added Successfully.', 'success');
+        }
+
+        function showAlert(message, alertType) {
+            const alertDiv = document.createElement('div');
+            alertDiv.classList.add('alert', `alert-${alertType}`, 'alert-top');
+            alertDiv.textContent = message;
+
+            const container = document.querySelector('.containera');
+            container.insertBefore(alertDiv, container.firstChild);
+
+            setTimeout(function() {
+                alertDiv.remove();
+            }, 5000);  // Remove after 5 seconds
+        }
+    });
+</script>
                
   <script src="{% static "dashboard1/libs/jquery/dist/jquery.min.js" %}"></script>
   <script src="{% static "dashboard1/libs/bootstrap/dist/js/bootstrap.bundle.min.js" %}"></script>

@@ -20,34 +20,103 @@ User = get_user_model()
 
 
 # Index Page
+# def index(request):
+#     user=request.user
+#     if request.user.is_authenticated:
+#         if user.user_type == CustomUser.ADMIN and not request.path == reverse('dashboard1'):
+#             return redirect(reverse('dashboard1'))
+#         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
+#             return redirect(reverse('index'))
+#         elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('mdashboard2'):
+#             return redirect(reverse('mdashboard2'))
+#     return render(request,'index.html',)
+
 def index(request):
+    user = request.user
+    user_profile=None
+
+    if request.user.is_authenticated:
+        if user.user_type == CustomUser.ADMIN and not request.path == reverse('dashboard1'):
+            return redirect(reverse('dashboard1'))
+        elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
+            return redirect(reverse('index'))
+        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('mdashboard2'):
+            return redirect(reverse('mdashboard2'))
+        
+        # Get the associated user profile
+        user_profile = UserProfile.objects.get(user=user)
+
+
+    context = {
+        'user': user,
+        'user_profile': user_profile,
+    }
+    
+    return render(request, 'index.html', context)
+
+
+# def about(request):
+#     return render(request,'about.html',)
+
+def about(request):
+    user_profile = None  # Initialize user_profile as None
+
+    if request.user.is_authenticated:
+        try:
+            user_profile = UserProfile.objects.get(user=request.user)
+        except UserProfile.DoesNotExist:
+            pass  # Handle the case when the user profile doesn't exist
+
+    context = {
+        'user_profile': user_profile,
+    }
+
+    return render(request, 'about.html', context)
+
+def contact(request):
+    user_profile = None  # Initialize user_profile as None
+
+    if request.user.is_authenticated:
+        try:
+            user_profile = UserProfile.objects.get(user=request.user)
+        except UserProfile.DoesNotExist:
+            pass  # Handle the case when the user profile doesn't exist
+
+    context = {
+        'user_profile': user_profile,
+    }
+
+    return render(request, 'contact.html', context)
+
+
+# Merchant Dashboard
+def mdashboard2(request):
     user=request.user
     if request.user.is_authenticated:
         if user.user_type == CustomUser.ADMIN and not request.path == reverse('dashboard1'):
             return redirect(reverse('dashboard1'))
         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
             return redirect(reverse('index'))
-        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('dashboard2'):
-            return redirect(reverse('dashboard2'))
-    return render(request,'index.html',)
-def about(request):
-    return render(request,'about.html',)
-def contact(request):
-    return render(request,'contact.html',)
+        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('mdashboard2'):
+            return redirect(reverse('mdashboard2'))  
+    else:
+        return redirect(reverse('index'))
+    return render(request,'mdashboard2.html',)
 
-# Merchant Dashboard
+
+# Merchant Product add 
 def dashboard2(request):
     user=request.user
     stdata = Category.objects.filter(status=False)
-    if request.user.is_authenticated:
-        if user.user_type == CustomUser.ADMIN and not request.path == reverse('dashboard1'):
-            return redirect(reverse('dashboard1'))
-        elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
-            return redirect(reverse('index'))
-        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('dashboard2'):
-            return redirect(reverse('dashboard2'))  
-    else:
-        return redirect(reverse('index'),{'stdata': stdata})
+    # if request.user.is_authenticated:
+    #     if user.user_type == CustomUser.ADMIN and not request.path == reverse('dashboard1'):
+    #         return redirect(reverse('dashboard1'))
+    #     elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
+    #         return redirect(reverse('index'))
+    #     elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('mdashboard2'):
+    #         return redirect(reverse('mdashboard2'))  
+    # else:
+    #     return redirect(reverse('index'),{'stdata': stdata})
     return render(request,'dashboard2.html',{'stdata': stdata})
 
 def get_subcategories(request, category_id):
@@ -68,8 +137,8 @@ def dashboard1(request):
             return redirect(reverse('dashboard1'))
         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
             return redirect(reverse('index'))
-        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('dashboard2'):
-            return redirect(reverse('dashboard2'))
+        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('mdashboard2'):
+            return redirect(reverse('mdashboard2'))
     else:
         return redirect(reverse('index')) 
     
@@ -176,7 +245,7 @@ def login_view(request):
         elif user.user_type == CustomUser.CLIENT:
             return redirect(reverse('index'))
         elif user.user_type == CustomUser.MERCHANT:
-            return redirect(reverse('dashboard2'))
+            return redirect(reverse('mdashboard2'))
         else:
             return redirect('/')
     elif request.method == 'POST':
@@ -198,7 +267,7 @@ def login_view(request):
                         return redirect(reverse('index'))
                     elif user.user_type == CustomUser.MERCHANT:
                         messages.success(request, 'Login Success!!')
-                        return redirect(reverse('dashboard2'))
+                        return redirect(reverse('mdashboard2'))
                     else:
                         return redirect('/')
                 else:
@@ -356,6 +425,8 @@ def edit_profile(request):
         new_profile_pic = request.FILES.get('profile_pic')
         if new_profile_pic:
             user_profile.profile_pic = new_profile_pic
+            user_profile.save()
+            print("profile_get")
 
         # Update user profile fields
         user_profile.country = request.POST.get('country')
@@ -428,8 +499,8 @@ def userview(request):
             return redirect(reverse('userview'))
         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
             return redirect(reverse('index'))
-        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('dashboard2'):
-            return redirect(reverse('dashboard2'))
+        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('mdashboard2'):
+            return redirect(reverse('mdashboard2'))
     else:
         return redirect(reverse('index'))
 
@@ -514,16 +585,20 @@ def newcategory(request):
 
         # Check if the category name already exists
         if Category.objects.filter(category_name=category_name, status=False).exists():
-            error_message = 'Category Name already exists.'
+            return HttpResponseRedirect(reverse('add_category') + '?alert=Error')
         else:
             # Category name is unique; create a new Category instance and save it
             new_category = Category()
             new_category.category_name = category_name
             new_category.descriptioncat = category_description
             new_category.save()
-            return redirect("add_category")
+            return HttpResponseRedirect(reverse('add_category') + '?alert=Success')
+            # return redirect("add_category")
 
     return render(request, "add_category.html", {"error_message": error_message})
+
+
+
 
 # sub
 def newsubcategory(request):
@@ -533,8 +608,8 @@ def newsubcategory(request):
             return redirect(reverse('add_subcategory'))
         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
             return redirect(reverse('index'))
-        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('dashboard2'):
-            return redirect(reverse('dashboard2'))
+        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('mdashboard2'):
+            return redirect(reverse('mdashboard2'))
     else:
         return redirect(reverse('index'))
 
@@ -718,7 +793,7 @@ def sellerindex(request):
 
         return redirect("productlist")
 
-    return render(request, "dashboard2.html", {'stdata': stdata})
+    return render(request, "mdashboard2.html", {'stdata': stdata})
 
 
 def categoryajax(request, category):
@@ -736,24 +811,58 @@ def categoryajax(request, category):
     return JsonResponse(data,safe=False)
 
 # for display product
+# def productlist(request):
+#     products = Product.objects.all()
+#     wishlist_items = []
+#     wishlist_product_ids = []
+#     user_cart_ids = []
+
+#     if request.user.is_authenticated:
+#         wishlist_items = Wishlist.objects.filter(user=request.user)
+#         wishlist_product_ids = wishlist_items.values_list('product_id', flat=True)
+#         user_cart = BookCart.objects.filter(user=request.user)
+#         user_cart_ids = [item.product.id for item in user_cart]
+        
+#         # Get the associated user profile
+#         user_profile = UserProfile.objects.get(user=request.user)
+#         context = {
+#         'user': request.user,  # Use request.user instead of user
+#         'user_profile': user_profile,
+#     }
+#     return render(request, 'buy.html', {
+#         'products': products,
+#         'wishlist_items': wishlist_items,
+#         'wishlist_product_ids': wishlist_product_ids,
+#         'user_cart_ids': user_cart_ids,
+#     })
+
+# Buy.html page
 def productlist(request):
     products = Product.objects.all()
     wishlist_items = []
     wishlist_product_ids = []
     user_cart_ids = []
+    user_profile = None  # Initialize user_profile as None
 
     if request.user.is_authenticated:
         wishlist_items = Wishlist.objects.filter(user=request.user)
         wishlist_product_ids = wishlist_items.values_list('product_id', flat=True)
         user_cart = BookCart.objects.filter(user=request.user)
         user_cart_ids = [item.product.id for item in user_cart]
+        
+        # Get the associated user profile
+        user_profile = UserProfile.objects.get(user=request.user)
 
-    return render(request, 'buy.html', {
+    context = {
         'products': products,
         'wishlist_items': wishlist_items,
         'wishlist_product_ids': wishlist_product_ids,
-        'user_cart_ids': user_cart_ids
-    })
+        'user_cart_ids': user_cart_ids,
+        'user': request.user,
+        'user_profile': user_profile,
+    }
+    
+    return render(request, 'buy.html', context)
 
 
 # display in single page
@@ -763,6 +872,9 @@ def purchase(request, product_id):
 
     user = request.user
     product = get_object_or_404(Product, id=product_id)
+    
+            # Get the associated user profile
+    user_profile = UserProfile.objects.get(user=request.user)
 
 
     images = Image.objects.filter(product=product)
@@ -771,6 +883,7 @@ def purchase(request, product_id):
         'product': product,
         'images': images,
         'user': user,
+        'user_profile': user_profile,
     }
 
     return render(request, 'purchase.html',context)
@@ -805,7 +918,9 @@ def wishlist_view(request):
         wishlist_items = Wishlist.objects.filter(user=request.user)
         # Extract the product from the wishlist items
         wishlist_product = [item.product for item in wishlist_items]
-        return render(request, 'wishlist.html', {'wishlist_product': wishlist_product})
+                # Get the user's profile
+        user_profile = UserProfile.objects.get(user=request.user)
+        return render(request, 'wishlist.html', {'wishlist_product': wishlist_product, 'user_profile': user_profile})
     else:
         # Handle the case when the user is not logged in
         # You can redirect them to the login page or display a message
@@ -837,6 +952,8 @@ def cart(request):
     # Retrieve books in the user's cart
     books_in_cart = BookCart.objects.filter(user_id=user_id)
     products3 = Category.objects.filter(status=False)
+    
+    user_profile = UserProfile.objects.get(user=request.user)
 
 # Retrieve book details for the books in the cart
     book_details = Product.objects.filter(id__in=books_in_cart.values_list('product_id', flat=True))
@@ -846,7 +963,7 @@ def cart(request):
     
     #product_id=BookCart.request.get(product_id=product_id)
     st = BookCart.objects.filter(user_id=user_id)
-    return render(request,"cart.html",{'cart_books':book_details,'st':st,'total_price':total_price,'products3':products3})
+    return render(request,"cart.html",{'cart_books':book_details,'st':st,'total_price':total_price,'products3':products3,'user_profile': user_profile,})
 
 def increase_item(request, item_id):
     try:

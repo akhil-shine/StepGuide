@@ -8,6 +8,8 @@
   <title>Step Guide</title>
   <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
   <link rel="stylesheet" href="{% static "dashboard1/css/styles.min.css" %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
 
   <style>
     .custom-alert {
@@ -105,6 +107,17 @@
       cursor: pointer;
     }
 
+    /* Style the container of the "i" icon */
+.info-icon {
+  cursor: pointer; /* Add a pointer cursor for interaction */
+  margin-left: 5px; /* Add some spacing on the left side of the icon */
+}
+
+/* Style the "i" (icon) element */
+.info-icon i {
+  font-size: 18px; /* Adjust the font size as needed */
+  color: #007bff; /* Set the color to blue (you can use your preferred color) */
+}
 </style>
 </head>
 
@@ -143,119 +156,23 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
           <ul id="sidebarnav">
-            <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">Home</span>
-            </li>
             <li class="sidebar-item">
-              {% comment %} <a class="sidebar-link" href="http://127.0.0.1:8000/admin/" aria-expanded="false"> {% endcomment %}
-              {% comment %} <a class="sidebar-link" href="{% url "userview" %}" aria-expanded="false">
-                <span>
-                  <i class="ti ti-layout-dashboard"></i>
-                </span>
-                <span class="hide-menu">Users List</span>
-              </a>
-            </li> {% endcomment %}
-            {% comment %} <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">UI COMPONENTS</span>
-            </li> {% endcomment %}
-            {% comment %} <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
+              <a class="sidebar-link" href={% url "mdashboard2" %} aria-expanded="false">
                 <span>
                   <i class="ti ti-article"></i>
                 </span>
-                <span class="hide-menu">Buttons</span>
-              </a>
-            </li> {% endcomment %}
-            {% comment %} <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-alerts.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-alert-circle"></i>
-                </span>
-                <span class="hide-menu">Alerts</span>
-              </a>
-            </li> {% endcomment %}
-            {% comment %} <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-cards"></i>
-                </span>
-                <span class="hide-menu">Card</span>
-              </a>
-            </li> {% endcomment %}
-            {% comment %} <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-forms.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-file-description"></i>
-                </span>
-                <span class="hide-menu">Forms</span>
+                <span class="hide-menu">Home</span>
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
+              <a class="sidebar-link" href={% url "dashboard2" %} aria-expanded="false">
                 <span>
-                  <i class="ti ti-typography"></i>
+                  <i class="ti ti-layout-dashboard"></i>
                 </span>
-                <span class="hide-menu">Typography</span>
-              </a>
-
-              
-            </li> {% endcomment %}
-            {% comment %} <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">AUTHENTICATION</span>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url "login" %}"aria-expanded="false">
-                <span>
-                  <i class="ti ti-login"></i>
-                </span>
-                <span class="hide-menu">Login</span>
+                <span class="hide-menu">Add Product</span>
               </a>
             </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url "m_register" %}" aria-expanded="false">
-                <span>
-                  <i class="ti ti-user-plus"></i>
-                </span>
-                <span class="hide-menu">Register</span>
-              </a>
-            </li> {% endcomment %}
-
-
-            {% comment %} <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">EXTRA</span>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./icon-tabler.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-mood-happy"></i>
-                </span>
-                <span class="hide-menu">Icons</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./sample-page.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-aperture"></i>
-                </span>
-                <span class="hide-menu">Sample Page</span>
-              </a>
-            </li> {% endcomment %}
           </ul>
-          {% comment %} <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
-            <div class="d-flex">
-              <div class="unlimited-access-title me-3">
-                <h6 class="fw-semibold fs-4 mb-6 text-dark w-85">Upgrade to pro</h6>
-                <a href="https://adminmart.com/product/modernize-bootstrap-5-admin-template/" target="_blank" class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
-              </div>
-              <div class="unlimited-access-img">
-                <img src="{% static "dashboard1/images/backgrounds/rocket.png" %}" alt="" class="img-fluid">
-              </div>
-            </div>
-          </div> {% endcomment %}
         </nav>
         <!-- End Sidebar navigation -->
       </div>
@@ -282,12 +199,11 @@
           </ul>
 
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Mearchant!</p>
+            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Merchant!</p>
           </div>
 
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-              {% comment %} <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary">Download Free</a> {% endcomment %}
               Welcome, {{ user.first_name }}
               <li class="nav-item dropdown">
                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
@@ -322,7 +238,8 @@
       <br> <br> <br> <br> 
       <div class="form-container">
         <h1>Add Product</h1>
-        <form method="post" enctype="multipart/form-data" action={% url "sellerindex" %}>
+          <form method="post" enctype="multipart/form-data" action={% url "sellerindex" %} onsubmit="return validateForm()">
+
             {% csrf_token %}
             
             <div class="form-group">
@@ -363,37 +280,49 @@
               <label for="gender">Gender</label>
               <div class="checkbox-group">
                   <input type="checkbox" id="male" name="male" value="male">
-                  <label for="male">Male</label>
+                  <label for="male" style="display: inline-block; vertical-align: middle;">Male</label>
                   <input type="checkbox" id="female" name="female" value="female">
-                  <label for="female">Female</label>
+                  <label for="female" style="display: inline-block; vertical-align: middle;">Female</label>
               </div>
           </div>
           
             
         <!-- Size(16-18) -->
         <div class="form-group">
-            <label for="stock16-18">Size(16-18)</label> <span class="info-icon" onclick="showStockInfo('16-18')">i</span>
-            <input type="number" id="stock16-18" name="stock1" class="form-control" required>
-            
-        </div>
+          <label for="stock16-18" style="display: inline-block; vertical-align: middle;">Stock(16-18)</label> 
+          <span class="info-icon" style="display: inline-block; vertical-align: middle;" onclick="showStockInfo('16-18')">
+              <i class="fas fa-info-circle"></i>
+          </span>
+          <input type="number" id="stock16-18" name="stock1" class="form-control">
+      </div>
+      
         
         <!-- Size(20-24) -->
         <div class="form-group">
-            <label for="stock20-24">Size(20-24)</label> <span class="info-icon" onclick="showStockInfo('20-24')">i</span>
+            <label for="stock20-24" style="display: inline-block; vertical-align: middle;">Stock(20-24)</label> 
+            <span class="info-icon" style="display: inline-block; vertical-align: middle;" onclick="showStockInfo('20-24')">
+              <i class="fas fa-info-circle"></i>
+            </span>
             <input type="number" id="stock20-24" name="stock2" class="form-control" required>
             
         </div>
         
         <!-- Size(25-29) -->
         <div class="form-group">
-            <label for="stock25-29">Size(25-29)</label> <span class="info-icon" onclick="showStockInfo('25-29')">i</span>
+            <label for="stock25-29" style="display: inline-block; vertical-align: middle;">Stock(25-29)</label> 
+            <span class="info-icon" style="display: inline-block; vertical-align: middle;" onclick="showStockInfo('25-29')">
+              <i class="fas fa-info-circle"></i>
+            </span>
             <input type="number" id="stock25-29" name="stock3" class="form-control" required>
             
         </div>
         
         <!-- Size(30-35) -->
         <div class="form-group">
-            <label for="stock30-35">Size(30-35)</label> <span class="info-icon" onclick="showStockInfo('30-35')">i</span>
+            <label for="stock30-35" style="display: inline-block; vertical-align: middle;">Stock(30-35)</label> 
+            <span class="info-icon" style="display: inline-block; vertical-align: middle;" onclick="showStockInfo('30-35')">
+              <i class="fas fa-info-circle"></i>
+            </span>
             <input type="number" id="stock30-35" name="stock4" class="form-control" required>
             
         </div>
@@ -406,7 +335,7 @@
 
         <div class="form-group">
             <label for="price">Price for size (16-19)</label>
-            <input type="number" id="price" name="price1" class="form-control" required oninput="validatePrice(this); calculateSalePrice(document.getElementById('discount'))">
+            <input type="number" id="price" name="price1" class="form-control" oninput="validatePrice(this); calculateSalePrice(document.getElementById('discount'))">
             <span id="price-error" class="error-text"></span>
         </div>
               
@@ -482,6 +411,79 @@
                     .catch(error => console.error(error));
             }
         </script>
+
+        <script>
+          function validateForm() {
+              // Get references to form fields
+              var brandNameField = document.getElementById("product-name");
+              var categoryField = document.getElementById("category");
+              var subcategoryField = document.getElementById("subcategory");
+              var productDescriptionField = document.getElementById("description");
+              var materialDescriptionField = document.getElementById("description");
+              var priceField = document.getElementById("price");
+              var stock16to18Field = document.getElementById("stock16-18");
+              var stock20to24Field = document.getElementById("stock20-24");
+              var stock25to29Field = document.getElementById("stock25-29");
+              var stock30to35Field = document.getElementById("stock30-35");
+      
+              // Reset any previous error messages
+              var errorMessages = document.getElementsByClassName("error-text");
+              for (var i = 0; i < errorMessages.length; i++) {
+                  errorMessages[i].textContent = "";
+              }
+      
+              // Add validation logic here
+              var valid = true;
+      
+              // Validate brand name (example: not empty)
+              if (brandNameField.value.trim() === "") {
+                  document.getElementById("product-name-error").textContent = "Brand Name is required.";
+                  valid = false;
+              }
+      
+              // Validate category selection
+              if (categoryField.value === "") {
+                  document.getElementById("category-error").textContent = "Category is required.";
+                  valid = false;
+              }
+      
+              // Validate subcategory selection
+              if (subcategoryField.value === "") {
+                  document.getElementById("subcategory-error").textContent = "Subcategory is required.";
+                  valid = false;
+              }
+      
+              // Validate product description (example: not empty)
+              if (productDescriptionField.value.trim() === "") {
+                  document.getElementById("description-error").textContent = "Product Description is required.";
+                  valid = false;
+              }
+      
+              // Validate material description (example: not empty)
+              if (materialDescriptionField.value.trim() === "") {
+                  document.getElementById("material-description-error").textContent = "Material Description is required.";
+                  valid = false;
+              }
+      
+              // Validate price (example: must be a positive number)
+              if (isNaN(priceField.value) || parseFloat(priceField.value) <= 0) {
+                  document.getElementById("price-error").textContent = "Price must be a positive number.";
+                  valid = false;
+              }
+      
+              // Validate stock (example: must be a non-negative integer)
+              var stockFields = [stock16to18Field, stock20to24Field, stock25to29Field, stock30to35Field];
+              for (var i = 0; i < stockFields.length; i++) {
+                  if (isNaN(stockFields[i].value) || parseInt(stockFields[i].value) < 0) {
+                      document.getElementById("stock-error").textContent = "Stock values must be non-negative integers.";
+                      valid = false;
+                      break; // Stop checking if one stock field is invalid
+                  }
+              }
+      
+              return valid;
+          }
+      </script>
 
         </form>
           </div>

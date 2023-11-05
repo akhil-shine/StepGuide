@@ -14,6 +14,8 @@ urlpatterns = [
     path('m_register/',views.mregister,name='m_register'),
     path('dashboard1.html/',views.dashboard1,name='dashboard1'),
     path('dashboard2.html/',views.dashboard2,name='dashboard2'),
+    path('mdashboard2.html/',views.mdashboard2,name='mdashboard2'),
+
     path('edit_profile.html/',views.edit_profile,name='edit_profile'),
     # Forget Password
     path('password_reset/',auth_views.PasswordResetView.as_view(),name='password_reset'),

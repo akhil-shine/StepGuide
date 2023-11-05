@@ -31,6 +31,36 @@
         #product-detail:hover {
             transform: scale(1.2); /* Adjust the scale factor as needed */
         }
+
+        /* Style for the modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Style for the modal content */
+        .modal-content {
+            display: block;
+            margin: auto;
+            max-width: 70%;
+            max-height: 70%;
+        }
+
+        /* Style for the close button */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -104,11 +134,14 @@
                     </a>
                     <div class="ml-2 dropdown">
                         {% if user.is_authenticated %}
-                            <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                Welcome, {{ user.username }}
-                            </button>
+                        {% if user_profile.profile_pic %}
+                        <img src="{{ user_profile.profile_pic.url }}" alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
+                        {% else %}
+                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png"  alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
+                        {% endif %}
                             <ul class="dropdown-menu" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
                                 <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
                             </ul>
                         {% else %}
@@ -284,6 +317,7 @@
                                         </ul>
                                     </div>
                                 </div> {% endcomment %}
+                                {% if user.is_authenticated %}
                                 <div class="row pb-3">
                                     <div class="col d-grid">
                                         <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Buy</button>
@@ -291,7 +325,48 @@
                                     <div class="col d-grid">
                                         <a href="{% url 'add_cart1' product.id %}?bookid2={{ product.id }}"class="btn btn-success mr-3">Add Cart </a>
                                     </div>
-                                </div>
+
+                                    <div class="col d-grid">
+                                        <a href="#" class="btn btn-success mr-3" onclick="openModal()">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rulers" viewBox="0 0 16 16">
+                                                <path d="M1 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5v-1H2v-1h4v-1H4v-1h2v-1H2v-1h4V9H4V8h2V7H2V6h4V2h1v4h1V4h1v2h1V2h1v4h1V4h1v2h1V2h1v4h1V1a1 1 0 0 0-1-1H1z"/>
+                                            </svg>
+                                            Size Chart
+                                        </a>
+                                    </div>
+                                    
+                                    
+                                    <div id="imageModal" class="modal">
+                                        <div class="modal-content">
+                                            <span class="close" onclick="closeModal()">&times;</span>
+                                            <img src="{% static "./assets/img/chart.png" %}" alt="Image">
+                                        </div>
+                                    </div>
+                                    
+                                    <script>
+                                        // Get the modal and close button elements
+                                        var modal = document.getElementById("imageModal");
+                                        var closeBtn = document.querySelector(".close");
+                                    
+                                        // Function to open the modal
+                                        function openModal() {
+                                            modal.style.display = "block";
+                                        }
+                                    
+                                        // Function to close the modal
+                                        function closeModal() {
+                                            modal.style.display = "none";
+                                        }
+                                    
+                                        // Close the modal when clicking outside the modal content
+                                        window.onclick = function(event) {
+                                            if (event.target == modal) {
+                                                modal.style.display = "none";
+                                            }
+                                        }
+                                    </script>
+                                    
+                                {% endif %}
                             </form>
 
                         </div>
@@ -913,6 +988,7 @@
         });
     </script>
     <!-- End Slider Script -->
+
 
 </body>
 

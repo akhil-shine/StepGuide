@@ -34,7 +34,7 @@ class CustomUser(AbstractUser):
 class UserProfile(models.Model):
     
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
-    profile_pic=models.FileField(upload_to='profile_pic/',blank=True,null=True)
+    profile_pic=models.FileField(upload_to='profile/',default="")
     country = models.CharField(max_length=15, blank=True, null=True)
     state = models.CharField(max_length=15, blank=True, null=True)
     city = models.CharField(max_length=15, blank=True, null=True)
