@@ -1,0 +1,619 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Cart</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="{% static "assets/img/apple-icon.png" %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.ico" %}">
+
+    <link rel="stylesheet" href="{% static "assets/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/templatemo.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/custom.css" %}">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="{% static "assets/css/fontawesome.min.css" %}">
+
+    <!-- Load map styles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+
+    <style>
+
+        
+        .container12 {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        li {
+            padding: 15px 0;
+            border-bottom: 2px solid #ecf0f1;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1em;
+        }
+        
+        li:last-child {
+            border-bottom: none;
+        }
+        
+        button#rzp-button1 {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        button#rzp-button1:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
+        
+        button#rzp-button1:active {
+            transform: scale(1);
+        }
+        
+        #total_item_amount {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        #order-placed-section {
+            border: 2px solid green;
+            padding: 10px;
+            background-color: #e8f5e9;
+            margin-top: 20px;
+        }
+        
+        #order-success-message {
+            color: green;
+        }
+
+
+        /* Style for cart items container */
+        .cart-items-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+    
+        /* Style for each cart item */
+        .cart-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    
+
+        /* Style for shipping address container */
+        .shipping-address-container {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+    
+        /* Style for shipping address heading */
+        .shipping-address-heading {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+    
+        /* Style for individual address details */
+        .address-details {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+    
+        /* Style for strong tags within the address details */
+        .address-details strong {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .brand {
+            color: #ff3366; /* Choose your desired color */
+            font-weight: bold;
+        }
+    </style>
+    
+</head>
+
+<body>
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between" >
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@stepguide.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
+                </div>
+                {% comment %} <div>
+                    <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
+                </div> {% endcomment %}
+            </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow" style="padding: 1px 0;">
+        <div class="container d-flex justify-content-between align-items-center">
+    
+            <a class="navbar-brand text-success logo h2 align-self-center" href="{% url "index" %}">
+                StepGuide
+            </a>
+    
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="templatemo_main_nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-center align-items-center mx-lg-auto fs-5 py-0">
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "index" %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "about" %}">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "productlist" %}">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "contact" %}">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <div class="d-lg-none flex-sm-fill mt-2 mb-2 col-7 col-sm-auto pr-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                            <div class="input-group-text">
+                                <i class="fa fa-fw fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                        <i class="fa fa-fw fa-search text-dark mx-2"></i>
+                    </a> {% endcomment %}
+                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                        <i class="fa fa-fw fa-cart-arrow-down text-dark mx-2"></i>
+                        <!-- <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span> -->
+                    </a>
+                    <div class="ml-2 dropdown">
+                        {% if user.is_authenticated %}
+                            <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Welcome, {{ user.username }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
+                            </ul>
+                        {% else %}
+                            <a class="nav-link fw-bold" href="{% url "login" %}">Login</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <!-- Close Header -->
+
+    <!-- Modal -->
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="w-100 pt-1 mb-5 text-right">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <body>
+        {% block content %}
+        <div class="container12">
+            <div id="order-placed-section" style="display: none;">
+                <h2>Order Placed</h2>
+                <p id="order-success-message"></p>
+            </div>
+            <h1>Checkout</h1>
+            
+            <ul>
+                {% for item in cart_items %}
+                <div class="shipping-address-container">
+                    <h3>Product Details</h3>
+                    <p class="brand">{{ item.product.brand_name }}</p>
+                    <p class="address-details"><strong>Quantity:</strong> {{ item.quantity }}</p>
+                    <p class="address-details"><strong>Size:</strong> {{ item.size }}</p>
+                    <!-- Add other fields as needed -->
+                </div>
+                {% endfor %}
+            </ul>
+            <ul>
+                {% if shipping_address %}
+                <div class="shipping-address-container">
+                    <h2 class="shipping-address-heading">Shipping Address</h2>
+                    <p class="address-details"><strong>Name:</strong> {{ shipping_address.name }}</p>
+                    <p class="address-details"><strong>Email:</strong> {{ shipping_address.email }}</p>
+                    <p class="address-details"><strong>Phone:</strong> {{ shipping_address.phn1 }}{% if shipping_address.phn2 %}, {{ shipping_address.phn2 }}{% endif %}</p>
+                    <p class="address-details"><strong>Address:</strong> {{ shipping_address.address }}, {{ shipping_address.land }}, {{ shipping_address.city }}, {{ shipping_address.district }}, {{ shipping_address.state }}, {{ shipping_address.pin }}, {{ shipping_address.country }}</p>
+                </div>
+                {% endif %}
+            </ul>
+            <p>Total Amount: &#8377<span id="total_item_amount">{{total_amount}}</span></p>
+        
+            <button id="rzp-button1">Pay with Razorpay</button>
+            {% comment %} <button class="btn" id="pay-btn">Donate❤️</button> {% endcomment %}
+        </div>
+        <div id="checkout-data" data-email="{{ shipping_address.email }}" data-fullname="{{ shipping_address.name }}">
+        </div>
+        <script>
+            var handlePaymentUrl = "{% url 'handle-payment' %}";
+        </script>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        {% endblock %}
+    </body>
+
+
+    <!-- Start Brands -->
+    <section class="bg-light py-5">
+        <div class="container my-4">
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">Our Brands</h1>
+                    <p>
+                        “There's a reason good fabrics have a cost. They're done with good quality to last.”
+                    </p>
+                </div>
+                <div class="col-lg-9 m-auto tempaltemo-carousel">
+                    <div class="row d-flex flex-row">
+                        <!--Controls-->
+                        <div class="col-1 align-self-center">
+                            <a class="h1" href="#multi-item-example" role="button" data-bs-slide="prev">
+                                <i class="text-light fas fa-chevron-left"></i>
+                            </a>
+                        </div>
+                        <!--End Controls-->
+
+                        <!--Carousel Wrapper-->
+                        <div class="col">
+                            <div class="carousel slide carousel-multi-item pt-2 pt-md-0" id="multi-item-example" data-bs-ride="carousel">
+                                <!--Slides-->
+                                <div class="carousel-inner product-links-wap" role="listbox">
+
+                                    <!--First slide-->
+                                    <div class="carousel-item active">
+                                        <div class="row">
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_01.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_02.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_03.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_04.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End First slide-->
+
+                                    <!--Second slide-->
+                                    <div class="carousel-item">
+                                        <div class="row">
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_01.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_02.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_03.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_04.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End Second slide-->
+
+                                    <!--Third slide-->
+                                    <div class="carousel-item">
+                                        <div class="row">
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_01.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_02.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_03.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_04.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End Third slide-->
+
+                                </div>
+                                <!--End Slides-->
+                            </div>
+                        </div>
+                        <!--End Carousel Wrapper-->
+
+                        <!--Controls-->
+                        <div class="col-1 align-self-center">
+                            <a class="h1" href="#multi-item-example" role="button" data-bs-slide="next">
+                                <i class="text-light fas fa-chevron-right"></i>
+                            </a>
+                        </div>
+                        <!--End Controls-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--End Brands-->
+
+
+    <!-- Start Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">Step Guide</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li>
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                            Kottayam, Kerala 686513
+                        </li>
+                        <li>
+                            <i class="fa fa-phone fa-fw"></i>
+                            <a class="text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="mailto:info@company.com">info@stepguide.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="#">Sandals</a></li>
+                        <li><a class="text-decoration-none" href="#">Formal Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Men's Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Women's Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Kids Footwears</a></li>
+                        <li><a class="text-decoration-none" href="#">Shoes Accessories</a></li>
+                        <li><a class="text-decoration-none" href="#">Casual Shoes</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="#">Home</a></li>
+                        <li><a class="text-decoration-none" href="#">About Us</a></li>
+                        <li><a class="text-decoration-none" href="#">Company Locations</a></li>
+                        <li><a class="text-decoration-none" href="#">FAQs</a></li>
+                        <li><a class="text-decoration-none" href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="row text-light mb-4">
+                <div class="col-12 mb-3">
+                    <div class="w-100 my-3 border-top border-light"></div>
+                </div>
+                <div class="col-auto me-auto">
+                    <ul class="list-inline text-left footer-icons">
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://twitter.com/"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    <label class="sr-only" for="subscribeEmail">Email address</label>
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control bg-dark border-light" id="subscribeEmail" placeholder="Email address">
+                        <div class="input-group-text btn-success text-light">Subscribe</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            Copyright &copy; 2023 Step Guide 
+                            | Designed by <a rel="sponsored" href="https://www.linkedin.com/in/akhil-shine-051233224" target="_blank">Akhil Shine</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    <!-- End Footer -->
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkoutButton = document.getElementById('rzp-button1');
+        const checkoutData = document.getElementById("checkout-data");
+        const email = checkoutData.getAttribute("data-email");
+        const fullName = checkoutData.getAttribute("data-fullname");
+        const totalItemAmount = document.getElementById("total_item_amount");
+    
+        function getCookie(name) {
+            let value = "; " + document.cookie;
+            let parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+    
+        checkoutButton.addEventListener('click', function (event) {
+            event.preventDefault();
+    
+            const rawPrice = totalItemAmount.textContent;
+            const totalPrice = parseFloat(rawPrice.replace('₹', '').trim());
+    
+            fetch("http://127.0.0.1:8000/create-order/", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    var options = {
+                        "key": "rzp_test_urbnGhXdEwZA2J",
+                        "amount": totalPrice * 100,
+                        "currency": "INR",
+                        "name": "Ecommerce",
+                        "description": "Order Payment",
+                        "order_id": data['order_id'],
+                        "prefill": {
+                            "name": fullName,
+                            "email": email
+                        },
+                        "handler": function (response) {
+                            const razorpay_order_id = response.razorpay_order_id;
+                            const payment_id = response.razorpay_payment_id;
+                            console.log(razorpay_order_id, payment_id)
+    
+                            fetch("http://127.0.0.1:8000/handle-payment/", {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': getCookie('csrftoken')
+                                },
+                                body: JSON.stringify({
+                                    'order_id': razorpay_order_id,
+                                    'payment_id': payment_id
+                                })
+                            })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok during payment handling');
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    if (data.message === 'Payment successful') {
+                                        const orderSection = document.getElementById('order-placed-section');
+                                        const orderMessage = document.getElementById('order-success-message');
+    
+                                        orderMessage.textContent = "Successfully placed order!";
+                                        orderSection.style.display = "block";
+                                    } else {
+                                        alert('Payment failed');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('An error occurred while processing the payment.', error);
+                                    alert('There was an issue processing your payment. Please try again.');
+                                });
+                        }
+                    };
+    
+                    var rzp1 = new Razorpay(options);
+                    rzp1.open();
+                })
+                .catch(error => {
+                    console.error('Error creating order:', error);
+                    alert('There was an issue initiating your order. Please try again.');
+                });
+        });
+    });
+</script>
+
+
+    <!-- Start Script -->
+    <script src="{% static "assets/js/jquery-1.11.0.min.js" %}"></script>
+    <script src="{% static "assets/js/jquery-migrate-1.2.1.min.js" %}"></script>
+    <script src="{% static "assets/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "assets/js/templatemo.js" %}"></script>
+    <script src="{% static "assets/js/custom.js" %}"></script>
+    <!-- End Script -->
+</body>
+
+</html>

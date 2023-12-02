@@ -77,7 +77,7 @@
                             <a class="nav-link mx-2 fw-bold" href="{% url "about" %}">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-2 fw-bold" href="{% url "productlist" %}">Shop</a>
+                            <a class="nav-link mx-2 fw-bold" href="{% url "productlist" %}" id="shop">Shop</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mx-2 fw-bold" href="{% url "contact" %}">Contact</a>
@@ -102,14 +102,18 @@
                     </a>
                     <div class="ml-2 dropdown">
                         {% if user.is_authenticated %}
-                        {% if user_profile.profile_pic %}
-                        <img src="{{ user_profile.profile_pic.url }}" alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
+                        {% comment %} {% if user_profile.profile_pic %} {% endcomment %}
+                        {% comment %} <img src="{{ user_profile.profile_pic.url }}" alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
                         {% else %}
                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png"  alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
-                        {% endif %}
+                        {% endif %} {% endcomment %}
+                        <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Welcome, {{ user.username }}
+                        </button>
+
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}"> {{ user.first_name }}</a></li>
-                            {% comment %} <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}"> Edit</a></li> {% endcomment %}
+                            {% comment %} <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}"> {{ user.first_name }}</a></li> {% endcomment %}
+                            <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}" id="edit_profile"> Edit</a></li>
                             <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
                             <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
                         </ul>

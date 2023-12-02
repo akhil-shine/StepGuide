@@ -1,330 +1,49 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Edit Profile</title>
-<link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<style type="text/css">
-    	body {
-    margin: 0;
-    padding-top: 40px;
-    color: #2e323c;
-    background: #f5f6fa;
-    position: relative;
-    height: 100%;
-}
-.account-settings .user-profile {
-    margin: 0 0 1rem 0;
-    padding-bottom: 1rem;
-    text-align: center;
-}
-.account-settings .user-profile .user-avatar {
-    margin: 0 0 1rem 0;
-}
-.account-settings .user-profile .user-avatar img {
-    width: 90px;
-    height: 90px;
-    -webkit-border-radius: 100px;
-    -moz-border-radius: 100px;
-    border-radius: 100px;
-}
-.account-settings .user-profile h5.user-name {
-    margin: 0 0 0.5rem 0;
-}
-.account-settings .user-profile h6.user-email {
-    margin: 0;
-    font-size: 0.8rem;
-    font-weight: 400;
-    color: #9fa8b9;
-}
-.account-settings .about {
-    margin: 2rem 0 0 0;
-    text-align: center;
-}
-.account-settings .about h5 {
-    margin: 0 0 15px 0;
-    color: #007ae1;
-}
-.account-settings .about p {
-    font-size: 0.825rem;
-}
-.form-control {
-    border: 1px solid #cfd1d8;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-    font-size: .825rem;
-    background: #ffffff;
-    color: #2e323c;
-}
-
-.card {
-    background: #ffffff;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    border: 0;
-    margin-bottom: 1rem;
-}
-
-
-    </style>
-</head>
 <body>
-
-
-
-<form class="w-100" method="post" enctype="multipart/form-data" id="pictureForm">
-<div class="container">
-<div class="row gutters">
-<form class="w-100" method="post" enctype="multipart/form-data" id="pictureForm">
-<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-<div class="card h-100">
-<div class="card-body">
-<div class="account-settings">
-<div class="user-profile">
-<div class="user-avatar">
-<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
-</div>
-<h5 class="user-name">{{ user.first_name }} {{ user.last_name }}</h5>
-</div>
-</div>
-</div>
-</div>
-</div>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-    <div class="card h-100">
-    <div class="card-body">
-    <div class="row gutters">
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-    <h6 class="mb-2 text-primary">Personal Details</h6>
+    {% block content %}
+    <div class="container">
+        <div class="cart-header">
+            <h1>Your Cart</h1>
+        </div>
+        <ul class="cart-items">
+            {% for item in cart_items %}
+            <li class="cart-item">
+                <div class="cart-item-image-container">
+                    <img class="cart-item-image" src="{{ item.product.thumbnail.url }}" alt="{{ item.product.name }}">
+                </div>
+                <div class="cart-item-details">
+                    <div class="cart-item-name">{{ item.product.brand_name }}</div>
+                    <div class="item-quantity">
+                        <form action="{% url 'increase-cart-item' item.product.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="quantity-btn increase-quantity" type="submit">+</button>
+                        </form>
+                        <span class="cart-item-quantity" data-quantity="{{ item.quantity }}">{{ item.quantity }}</span>
+                        <form action="{% url 'decrease-cart-item' item.product.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="quantity-btn decrease-quantity" type="submit">-</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="cart-item-price" data-price="{{ item.product.price }}">
+                    ${{ item.product.price }}
+                </div>
+                <div class="item-actions">
+                    <form action="{% url 'remove-from-cart' item.product.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="remove-from-cart-btn" type="submit">Remove</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <p class="total-price-data"><span id="total-price"></span></p>
+    
+        <a href="{% url 'productlist' %}" class="continue-shopping-link">
+            <i class="mdi mdi-arrow-left me-1"></i> Continue Shopping
+        </a>
+        <a class="checkout-button" href="{% url 'shippingaddress' %}">Proceed to Checkout</a>
     </div>
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-    <div class="form-group">
-        <label for="first_name" class="form-label">First Name:</label> 
-        <input type="text" class="form-control form-control-sm" onkeyup="validateFirst_Name()" id="first_name" name="first_name" value="{{ user.first_name }}" required>
-        <div class="invalid-feedback" id="fnamevalid">Numbers and special characters are not allowed</div>
-        <div class="valid-feedback" id="fnvalid">Looks good!</div>
-        
-        <label for="last_name" class="form-label">Last Name:</label>
-        <input type="text" class="form-control form-control-sm" onkeyup="validateLast_Name()"  id="last_name" name="last_name" value="{{ user.last_name }}" required>
-        <div class="invalid-feedback" id="lnamevalid">Numbers and special characters are not allowed</div>
-        <div class="valid-feedback" id="lnvalid">Looks good!</div>
-    </div>
-    </div>
-    {% comment %} <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-    <div class="form-group">
-    <label for="eMail">Email</label>
-    <input type="email" class="form-control" id="eMail" placeholder="Enter email ID">
-    </div>
-    </div> {% endcomment %}
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-    <div class="form-group">
-        <label for="phone_no" class="form-label">Phone Number:</label>
-        <input type="text" class="form-control form-control-sm" onkeyup="validatePhoneNumber()" id="phone" name="phone" value="{{ user.phone_no }}" required>
-        <div class="invalid-feedback" id="phonevalid">Phone number not allow characters and must have 10 digits</div>
-        <div class="valid-feedback" id="pvalid">Looks good!</div>
-    </div>
-    </div>
-    </div>
-    </div>
-    <div class="row gutters">
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-    <h6 class="mt-3 mb-2 text-primary">Address</h6>
-    </div>
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-    <div class="form-group">
-                    <label for="country" class="form-label">Country:</label>
-                    <input type="text" class="form-control form-control-sm" onkeyup="validateCountry()"  id="country" name="country" value="{{ user_profile.country }}" required>
-                    <div class="invalid-feedback" id="countryvalid">Numbers and special characters are not allowed</div>
-                    <div class="valid-feedback" id="countrynvalid">Looks good!</div>
-    </div>
-    </div>
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-    <div class="form-group">
-                    <label for="city" class="form-label">City:</label>
-                    <input type="text" class="form-control form-control-sm" onkeyup="validateCity()" id="city" name="city" value="{{ user_profile.city }}">
-                    <div class="invalid-feedback" id="cinamevalid">Numbers and special characters are not allowed</div>
-                    <div class="valid-feedback" id="cinvalid">Looks good!</div>
-    </div>
-    </div>
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-    <div class="form-group">
-                    <label for="state" class="form-label">State:</label>
-                    <input type="text" class="form-control form-control-sm" onkeyup="validateState()" id="state" name="state" value="{{ user_profile.state }}">
-                    <div class="invalid-feedback" id="snamevalid">Numbers and special characters are not allowed</div>
-                    <div class="valid-feedback" id="snvalid">Looks good!</div>
-    </div>
-    </div>
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-    <div class="form-group">
-                    <label for="pin_code" class="form-label">Pin Code:</label>
-                    <input type="text" class="form-control form-control-sm" onkeyup="validatePin()" id="pin_code" name="pin_code" value="{{ user_profile.pin_code }}">
-                    <div class="invalid-feedback" id="pinvalid">Invalid pin code</div>
-                    <div class="valid-feedback" id="pivalid">Looks good!</div>
-    </div>
-    </div>
-    </div>
-    <div class="row gutters">
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-    <div class="text-right">
-    <button type="button" id="submit" name="submit" class="btn btn-secondary">Cancel</button>
-    <button type="button" id="submit" name="submit" class="btn btn-primary">Update</button>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const first_nameInput = document.getElementById('first_name');
-            const last_nameInput = document.getElementById('last_name');
-            const phoneInput = document.getElementById('phone');
-            const countryInput = document.getElementById('country');
-            const stateInput = document.getElementById('state');
-            const cityInput = document.getElementById('city');
-            const pinInput = document.getElementById('pin_code');
-
-            first_nameInput.addEventListener('keyup', function(event) { validateFirst_Name(); });
-            last_nameInput.addEventListener('keyup', function(event) { validateLast_Name(); });
-            phoneInput.addEventListener('keyup', function(event) { validatePhoneNumber(); });
-            countryInput.addEventListener('keyup', function(event) { validateCountry(); });
-            stateInput.addEventListener('keyup', function(event) { validateState(); });
-            cityInput.addEventListener('keyup', function(event) { validateCity(); });
-            pinInput.addEventListener('keyup', function(event) { validatePin(); });
-
-            function validateFirst_Name() {
-                const namePattern = /^[A-Za-z ]+$/;
-                const fnamevalid = document.getElementById('fnamevalid');
-                const fnvalid = document.getElementById('fnvalid');
-                if (!namePattern.test(first_nameInput.value)) {
-                    first_nameInput.classList.add('is-invalid');
-                    first_nameInput.classList.remove('is-valid');
-                    fnamevalid.style.display = 'block';
-                    fnvalid.style.display = 'none';
-                } else {
-                    first_nameInput.classList.remove('is-invalid');
-                    first_nameInput.classList.add('is-valid');
-                    fnamevalid.style.display = 'none';
-                    fnvalid.style.display = 'block';
-                }
-            }
-
-            function validateLast_Name() {
-                const namePattern = /^[A-Za-z]+$/;
-                const lnamevalid = document.getElementById('lnamevalid');
-                const lnvalid = document.getElementById('lnvalid');
-                if (!namePattern.test(last_nameInput.value)) {
-                    last_nameInput.classList.add('is-invalid');
-                    last_nameInput.classList.remove('is-valid');
-                    lnamevalid.style.display = 'block';
-                    lnvalid.style.display = 'none';
-                } else {
-                    last_nameInput.classList.remove('is-invalid');
-                    last_nameInput.classList.add('is-valid');
-                    lnamevalid.style.display = 'none';
-                    lnvalid.style.display = 'block';
-                }
-            }
-
-            function validatePhoneNumber() {
-                const phoneNumberPattern = /^(?!.*0{10})(?!(\d)\1{9})[6-9][0-9]{9}$/;
-                const phonevalid = document.getElementById('phonevalid');
-                const pvalid = document.getElementById('pvalid');
-                if (!phoneNumberPattern.test(phoneInput.value)) {
-                    phoneInput.classList.add('is-invalid');
-                    phoneInput.classList.remove('is-valid');
-                    phonevalid.style.display = 'block';
-                    pvalid.style.display = 'none';
-                } else {
-                    phoneInput.classList.remove('is-invalid');
-                    phoneInput.classList.add('is-valid');
-                    phonevalid.style.display = 'none';
-                    pvalid.style.display = 'block';
-                }
-            }
-
-            function validateCountry() {
-                const namePattern = /^[A-Za-z]+$/;
-                const countryvalid = document.getElementById('countryvalid');
-                const countrynvalid = document.getElementById('countrynvalid');
-                if (!namePattern.test(countryInput.value)) {
-                    countryInput.classList.add('is-invalid');
-                    countryInput.classList.remove('is-valid');
-                    countryvalid.style.display = 'block';
-                    countrynvalid.style.display = 'none';
-                } else {
-                    countryInput.classList.remove('is-invalid');
-                    countryInput.classList.add('is-valid');
-                    countryvalid.style.display = 'none';
-                    countrynvalid.style.display = 'block';
-                }
-            }
-
-            function validateState() {
-                const namePattern = /^[A-Za-z]+$/;
-                const snamevalid = document.getElementById('snamevalid');
-                const snvalid = document.getElementById('snvalid');
-                if (!namePattern.test(stateInput.value)) {
-                    stateInput.classList.add('is-invalid');
-                    stateInput.classList.remove('is-valid');
-                    snamevalid.style.display = 'block';
-                    snvalid.style.display = 'none';
-                } else {
-                    stateInput.classList.remove('is-invalid');
-                    stateInput.classList.add('is-valid');
-                    snamevalid.style.display = 'none';
-                    snvalid.style.display = 'block';
-                }
-            }
-
-            function validateCity() {
-                const namePattern = /^[A-Za-z]+$/;
-                const cinamevalid = document.getElementById('cinamevalid');
-                const cinvalid = document.getElementById('cinvalid');
-                if (!namePattern.test(cityInput.value)) {
-                    cityInput.classList.add('is-invalid');
-                    cityInput.classList.remove('is-valid');
-                    cinamevalid.style.display = 'block';
-                    cinvalid.style.display = 'none';
-                } else {
-                    cityInput.classList.remove('is-invalid');
-                    cityInput.classList.add('is-valid');
-                    cinamevalid.style.display = 'none';
-                    cinvalid.style.display = 'block';
-                }
-            }
-
-            function validatePin() {
-                const pinNumberPattern = /^\d{6}$/;
-                const pinvalid = document.getElementById('pinvalid');
-                const pivalid = document.getElementById('pivalid');
-                if (!pinNumberPattern.test(pinInput.value)) {
-                    pinInput.classList.add('is-invalid');
-                    pinInput.classList.remove('is-valid');
-                    pinvalid.style.display = 'block';
-                    pivalid.style.display = 'none';
-                } else {
-                    pinInput.classList.remove('is-invalid');
-                    pinInput.classList.add('is-valid');
-                    pinvalid.style.display = 'none';
-                    pivalid.style.display = 'block';
-                }
-            }
-        });
-    </script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript">
-	
-</script>
-</body>
-</html>
+    
+    
+    {% endblock %}
+        </body>

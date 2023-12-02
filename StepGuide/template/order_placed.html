@@ -1,0 +1,269 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Wishlist</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static "assets/css/templatemo.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/custom.css" %}">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="{% static "assets/css/fontawesome.min.css" %}">
+
+    <style>
+        .product-wap {
+            transition: transform 0.3s ease;
+        }
+    
+        .product-wap:hover {
+            transform: scale(1.1); /* Adjust the scale factor as needed */
+        }
+             
+    </style>
+
+<style type="text/css">
+        body {
+            margin-top: 0px;
+        }
+        .text-center {
+            text-align: center !important;
+        }
+        .mb-5 {
+            margin-bottom: 3rem !important;
+        }
+        .mx-auto {
+            margin-right: auto !important;
+            margin-left: auto !important;
+        }
+        .text-reset {
+            --bs-text-opacity: 1;
+            color: inherit !important;
+        }
+        a {
+            color: #5465ff;
+            text-decoration: none;
+        }
+        body {
+            background: #eee;
+        }
+        .card {
+            box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+        }
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 0 solid rgba(0, 0, 0, 0.125);
+            border-radius: 1rem;
+        }
+        .card-body {
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            padding: 1.5rem 1.5rem;
+        }
+
+</style>
+
+</head>
+
+<body>
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between" >
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@stepguide.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow" style="padding: 1px 0;">
+        <div class="container d-flex justify-content-between align-items-center">
+    
+            <a class="navbar-brand text-success logo h2 align-self-center" href="{% url "index" %}">
+                StepGuide
+            </a>
+    
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="templatemo_main_nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-center align-items-center mx-lg-auto fs-5 py-0">
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "index" %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "about" %}">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "productlist" %}">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "contact" %}">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <div class="d-lg-none flex-sm-fill mt-2 mb-2 col-7 col-sm-auto pr-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                            <div class="input-group-text">
+                                <i class="fa fa-fw fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                        <i class="fa fa-fw fa-search text-dark mx-2"></i>
+                    </a> {% endcomment %}
+                    <a class="nav-icon position-relative text-decoration-none" href="{% url 'cart'  %}">
+                        <i class="fa fa-fw fa-cart-arrow-down text-dark mx-2"></i>
+                        <!-- <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span> -->
+                    </a>
+                    <div class="ml-2 dropdown">
+                        {% if user.is_authenticated %}
+                            <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Welcome, {{ user.username }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
+                            </ul>
+                        {% else %}
+                            <a class="nav-link fw-bold" href="{% url "login" %}">Login</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <!-- Close Header -->
+
+    <!-- Modal -->
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="w-100 pt-1 mb-5 text-right">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!-- Start Content -->
+    <br> <br> <br>
+    <div class="container-fluid">
+        <div class="container text-center">
+            <h1>Thank you.</h1>
+            <p class="lead w-lg-50 mx-auto">Your order has been placed successfully.</p>
+            <p class="w-lg-50 mx-auto">Your order number is <a href="#">9237427634826</a>. We will immediately process your order, and it will be delivered in 2 - 5 business days.</p>
+        </div>
+        <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> 
+        <div class="row my-4">
+            <div class="col">
+                <a href="{% url "order_details" %}" class="btn btn-link text-muted">
+                    <i class="mdi mdi-arrow-left me-1"></i> Order Details 
+                </a>
+            </div> 
+        {% comment %} <div class="container">
+            <h2 class="h5 mb-5 text-center">You may also like these products</h2>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card text-center mb-3">
+                        <div class="py-5 px-4">
+                            <img src="https://www.bootdey.com/image/280x280/6495ED/000000" alt class="img-fluid mb-4" />
+                            <h3 class="fs-6 text-truncate"><a href="#" class="stretched-link text-reset">Smartphone 5G Black 12GB RAM+512GB NEW</a></h3>
+                            <span class="text-success">$799.00</span> <del class="text-muted">$650.83</del>
+                        </div>
+                        <div class="bg-danger text-white small position-absolute end-0 top-0 px-2 py-2 lh-1 text-center">
+                            <span class="d-block">10%</span>
+                            <span class="d-block">OFF</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card text-center position-relative mb-3">
+                        <div class="py-5 px-4">
+                            <img src="https://www.bootdey.com/image/280x280/FFB6C1/000000" alt class="img-fluid mb-4" />
+                            <h3 class="fs-6 text-truncate"><a href="#" class="stretched-link text-reset">Wireless Headphones with Noise Cancellation Tru Bass Bluetooth HiFi</a></h3>
+                            <span class="text-success">$250.00</span> <del class="text-muted">$250</del>
+                        </div>
+                        <div class="bg-danger text-white small position-absolute end-0 top-0 px-2 py-2 lh-1 text-center">
+                            <span class="d-block">25%</span>
+                            <span class="d-block">OFF</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card text-center mb-3">
+                        <div class="py-5 px-4">
+                            <img src="https://www.bootdey.com/image/280x280/008B8B/000000" alt class="img-fluid mb-4" />
+                            <h3 class="fs-6 text-truncate"><a href="#" class="stretched-link text-reset">Smartwatch IP68 Waterproof GPS and Bluetooth Support</a></h3>
+                            <span class="text-success">$29.00</span> <del class="text-muted">$14.50</del>
+                        </div>
+                        <div class="bg-danger text-white small position-absolute end-0 top-0 px-2 py-2 lh-1 text-center">
+                            <span class="d-block">50%</span>
+                            <span class="d-block">OFF</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card text-center mb-3">
+                        <div class="py-5 px-4">
+                            <img src="https://www.bootdey.com/image/280x280/00CED1/000000" alt class="img-fluid mb-4" />
+                            <h3 class="fs-6 text-truncate"><a href="#" class="stretched-link text-reset">Men's Running Shoes</a></h3>
+                            <span class="text-success">$110.00</span> <del class="text-muted">$85.23</del>
+                        </div>
+                        <div class="bg-danger text-white small position-absolute end-0 top-0 px-2 py-2 lh-1 text-center">
+                            <span class="d-block">25%</span>
+                            <span class="d-block">OFF</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> {% endcomment %}
+    </div>
+    
+
+    <!-- Start Script -->
+
+    <script type="text/javascript"> </script>
+    <script src="{% static "assets/js/jquery-1.11.0.min.js" %}"></script>
+    <script src="{% static "assets/js/jquery-migrate-1.2.1.min.js" %}"></script>
+    <script src="{% static "assets/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "assets/js/templatemo.js" %}"></script>
+    <script src="{% static "assets/js/custom.js" %}"></script>
+    <!-- End Script -->
+</body>
+
+</html>

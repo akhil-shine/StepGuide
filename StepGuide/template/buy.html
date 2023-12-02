@@ -15,9 +15,23 @@
     <link rel="stylesheet" href="{% static "assets/css/templatemo.css" %}">
     <link rel="stylesheet" href="{% static "assets/css/custom.css" %}">
 
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    {% comment %} <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> {% endcomment %}
+
     <!-- Load fonts style after rendering the layout styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="{% static "assets/css/fontawesome.min.css" %}">
+
+
+
+
+
+
+
+    
+
 
     <style>
         .product-wap {
@@ -26,6 +40,50 @@
     
         .product-wap:hover {
             transform: scale(1.1); /* Adjust the scale factor as needed */
+        }
+        
+        .container3 {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
+        }
+    
+        label {
+            flex-basis: 48%;
+            margin-bottom: 5px;
+        }
+    
+        select,
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+    
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 
@@ -42,12 +100,12 @@
                     <i class="fa fa-phone mx-2"></i>
                     <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
                 </div>
-                <div>
+                {% comment %} <div>
                     <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
                     <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
                     <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
                     <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
     </nav>
@@ -101,11 +159,9 @@
                     </a>
                     <div class="ml-2 dropdown">
                         {% if user.is_authenticated %}
-                        {% if user_profile.profile_pic %}
-                        <img src="{{ user_profile.profile_pic.url }}" alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
-                        {% else %}
-                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png"  alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
-                        {% endif %}
+                            <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Welcome, {{ user.username }}
+                            </button>
                             <ul class="dropdown-menu" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
                                 <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
@@ -141,17 +197,17 @@
     </div>
 
 
-    <div class="mx-auto" style="width: 100%; max-width: 600px; height: 50px; margin-top: 2px; margin-bottom: 0px;">
+    <div class="mx-auto" style="width: 100%; max-width: 600px; height: 50px; margin-top: 20px; margin-bottom: 0px;">
 
         <form id="search-form">
-            <div class="input-group" style="height: 50px">
+            <div class="input-group" id="mtest" style="height: 50px">
                 <input class="form-control border-success w-50" type="text" id="query" name="query" placeholder="Search">
-                <button type="submit" class="btn btn-success border-0 w-25">Search</button>
+                <button type="submit" class="btn btn-success border-0 w-25" id="search">Search</button>
             </div>
         </form>
     </div>
     
-    <div class="container py-5" style="max-width: 1700px; margin-top: 0; margin-bottom: 2px;" id="results">
+    <div class="container py-1" style="max-width: 1700px; margin-top: 0; margin-bottom: 0px;" id="results">
         <!-- Results or message will be displayed here using JavaScript -->
     </div>    
     
@@ -269,8 +325,54 @@
                             <li><a class="text-decoration-none" href="#">Sunglass</a></li>
                         </ul>
                     </li> {% endcomment %}
+                    
+                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="">
+                        Filters
+                        <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                    </a>
+                    <div class="container3 py-5">
+                        <form method="get" action="{% url 'filter_products' %}">
+                            <!-- Other filters -->
+                            <label for="brand">Brand:</label>
+                            <select name="brand" id="brand">
+                                <option value="" selected>All Brands</option>
+                                <!-- Add options dynamically based on available brands -->
+                                {% for product in products %}
+                                    <option value="{{ product.brand_name }}">{{ product.brand_name }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                            
+                            {% comment %} <label for="min_price">Min Price:</label> {% endcomment %}
+                            <input type="text" style="display: none;" id="min_price" name="min_price" placeholder="Min Price" value="{{ request.GET.min_price }}">
+                    
+                            {% comment %} <label for="max_price">Max Price:</label> {% endcomment %}
+                            <input type="text" style="display: none;" id="max_price" name="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}">
+                    
+                            <!-- Price range slider using input type="range" -->
+                            <div class="price-range-slider-container">
+                                <label for="price_range">Price Range:</label>
+                                <input type="range" id="price_range" name="price_range" min="250" max="25000" value="{{ request.GET.min_price|default:0 }}" oninput="updatePriceRange(this.value)">
+                                <span id="price_range_output">
+                                    {{ request.GET.min_price|default:250 }} - {{ request.GET.max_price|default:25000 }}
+                                </span>
+                            </div>
+                    
+                            <button type="submit" style="display: none;">Apply Filters</button>
+                        </form>
+                    </div>
+                    
+                    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                    <script>
+                        function updatePriceRange(value) {
+                            $("#min_price").val(value);
+                            $("#price_range_output").text(value + " - " + $("#max_price").val());
+                            $("form").submit(); // Trigger form submission on slider move
+                        }
+                    </script>    
                 </ul>
             </div>
+            
 
             <div class="col-lg-9">
                 <div class="row">
@@ -312,12 +414,9 @@
                                     {% else %}
                                         <li><a class="btn btn-success text-white" href="{% url 'add_wishlist' i.id %}?product_id={{ i.id }}"><i class="far fa-heart"></i></a></li>
                                     {% endif %}
-                                    
-                                    
-                     
                                         {% if i.id in user_cart_ids %}
                                         {% else %}
-                                        <li><a class="btn btn-success text-white mt-2" href="{% url 'add_cart' i.id %}?bookid2={{ i.id }}"><i class="fas fa-cart-plus"></i></a></li>
+                                        <li><a class="btn btn-success text-white mt-2" href="{% url 'add-to-cart' product_id=i.id %}"><i class="fas fa-cart-plus"></i></a></li>
                                         {% endif %}
                                         {% endif %}
                                         <li><a class="btn btn-success text-white mt-2" href="{% url 'purchase' i.id %}?product_id={{i.id}}"><i class="far fa-eye"></i></a></li>
@@ -326,7 +425,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <a href="{% url 'purchase' i.id %}?product_id={{i.id}}" class="h3 text-decoration-none">{{ i.brand_name}}</a>
+                                <a href="{% url 'purchase' i.id %}?product_id={{i.id}}" class="h3 text-decoration-none" id="singleview"><strong>{{ i.brand_name}}</strong></a>
                                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                     <li>{{ i.category}}</li>
                                 </ul>
@@ -335,14 +434,14 @@
                                         
                                     </li>
                                 </ul>
-                                <p class="text-center mb-0">{{ i.price}}</p>
+                                <p class="text-center mb-0"><strong>{{ i.price}}</strong></p>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
 
-                <div div="row">
+                {% comment %} <div div="row">
                     <ul class="pagination pagination-lg justify-content-end">
                         <li class="page-item disabled">
                             <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" href="#" tabindex="-1">1</a>
@@ -354,7 +453,7 @@
                             <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" href="#">3</a>
                         </li>
                     </ul>
-                </div>
+                </div> {% endcomment %}
             </div>
 
         </div>
@@ -518,7 +617,7 @@
                 <div class="col-12 mb-3">
                     <div class="w-100 my-3 border-top border-light"></div>
                 </div>
-                <div class="col-auto me-auto">
+                {% comment %} <div class="col-auto me-auto">
                     <ul class="list-inline text-left footer-icons">
                         <li class="list-inline-item border border-light rounded-circle text-center">
                             <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
@@ -540,7 +639,7 @@
                         <input type="text" class="form-control bg-dark border-light" id="subscribeEmail" placeholder="Email address">
                         <div class="input-group-text btn-success text-light">Subscribe</div>
                     </div>
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
 
@@ -559,6 +658,33 @@
 
     </footer>
     <!-- End Footer -->
+
+    {% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{% static "assets/js/jquery-ui.min.js" %}"></script>
+    <script>
+        $(function() {
+            $("#price-range-slider").slider({
+                range: true,
+                min: 0,
+                max: 2000,
+                values: [{{ request.GET.min_price|default:0 }}, {{ request.GET.max_price|default:2000 }}],
+                slide: function(event, ui) {
+                    $("#min_price").val(ui.values[0]);
+                    $("#max_price").val(ui.values[1]);
+    
+                    // Trigger form submission on slider move
+                    $("form").submit();
+                }
+            });
+    
+            // Set initial values for the min and max price inputs
+            $("#min_price").val($("#price-range-slider").slider("values", 0));
+            $("#max_price").val($("#price-range-slider").slider("values", 1));
+        });
+    </script>
+    {% endblock %}
+    
 
     <!-- Start Script -->
     <script src="{% static "assets/js/jquery-1.11.0.min.js" %}"></script>

@@ -1,0 +1,512 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Order</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="{% static "assets/img/apple-icon.png" %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.ico" %}">
+
+    <link rel="stylesheet" href="{% static "assets/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/templatemo.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/custom.css" %}">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="{% static "assets/css/fontawesome.min.css" %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    {% comment %} <style>
+        .product-wap {
+            transition: transform 0.3s ease;
+        }
+    
+        .product-wap:hover {
+            transform: scale(1.1); /* Adjust the scale factor as needed */
+        }
+
+        
+    </style> {% endcomment %}
+
+<style type="text/css">
+        body{margin-top:0px;
+        background-color: #f1f3f7;
+        }
+
+        .card {
+            margin-bottom: 24px;
+            -webkit-box-shadow: 0 2px 3px #e4e8f0;
+            box-shadow: 0 2px 3px #e4e8f0;
+        }
+        .card {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid #eff0f2;
+            border-radius: 1rem;
+        }
+        .activity-checkout {
+            list-style: none
+        }
+
+        .activity-checkout .checkout-icon {
+            position: absolute;
+            top: -4px;
+            left: -24px
+        }
+
+        .activity-checkout .checkout-item {
+            position: relative;
+            padding-bottom: 24px;
+            padding-left: 35px;
+            border-left: 2px solid #f5f6f8
+        }
+
+        .activity-checkout .checkout-item:first-child {
+            border-color: #3b76e1
+        }
+
+        .activity-checkout .checkout-item:first-child:after {
+            background-color: #3b76e1
+        }
+
+        .activity-checkout .checkout-item:last-child {
+            border-color: transparent
+        }
+
+        .activity-checkout .checkout-item.crypto-activity {
+            margin-left: 50px
+        }
+
+        .activity-checkout .checkout-item .crypto-date {
+            position: absolute;
+            top: 3px;
+            left: -65px
+        }
+
+
+
+        .avatar-xs {
+            height: 1rem;
+            width: 1rem
+        }
+
+        .avatar-sm {
+            height: 2rem;
+            width: 2rem
+        }
+
+        .avatar {
+            height: 3rem;
+            width: 3rem
+        }
+
+        .avatar-md {
+            height: 4rem;
+            width: 4rem
+        }
+
+        .avatar-lg {
+            height: 5rem;
+            width: 5rem
+        }
+
+        .avatar-xl {
+            height: 6rem;
+            width: 6rem
+        }
+
+        .avatar-title {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            background-color: #3b76e1;
+            color: #fff;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            font-weight: 500;
+            height: 100%;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            width: 100%
+        }
+
+        .avatar-group {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            padding-left: 8px
+        }
+
+        .avatar-group .avatar-group-item {
+            margin-left: -8px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            -webkit-transition: all .2s;
+            transition: all .2s
+        }
+
+        .avatar-group .avatar-group-item:hover {
+            position: relative;
+            -webkit-transform: translateY(-2px);
+            transform: translateY(-2px)
+        }
+
+        .card-radio {
+            background-color: #fff;
+            border: 2px solid #eff0f2;
+            border-radius: .75rem;
+            padding: .5rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block
+        }
+
+        .card-radio:hover {
+            cursor: pointer
+        }
+
+        .card-radio-label {
+            display: block
+        }
+
+        .edit-btn {
+            width: 35px;
+            height: 35px;
+            line-height: 40px;
+            text-align: center;
+            position: absolute;
+            right: 25px;
+            margin-top: -50px
+        }
+
+        .card-radio-input {
+            display: none
+        }
+
+        .card-radio-input:checked+.card-radio {
+            border-color: #3b76e1!important
+        }
+
+
+        .font-size-16 {
+            font-size: 16px!important;
+        }
+        .text-truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        a {
+            text-decoration: none!important;
+        }
+
+
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 0.47rem 0.75rem;
+            font-size: .875rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #545965;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #e2e5e8;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border-radius: 0.75rem;
+            -webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+            transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        }
+
+        .edit-btn {
+            width: 35px;
+            height: 35px;
+            line-height: 40px;
+            text-align: center;
+            position: absolute;
+            right: 25px;
+            margin-top: -50px;
+        }
+
+        .ribbon {
+            position: absolute;
+            right: -26px;
+            top: 20px;
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 1px 22px;
+            font-size: 13px;
+            font-weight: 500
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between" >
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@stepguide.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow" style="padding: 1px 0;">
+        <div class="container d-flex justify-content-between align-items-center">
+    
+            <a class="navbar-brand text-success logo h2 align-self-center" href="{% url "index" %}">
+                StepGuide
+            </a>
+    
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="templatemo_main_nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-center align-items-center mx-lg-auto fs-5 py-0">
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "index" %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "about" %}">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "productlist" %}">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "contact" %}">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <div class="d-lg-none flex-sm-fill mt-2 mb-2 col-7 col-sm-auto pr-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                            <div class="input-group-text">
+                                <i class="fa fa-fw fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                        <i class="fa fa-fw fa-search text-dark mx-2"></i>
+                    </a> {% endcomment %}
+                    <a class="nav-icon position-relative text-decoration-none" href="{% url 'cart'  %}">
+                        <i class="fa fa-fw fa-cart-arrow-down text-dark mx-2"></i>
+                        <!-- <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span> -->
+                    </a>
+                    <div class="ml-2 dropdown">
+                        {% if user.is_authenticated %}
+                            <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Welcome, {{ user.username }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
+                            </ul>
+                        {% else %}
+                            <a class="nav-link fw-bold" href="{% url "login" %}">Login</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <!-- Close Header -->
+
+    <!-- Modal -->
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="w-100 pt-1 mb-5 text-right">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!-- Start Content -->
+    <br> 
+    <div class="container" style="height: 600px;">
+        <form method="POST" enctype="multipart/form-data" id="pictureForm">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <ol class="activity-checkout mb-0 px-4 mt-3">
+                                <li class="checkout-item">
+                                    <div class="avatar checkout-icon p-1">
+                                        <div class="avatar-title rounded-circle bg-primary">
+                                            <i class="bx bxs-receipt text-white font-size-20"></i>
+                                        </div>
+                                    </div>
+                                    <div class="feed-item-list">
+                                        <div>
+                                            <h5 class="font-size-16 mb-1">Billing Info</h5>
+                                            <p class="text-muted text-truncate mb-4">Enter the Shipping address</p>
+                                            <div class="mb-3">
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="billing-name">Name</label>
+                                                            <input type="text" class="form-control" id="billing-name" placeholder="Enter name" name="name" value="{{ user.first_name }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="billing-email-address">Email Address</label>
+                                                            <input type="email" class="form-control" id="billing-email-address" placeholder="Enter email" name="email" value="{{ user.email }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="billing-phone">Phone</label>
+                                                            <input type="text" class="form-control" id="billing-phone" placeholder="Enter Phone no." name="phn1" value="{{ user.phone_no }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="billing-phone1">Alternative Phone</label>
+                                                            <input type="text" class="form-control" id="billing-phone1" placeholder="Enter Phone no." name="phn2">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="billing-address">Address</label>
+                                                    <textarea class="form-control" id="billing-address" rows="3" placeholder="Enter full address" name="address"></textarea>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-4 mb-lg-0">
+                                                            <label class="form-label">Country</label>
+                                                            <input type="text" class="form-control" id="billing-country" placeholder="Country" name="country" value="{{ profile.country }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-4 mb-lg-0">
+                                                            <label class="form-label" for="billing-state">State</label>
+                                                            <input type="text" class="form-control" id="billing-state" placeholder="State" name="state" value="{{ profile.state }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-4 mb-lg-0">
+                                                            <label class="form-label" for="billing-district">District</label>
+                                                            <input type="text" class="form-control" id="billing-district" placeholder="District" name="district">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-4 mb-lg-0">
+                                                            <label class="form-label" for="billing-city">City</label>
+                                                            <input type="text" class="form-control" id="billing-city" placeholder="City" name="city" value="{{ profile.city }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-0">
+                                                            <label class="form-label" for="billing-zip-code">Zip / Postal code</label>
+                                                            <input type="text" class="form-control" id="billing-zip-code" placeholder="Enter Postal code" name="pin" value="{{ profile.pin_code }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-0">
+                                                            <label class="form-label" for="billing-landmark">Land Mark</label>
+                                                            <input type="text" class="form-control" id="billing-landmark" placeholder="Enter Land Mark" name="land">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="row my-4">
+                        <div class="col">
+                            <a href="ecommerce-products.html" class="btn btn-link text-muted">
+                                <i class="mdi mdi-arrow-left me-1"></i> Continue Shopping 
+                            </a>
+                        </div> 
+                        <div class="col">
+                            <div class="text-end mt-2 mt-sm-0">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="mdi mdi-cart-outline me-1" href="{% url 'summery' %}"></i> Proceed 
+                                    {% comment %} <a class="checkout-button" href="{% url 'summery' %}">Checkout</a> {% endcomment %}
+                                </button>
+                            </div>
+                        </div> 
+                    </div> 
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    
+    <!-- Start Script -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript"> 
+    </script>
+    <script src="{% static "assets/js/jquery-1.11.0.min.js" %}"></script>
+    <script src="{% static "assets/js/jquery-migrate-1.2.1.min.js" %}"></script>
+    <script src="{% static "assets/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "assets/js/templatemo.js" %}"></script>
+    <script src="{% static "assets/js/custom.js" %}"></script>
+    <!-- End Script -->
+</body>
+
+</html>

@@ -77,12 +77,12 @@
                     <i class="fa fa-phone mx-2"></i>
                     <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
                 </div>
-                <div>
+                {% comment %} <div>
                     <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
                     <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
                     <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
                     <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
     </nav>
@@ -136,13 +136,12 @@
                     </a>
                     <div class="ml-2 dropdown">
                         {% if user.is_authenticated %}
-                        {% if user_profile.profile_pic %}
-                        <img src="{{ user_profile.profile_pic.url }}" alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
-                        {% else %}
-                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png"  alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
-                        {% endif %}
+                            <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Welcome, {{ user.username }}
+                            </button>
                             <ul class="dropdown-menu" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
                                 <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
                             </ul>
                         {% else %}
@@ -194,15 +193,18 @@
                                     <ul class="list-unstyled">
                                         {% if user.is_authenticated and user.id != i.user.id %}
                                         {% if i.id in wishlist_product_ids %}
-                                        <li><a class="btn btn-success text-white" href="{% url 'delete_wishlist' i.id %}?product_id={{ i.id }}"><i class="fas fa-heart"></i></a></li>
                                     {% else %}
-                                        <li><a class="btn btn-success text-white" href="{% url 'add_wishlist' i.id %}?product_id={{ i.id }}"><i class="far fa-heart"></i></a></li>
+                                    <li><a class="btn btn-success text-white" href="{% url 'delete_wishlist1' i.id %}?product_id={{ i.id }}"><i class="fas fa-heart"></i></a></li>
                                     {% endif %}
                                     
                                     
                       {% endif %}
                                         <li><a class="btn btn-success text-white mt-2" href="{% url 'purchase' i.id %}?product_id={{i.id}}"><i class="far fa-eye"></i></a></li>
-                                        <li><a class="btn btn-success text-white mt-2" href=""><i class="fas fa-cart-plus"></i></a></li>
+                                        {% if i.id in user_cart_ids %}
+                                        {% else %}
+                                        <li><a class="btn btn-success text-white mt-2" href="{% url 'add_cart' i.id %}?bookid2={{ i.id }}"><i class="fas fa-cart-plus"></i></a></li>
+                                        {% endif %}
+                                    
                                     </ul>
                                 </div>
                             </div>

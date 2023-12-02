@@ -62,48 +62,31 @@
         font-weight: bold;
         cursor: pointer;
     }
+    /* Custom background styles */
+    .custom-background-1 {
+        background-color: #919193; /* Light gray background color */
+        color: #dcebe0; /* Dark text color */
+        border: 2px solid #ccc; /* Light gray border */
+    }
 
-    .form-container {
-      max-width: 700px;
-      margin: 0 auto;
-      
-      padding: 40px;
-      background-color: #f5f5f5;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    
-    h1 {
-      text-align: center;
-    }
-    
-    form {
-      text-align: left;
-    }
-    
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    
-    input[type="text"],
-    textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    
-    input[type="submit"] {
-      background-color: #007BFF;
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+    /* Bold text styles */
+.white-text {
+    font-weight: bold;
+}
+
+/* Bold text styles with larger font size */
+.white-text {
+    font-weight: bold;
+    font-size: 18px; /* Adjust the font size as needed */
+}
+
+/* Larger font size for the card titles */
+.card-title {
+    font-size: 22px; /* Adjust the font size for card titles */
+    color: #dcebe0; /* Adjust the title color (in this case, a green color) */
+}
+
+
 
 </style>
 </head>
@@ -159,14 +142,23 @@
                 <span class="hide-menu">Add Product</span>
               </a>
             </li>
-            {% comment %} <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url "add_category" %}" aria-expanded="false">
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "product_list" %}" aria-expanded="false">
                 <span>
                   <i class="ti ti-article"></i>
                 </span>
-                <span class="hide-menu">Add Category</span>
+                <span class="hide-menu">My Products</span>
               </a>
-            </li> {% endcomment %}
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "stock_details" %}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                <span class="hide-menu">Stock Details</span>
+              </a>
+            </li>
             
           </ul>
         </nav>
@@ -231,7 +223,20 @@
         </nav>
       </header>
       
-      <!--  Header End -->
+      <div class="container-fluid" id="mtest">
+        <div class="row">
+            <div class="col-lg-3 d-flex align-items-stretch">
+                <!-- Total Users Section -->
+                <div class="card w-100 custom-background-1">
+                    <div class="card-body p-4">
+                        <div class="mb-6">
+                            <h5 class="card-title fw-bold green-text">Total Products</h5>
+                            <p class="white-text fw-bold">User Count: <strong>{{ product_count }}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
                
   <script src="{% static "dashboard1/libs/jquery/dist/jquery.min.js" %}"></script>

@@ -75,12 +75,6 @@
                     <i class="fa fa-phone mx-2"></i>
                     <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
                 </div>
-                <div>
-                    <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
-                    <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
-                    <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
-                    <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
-                </div>
             </div>
         </div>
     </nav>
@@ -134,19 +128,24 @@
                     </a>
                     <div class="ml-2 dropdown">
                         {% if user.is_authenticated %}
-                        {% if user_profile.profile_pic %}
-                        <img src="{{ user_profile.profile_pic.url }}" alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
+                        {% comment %} {% if user_profile.profile_pic %} {% endcomment %}
+                        {% comment %} <img src="{{ user_profile.profile_pic.url }}" alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
                         {% else %}
                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png"  alt="" width="35" height="35" class="rounded-circle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"> 
-                        {% endif %}
-                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
-                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
-                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
-                            </ul>
-                        {% else %}
-                            <a class="nav-link fw-bold" href="{% url "login" %}">Login</a>
-                        {% endif %}
+                        {% endif %} {% endcomment %}
+                        <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Welcome, {{ user.username }}
+                        </button>
+
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            {% comment %} <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}"> {{ user.first_name }}</a></li> {% endcomment %}
+                            <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}"> Edit</a></li>
+                            <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
+                            <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
+                        </ul>
+                    {% else %}
+                        <a class="nav-link fw-bold" href="{% url "login" %}">Login</a>
+                    {% endif %}
                     </div>
                 </div>
             </div>
@@ -177,11 +176,11 @@
 
     <!-- Open Content -->
     <section class="bg-light">
-        <div class="container pb-5">
+        <div class="container pb-5" id="mtest">
             <div class="row">
                 <div class="col-lg-5 mt-5">
                     <div class="card mb-3">
-                        <img class="card-img img-fluid" src="{{ product.thumbnail.url }}" alt="Card image cap" id="product-detail" style="width: 600px; height: 485px;">
+                        <img class="card-img img-fluid" src="{{ product.thumbnail.url }}" alt="Card image cap" id="product-detail" style="width: 600px; height: 480px;">
                     </div>
                     <div class="row">
                         <!--Start Controls-->
@@ -261,14 +260,14 @@
 
 
                             <p class="h3 py-2">{{ product.price}}</p>
-                            <p class="py-2">
+                            {% comment %} <p class="py-2">
                                 <i class="fa fa-star text-warning"></i>
                                 <i class="fa fa-star text-warning"></i>
                                 <i class="fa fa-star text-warning"></i>
                                 <i class="fa fa-star text-warning"></i>
                                 <i class="fa fa-star text-secondary"></i>
                                 <span class="list-inline-item text-dark">Rating 4.8 | 36 Comments</span>
-                            </p>
+                            </p> {% endcomment %}
                             <ul class="list-inline">
                                 <li class="list-inline-item">
                                     <h6>Brand:</h6>
@@ -291,21 +290,30 @@
 
                 
 
-                            <form action="" method="GET">
+                            <form action="{% url 'add-to-cart' product_id=product.id %}" method="POST" id="product-form">
+                                {% csrf_token %}
                                 <input type="hidden" name="product-title" value="Activewear">
-                                {% comment %} <div class="row">
+                                <div class="row">
                                     <div class="col-auto">
                                         <ul class="list-inline pb-3">
                                             <li class="list-inline-item">Size :
-                                                <input type="hidden" name="product-size" id="product-size" value="S">
+                                                <input type="hidden" name="product-size" id="product-size" value="1">
                                             </li>
-                                            <li class="list-inline-item"><span class="btn btn-success btn-size">S</span></li>
-                                            <li class="list-inline-item"><span class="btn btn-success btn-size">M</span></li>
-                                            <li class="list-inline-item"><span class="btn btn-success btn-size">L</span></li>
-                                            <li class="list-inline-item"><span class="btn btn-success btn-size">XL</span></li>
+                                            {% for size in sizes_with_stock %}
+                                                <li class="list-inline-item" id="size{{ size.size }}">
+                                                    <span class="btn btn-success btn-size" onclick="updateSize('{{ size.size }}')">{{ size.size }}</span>
+                                                </li>
+                                            {% endfor %}
                                         </ul>
+                                        <script>
+                                            function updateSize(size) {
+                                                document.getElementById('product-size').value = size.toString();
+                                                console.log(`Selected Size: ${size}`);
+                                                console.log(`product-size value: ${document.getElementById('product-size').value}`);
+                                            }
+                                        </script>
                                     </div>
-                                    <div class="col-auto">
+                                    {% comment %} <div class="col-auto">
                                         <ul class="list-inline pb-3">
                                             <li class="list-inline-item text-right">
                                                 Quantity
@@ -315,16 +323,23 @@
                                             <li class="list-inline-item"><span class="badge bg-secondary" id="var-value">1</span></li>
                                             <li class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
                                         </ul>
-                                    </div>
-                                </div> {% endcomment %}
+                                    </div> {% endcomment %}
+                                </div>
                                 {% if user.is_authenticated %}
                                 <div class="row pb-3">
-                                    <div class="col d-grid">
+                                    {% comment %} <div class="col d-grid">
                                         <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Buy</button>
-                                    </div>
+                                    </div> {% endcomment %}
+
                                     <div class="col d-grid">
-                                        <a href="{% url 'add_cart1' product.id %}?bookid2={{ product.id }}"class="btn btn-success mr-3">Add Cart </a>
+                                        <a href="{% url 'shippingaddress' %}" class="btn btn-success mr-3">
+                                            Buy Now
+                                        </a>
                                     </div>
+
+                                    <div class="col d-grid">
+                                        <button type="submit" class="btn btn-success">Add to Cart</button>                                   
+                                     </div>
 
                                     <div class="col d-grid">
                                         <a href="#" class="btn btn-success mr-3" onclick="openModal()">
@@ -904,7 +919,7 @@
                 <div class="col-12 mb-3">
                     <div class="w-100 my-3 border-top border-light"></div>
                 </div>
-                <div class="col-auto me-auto">
+                {% comment %} <div class="col-auto me-auto">
                     <ul class="list-inline text-left footer-icons">
                         <li class="list-inline-item border border-light rounded-circle text-center">
                             <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
@@ -926,7 +941,7 @@
                         <input type="text" class="form-control bg-dark border-light" id="subscribeEmail" placeholder="Email address">
                         <div class="input-group-text btn-success text-light">Subscribe</div>
                     </div>
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
 

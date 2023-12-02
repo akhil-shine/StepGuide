@@ -81,10 +81,9 @@ class Product(models.Model):
 
     
     # Size-specific stock fields
-    stock_16_18 = models.PositiveIntegerField(default=0)
-    stock_20_24 = models.PositiveIntegerField(default=0)
-    stock_25_29 = models.PositiveIntegerField(default=0)
-    stock_30_35 = models.PositiveIntegerField(default=0)
+    stock_for_child_1_3 = models.PositiveIntegerField(default=0)
+    stock_4_8 = models.PositiveIntegerField(default=0)
+    stock_9_12 = models.PositiveIntegerField(default=0)
     
      # Calculate total stock as the sum of individual stock fields
     total_stock = models.PositiveIntegerField(default=0) # Make it non-editable
@@ -106,6 +105,16 @@ class Image(models.Model):
         return f"Image for {self.product.brand_name}"
     
     
+# Total Stock Details
+class SizeStock(models.Model):
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    size = models.CharField(max_length=50)
+    stock_quantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.product.brand_name} - {self.size}"
+    
+    
 # wishlist
 class Wishlist(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -124,8 +133,110 @@ class BookCart(models.Model):
     product=models.ForeignKey(Product,on_delete=models.CASCADE,null=True)
     status=models.BooleanField(default=True)
     quantity = models.PositiveIntegerField(default=1, null=True)
+    size = models.PositiveIntegerField(default=1, null=True)
+    
     
     def str(self):
         # return self.book.title
         return f"cart details {self.user.email}: {self.product.brand_name}"
     
+
+
+# shipping Address
+class ShippingAddress(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    phn1 = models.CharField(max_length=15)
+    phn2 = models.CharField(max_length=15, blank=True, null=True)
+    address = models.TextField()
+    country = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    district = models.CharField(max_length=255)
+    pin = models.CharField(max_length=10)
+    land = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=15, blank=True, null=True)
+    # product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True)
+    # quantity = models.PositiveIntegerField()
+    # price = models.DecimalField(max_digits=10, decimal_places=2, default=1)
+    # total_price = models.DecimalField(max_digits=10, decimal_places=2, default=1)
+    # size = models.PositiveIntegerField(default=1, null=True)
+    def __str__(self):
+        return self.name
+    
+# Payment
+# class Payment(models.Model): 
+#     class PaymentStatusChoices(models.TextChoices):
+#         PENDING = 'pending', 'Pending'
+#         SUCCESSFUL = 'successful', 'Successful'
+#         FAILED = 'failed', 'Failed'
+        
+#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # Link the payment to a user
+#     razorpay_order_id = models.CharField(max_length=255)  # Razorpay order ID
+#     payment_id = models.CharField(max_length=255)  # Razorpay payment ID
+#     amount = models.DecimalField(max_digits=8, decimal_places=2)  # Amount paid
+#     currency = models.CharField(max_length=3)  # Currency code (e.g., "INR")
+#     timestamp = models.DateTimeField(auto_now_add=True)  # Timestamp of the payment
+#     payment_status = models.CharField(max_length=20, choices=PaymentStatusChoices.choices, default=PaymentStatusChoices.PENDING)
+
+#     def str(self):
+#         return f"Order for {self.user.username}"
+
+#     class Meta:
+#         ordering = ['-timestamp']
+
+# #Update Status not implemented
+#     def update_status(self):
+#         # Calculate the time difference in minutes
+#         time_difference = (timezone.now() - self.timestamp).total_seconds() / 60
+
+#         if self.payment_status == self.PaymentStatusChoices.PENDING and time_difference > 1:
+#             # Update the status to "Failed"
+#             self.payment_status = self.PaymentStatusChoices.FAILED
+#             self.save()
+
+
+
+class CartItem(models.Model):
+    cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    size = models.PositiveIntegerField(default=1, null=True)
+
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.brand_name}"
+
+class Cart(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product, through='CartItem')
+
+    def __str__(self):
+        return f"Cart for {self.user.username}"
+
+# User.profile = property(lambda u: Profile.objects.get_or_create(user=u)[0])
+# User.cart = property(lambda u: Cart.objects.get_or_create(user=u)[0])
+
+
+
+
+class Order(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product, through='OrderItem')
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_id = models.CharField(max_length=100, null=True, blank=True)
+    payment_status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Order {self.id} by {self.user.username}"
+    
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    item_total = models.DecimalField(max_digits=10, decimal_places=2)
+    size = models.PositiveIntegerField(default=1, null=True)
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.brand_name} in Order {self.order.id}"

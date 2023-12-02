@@ -169,3 +169,10 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+# LOGIN_URL = 'login/'
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+
+RAZOR_KEY_ID = 'rzp_test_urbnGhXdEwZA2J'
+RAZOR_KEY_SECRET = 'FCjGpWkUtzkkn4udio7VRe6q'

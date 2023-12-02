@@ -61,14 +61,14 @@
                 {% csrf_token %}
 
                 <div class="header-text mb-3">
-                     <h2>Welcome back!</h2>
+                     <h2 id="mtest">Welcome back!</h2>
                      <p>You can sign in to access with your existing account.</p>
                 </div>
                 <div class="input-group mb-1">
-                    <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Username" name="username" required>
+                    <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Username" name="username" id="username" required>
                 </div>
                 <div class="input-group mb-1">
-                    <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password" name="password" required>
+                    <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password" name="password" id="password" required>
                 </div>
                 {% comment %} <div class="input-group mb-3">
                 <div class="g-recaptcha" data-sitekey="6LcJj44nAAAAAM_NCztnb4EgTD6QHnfAgix5P25k"></div>
@@ -83,7 +83,7 @@
                 </div> 
 
                 <div class="input-group mb-1">
-                    <button class="btn btn-lg btn-success w-100 fs-6" type="submit">Login</button>
+                    <button class="btn btn-lg btn-success w-100 fs-6" type="submit" id-"sb">Login</button>
                 </div>
                 {% load socialaccount %}
                 <div class="input-group mb-3">

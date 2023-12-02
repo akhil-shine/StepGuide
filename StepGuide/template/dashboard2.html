@@ -66,7 +66,7 @@
     }
 
     .form-container {
-      max-width: 700px;
+      max-width: 1000px;
       margin: 0 auto;
       
       padding: 40px;
@@ -117,6 +117,49 @@
 .info-icon i {
   font-size: 18px; /* Adjust the font size as needed */
   color: #007bff; /* Set the color to blue (you can use your preferred color) */
+}
+
+
+  body {
+      font-family: Arial, sans-serif;
+  }
+
+  .navigation {
+      text-align: center;
+      margin-top: 0px;
+  }
+
+  .navigation ul {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+      justify-content: space-evenly;
+  }
+
+  .navigation li {
+      display: inline-block;
+      margin: 0 10px;
+  }
+
+  .navigation a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      font-size: 14px;
+  }
+
+  .navigation a.completed {
+      color: #0040ff;
+  }
+
+  .tick-mark {
+      margin-left: 5px;
+      color: green;
+  }
+
+  .custom-color {
+    color: #59ab6e; 
+    text-align: left;
 }
 </style>
 </head>
@@ -170,6 +213,14 @@
                   <i class="ti ti-layout-dashboard"></i>
                 </span>
                 <span class="hide-menu">Add Product</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "product_list" %}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                <span class="hide-menu">My Products</span>
               </a>
             </li>
           </ul>
@@ -235,123 +286,165 @@
       </header>
       
       <!--  Header End -->
+      
       <br> <br> <br> <br> 
-      <div class="form-container">
-        <h1>Add Product</h1>
-          <form method="post" enctype="multipart/form-data" action={% url "sellerindex" %} onsubmit="return validateForm()">
-
-            {% csrf_token %}
-            
-            <div class="form-group">
-                <label for="product-name">Brand Name</label>
-                <input type="text" id="product-name" name="brand_name" class="form-control" required oninput="validateProductName(this)">
-                <span id="product-name-error" class="error-text"></span>
-            </div>
-            
-            <div class="form-group">
-                <label for="category-name">Category Name</label>
-                <select class="form-control bg-light text-dark" id="category" name="category" required onchange="updateSubcategories()">
-                    <option value="">Choose a Category...</option>
-                    {% for i in stdata %}
-                        <option value="{{ i.id }}">{{ i.category_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="subcategory-name">Subcategory Name</label>
-                <select class="form-control bg-light text-dark" id="subcategory" name="subcategory" required>
-                    <option value="">Choose a SubCategory...</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="description">Product Description</label>
-                <textarea id="description" name="product_description" class="form-control" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="description">Material Description</label>
-                <textarea id="description" name="material_description" class="form-control" required></textarea>
-            </div>
-
-
-            <div class="form-group">
-              <label for="gender">Gender</label>
-              <div class="checkbox-group">
-                  <input type="checkbox" id="male" name="male" value="male">
-                  <label for="male" style="display: inline-block; vertical-align: middle;">Male</label>
-                  <input type="checkbox" id="female" name="female" value="female">
-                  <label for="female" style="display: inline-block; vertical-align: middle;">Female</label>
-              </div>
-          </div>
-          
-            
-        <!-- Size(16-18) -->
-        <div class="form-group">
-          <label for="stock16-18" style="display: inline-block; vertical-align: middle;">Stock(16-18)</label> 
-          <span class="info-icon" style="display: inline-block; vertical-align: middle;" onclick="showStockInfo('16-18')">
-              <i class="fas fa-info-circle"></i>
-          </span>
-          <input type="number" id="stock16-18" name="stock1" class="form-control">
+      <div class="form-container mb-5" >
+        <h2 class="custom-color">Add Product</h2>
+        <br>
+        <div class="navigation">
+          <ul>
+              <li><a href="#" onclick="prevStep(1)" style='color:blue'>Product Information</a></li>
+              <li><a href="#" onclick="prevStep(2)">Product Details</a></li>
+              <li><a href="#" onclick="prevStep(3)">Product Images</a></li>
+          </ul>
       </div>
       
         
-        <!-- Size(20-24) -->
-        <div class="form-group">
-            <label for="stock20-24" style="display: inline-block; vertical-align: middle;">Stock(20-24)</label> 
-            <span class="info-icon" style="display: inline-block; vertical-align: middle;" onclick="showStockInfo('20-24')">
-              <i class="fas fa-info-circle"></i>
-            </span>
-            <input type="number" id="stock20-24" name="stock2" class="form-control" required>
-            
-        </div>
-        
-        <!-- Size(25-29) -->
-        <div class="form-group">
-            <label for="stock25-29" style="display: inline-block; vertical-align: middle;">Stock(25-29)</label> 
-            <span class="info-icon" style="display: inline-block; vertical-align: middle;" onclick="showStockInfo('25-29')">
-              <i class="fas fa-info-circle"></i>
-            </span>
-            <input type="number" id="stock25-29" name="stock3" class="form-control" required>
-            
-        </div>
-        
-        <!-- Size(30-35) -->
-        <div class="form-group">
-            <label for="stock30-35" style="display: inline-block; vertical-align: middle;">Stock(30-35)</label> 
-            <span class="info-icon" style="display: inline-block; vertical-align: middle;" onclick="showStockInfo('30-35')">
-              <i class="fas fa-info-circle"></i>
-            </span>
-            <input type="number" id="stock30-35" name="stock4" class="form-control" required>
-            
-        </div>
-
-        <div class="form-group">
-            <label for="price">Price</label>
-            <input type="number" id="price" name="price" class="form-control" required oninput="validatePrice(this); calculateSalePrice(document.getElementById('discount'))">
-            <span id="price-error" class="error-text"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="price">Price for size (16-19)</label>
-            <input type="number" id="price" name="price1" class="form-control" oninput="validatePrice(this); calculateSalePrice(document.getElementById('discount'))">
-            <span id="price-error" class="error-text"></span>
-        </div>
-              
-            
-            <div class="form-group">
-                <label for="product-image">Product Image</label> <span id="product-image-error" class="error-text"></span>
-                <input type="file" id="product-image" name="product_images1" class="form-control" multiple required>
+        <form id="product-form" method="post" enctype="multipart/form-data" action={% url "sellerindex" %} onsubmit="return validateForm()">
+            {% csrf_token %}
+            <!-- Step 1: Basic Information -->
+            <div class="step" id="step-1">
+                <!-- ... (your existing code for brand name, category, subcategory, product description, and material description) ... -->
+                <div class="form-group">
+                    <label for="product-name">Brand Name</label>
+                    <input type="text" id="product-name" name="brand_name" class="form-control" required oninput="validateProductName(this)">
+                    <span id="product-name-error" class="error-text"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category-name">Category Name</label>
+                    <select class="form-control bg-light text-dark" id="category" name="category" required onchange="updateSubcategories()">
+                        <option value="">Choose a Category...</option>
+                        {% for i in stdata %}
+                            <option value="{{ i.id }}">{{ i.category_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subcategory-name">Subcategory Name</label>
+                    <select class="form-control bg-light text-dark" id="subcategory" name="subcategory" required>
+                        <option value="">Choose a SubCategory...</option>
+                    </select>
+                </div>
+    
+                <div class="form-group">
+                    <label for="description">Product Description</label>
+                    <textarea id="description" name="product_description" class="form-control" required></textarea>
+                </div>
+    
+                <div class="form-group">
+                    <label for="description">Material Description</label>
+                    <textarea id="description" name="material_description" class="form-control" required></textarea>
+                </div>
+                <div >
+                <button type="button" onclick="nextStep(2)" class="btn btn-primary" style="display: flex; margin-left: 860px;">Next</button>
+                </div>
+              </div>
+    
+            <!-- Step 2: Product Details -->
+            <div class="step" id="step-2" style="display: none;">
+                <!-- ... (your existing code for gender, stock, price, etc.) ... -->
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="male" name="male" value="male">
+                        <label for="male" style="display: inline-block; vertical-align: middle;">Male</label>
+                        <input type="checkbox" id="female" name="female" value="female">
+                        <label for="female" style="display: inline-block; vertical-align: middle;">Female</label>
+                    </div>
+                </div>
+                
+                  
+              <!-- Size(16-18) -->
+              <div class="form-group">
+                <label for="stock16-18" style="display: inline-block; vertical-align: middle;">stock_for_child_1_3</label> 
+                <span class="info-icon" style="display: inline-block; vertical-align: middle;" onclick="showStockInfo('16-18')">
+                    <i class="fas fa-info-circle"></i>
+                </span>
+                <input type="number" id="stock16-18" name="stock1" class="form-control" onblur="setDefaultIfEmpty(this)">
             </div>
-
-            <div class="form-group">
-              <label for="product-image">Product Thumbnial</label> <span id="product-image-error" class="error-text"></span>
-              <input type="file" id="product-image" name="thumbnail" class="form-control">
-          </div>
             
-            <button type="submit" id="add-product-button" class="btn btn-primary">Add Product</button>
-            <button type="reset" class="btn btn-primary">Reset</button>
+            <script>
+                function setDefaultIfEmpty(element) {
+                    // Check if the input is empty or contains only whitespace
+                    if (element.value.trim() === "") {
+                        // Set the default value to 0
+                        element.value = 0;
+                    }
+                }
+            </script>
+            
+              <!-- Size(20-24) -->
+              <div class="form-group">
+                  <label for="stock20-24" style="display: inline-block; vertical-align: middle;">stock_4_8</label> 
+                  <span class="info-icon" style="display: inline-block; vertical-align: middle;" onclick="showStockInfo('20-24')">
+                    <i class="fas fa-info-circle"></i>
+                  </span>
+                  <input type="number" id="stock20-24" name="stock2" class="form-control" required>
+                  
+              </div>
+              
+              <!-- Size(25-29) -->
+              <div class="form-group">
+                  <label for="stock25-29" style="display: inline-block; vertical-align: middle;">stock_9_12</label> 
+                  <span class="info-icon" style="display: inline-block; vertical-align: middle;" onclick="showStockInfo('25-29')">
+                    <i class="fas fa-info-circle"></i>
+                  </span>
+                  <input type="number" id="stock25-29" name="stock3" class="form-control" required>
+                  
+              </div>
+              
+              <!-- Size(30-35) -->
+              {% comment %} <div class="form-group">
+                  <label for="stock30-35" style="display: inline-block; vertical-align: middle;">Stock(30-35)</label> 
+                  <span class="info-icon" style="display: inline-block; vertical-align: middle;" onclick="showStockInfo('30-35')">
+                    <i class="fas fa-info-circle"></i>
+                  </span>
+                  <input type="number" id="stock30-35" name="stock4" class="form-control" required>
+                  
+              </div> {% endcomment %}
+      
+              <div class="form-group">
+                  <label for="price">Price</label>
+                  <input type="number" id="price" name="price" class="form-control" required oninput="validatePrice(this); calculateSalePrice(document.getElementById('discount'))">
+                  <span id="price-error" class="error-text"></span>
+              </div>
+      
+              <div class="form-group">
+                  <label for="price">Price for size (16-19)</label>
+                  <input type="number" id="price" name="price1" class="form-control" oninput="validatePrice(this); calculateSalePrice(document.getElementById('discount'))">
+                  <span id="price-error" class="error-text"></span>
+              </div>
+              <br>
+              <div class="button1" style="display: flex; justify-content: space-between;">
+                <button type="button" onclick="prevStep(1)" class="btn btn-dark">Previous</button>
+                <button type="button" onclick="nextStep(3)" class="btn btn-primary">Next</button>
+              </div>
+            </div>
+    
+            <!-- Step 3: Product Images -->
+            <div class="step" id="step-3" style="display: none;">
+                <!-- ... (your existing code for product images and thumbnail) ... -->
+                <div class="form-group">
+                    <label for="product-image">Product Image</label> <span id="product-image-error" class="error-text"></span>
+                    <input type="file" id="product-image" name="product_images1" class="form-control" multiple required>
+                </div>
+    
+                <div class="form-group">
+                  <label for="product-image">Product Thumbnial</label> <span id="product-image-error" class="error-text"></span>
+                  <input type="file" id="product-image" name="thumbnail" class="form-control">
+              </div>
+              <br>
+              <div class="button1" style="display: flex; justify-content: space-between;">
+                <button type="button" onclick="prevStep(2)" class="btn btn-dark">Previous</button>
+                <button type="submit" id="add-product-button" class="btn btn-primary">Submit</button>
+                {% comment %} <button type="reset" class="btn btn-primary">Reset</button> {% endcomment %}
+              </div>
+            </div>
+            
+            {% comment %} <button type="submit" id="add-product-button" class="btn btn-primary">Add Product</button>
+            <button type="reset" class="btn btn-primary">Reset</button> {% endcomment %}
               
         
         <!-- The Modal -->
@@ -363,6 +456,43 @@
             </div>
         </div>
         
+ <script>
+    var currentStep = 1;
+
+    function nextStep(step) {
+        document.getElementById("step-" + currentStep).style.display = "none";
+        currentStep = step;
+        document.getElementById("step-" + currentStep).style.display = "block";
+        updateNavigation(); // Move the updateNavigation call here
+    }
+
+    function prevStep(step) {
+        document.getElementById("step-" + currentStep).style.display = "none";
+        currentStep = step;
+        document.getElementById("step-" + currentStep).style.display = "block";
+        updateNavigation(); // Move the updateNavigation call here
+    }
+
+    function updateNavigation() {
+        for (var i = 1; i <= 3; i++) {
+            var link = document.querySelector(".navigation ul li:nth-child(" + i + ") a");
+            var tickMark = document.createElement("span");
+            tickMark.className = "tick-mark";
+            if (i < currentStep) {
+                link.classList.add("completed");
+                link.appendChild(tickMark);
+            } else {
+                link.classList.remove("completed");
+                if (link.lastChild && link.lastChild.className === "tick-mark") {
+                    link.removeChild(link.lastChild);
+                }
+            }
+        }
+    }
+</script>
+    
+      
+
         <script>
             // JavaScript to show and hide the stock information modal
             function showStockInfo(size) {
