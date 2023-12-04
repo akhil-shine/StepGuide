@@ -105,6 +105,9 @@ urlpatterns = [
     path('handle-payment/', views.handle_payment, name='handle-payment'),
 
 
+    path('order_complete/', views.order_complete, name='order_complete'),
+
+
 
 
 ]

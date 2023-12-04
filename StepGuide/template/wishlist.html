@@ -202,7 +202,7 @@
                                         <li><a class="btn btn-success text-white mt-2" href="{% url 'purchase' i.id %}?product_id={{i.id}}"><i class="far fa-eye"></i></a></li>
                                         {% if i.id in user_cart_ids %}
                                         {% else %}
-                                        <li><a class="btn btn-success text-white mt-2" href="{% url 'add_cart' i.id %}?bookid2={{ i.id }}"><i class="fas fa-cart-plus"></i></a></li>
+                                        <li><a class="btn btn-success text-white mt-2" href="{% url 'cart' %}?bookid2={{ i.id }}"><i class="fas fa-cart-plus"></i></a></li>
                                         {% endif %}
                                     
                                     </ul>

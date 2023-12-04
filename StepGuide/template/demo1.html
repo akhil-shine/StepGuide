@@ -1,63 +1,594 @@
-<div class="main-panel" style="max-width: 100%; overflow-x: hidden;">
-    <div class="content-wrapper">
-        <div class="row">
-            <div class="col-sm-12 bg-light">
-                <div class="row">
-                    <div class="col-xl-8">
-                        <a href="{% url 'productlist' %}" class="btn btn-link text-muted ">
-                            <i class="mdi mdi-arrow-left me-1"></i> Continue Shopping
-                        </a>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Cart</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="{% static "assets/img/apple-icon.png" %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.ico" %}">
+
+    <link rel="stylesheet" href="{% static "assets/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/templatemo.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/custom.css" %}">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="{% static "assets/css/fontawesome.min.css" %}">
+
+    <!-- Load map styles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+
+    <style>        
+        .cart-items {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .cart-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-item-details {
+            flex-grow: 1;
+        }
+        
+        .cart-item-name {
+            font-weight: bold;
+        }
+        
+        .remove-from-cart-btn,
+        .quantity-btn {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        
+        .increase-quantity,
+        .decrease-quantity {
+            background-color: #28a745;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        
+        .item-quantity {
+            margin: 0 10px;
+        }
+        
+        .cart-item-price {
+            font-weight: bold;
+        }
+        
+        .cart-item-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .cart-item-image:hover {
+            transform: scale(1.1);
+        }
+        
+
+
+        .total-price-data {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        #total-price {
+            font-size: 1.5em;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        
+    </style>
+    
+</head>
+
+<body>
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between" >
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@stepguide.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
+                </div>
+                {% comment %} <div>
+                    <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
+                </div> {% endcomment %}
+            </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow" style="padding: 1px 0;">
+        <div class="container d-flex justify-content-between align-items-center">
+    
+            <a class="navbar-brand text-success logo h2 align-self-center" href="{% url "index" %}">
+                StepGuide
+            </a>
+    
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="templatemo_main_nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-center align-items-center mx-lg-auto fs-5 py-0">
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "index" %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "about" %}">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "productlist" %}">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "contact" %}">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <div class="d-lg-none flex-sm-fill mt-2 mb-2 col-7 col-sm-auto pr-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                            <div class="input-group-text">
+                                <i class="fa fa-fw fa-search"></i>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-xl-2">
-                        <!-- Add content if needed -->
+                    {% comment %} <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                        <i class="fa fa-fw fa-search text-dark mx-2"></i>
+                    </a> {% endcomment %}
+                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                        <i class="fa fa-fw fa-cart-arrow-down text-dark mx-2"></i>
+                        <!-- <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span> -->
+                    </a>
+                    <div class="ml-2 dropdown">
+                        {% if user.is_authenticated %}
+                            <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Welcome, {{ user.username }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
+                            </ul>
+                        {% else %}
+                            <a class="nav-link fw-bold" href="{% url "login" %}">Login</a>
+                        {% endif %}
                     </div>
                 </div>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <!-- Close Header -->
+
+    <!-- Modal -->
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="w-100 pt-1 mb-5 text-right">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 
-                <div class="container-fluid text-center mt-5"> <!-- Changed to container-fluid for full width -->
-                    <div class="row" id="pro">
-                        <div class="col-xl-8 mx-auto">
-                            <table id="example">
-                                {% for item in cart_items %}
-                                    <li class="cart-item">
-                                        <div class="cart-item-details">
-                                            <!-- Display Product Image in a Circle -->
-                                            <div class="cart-item-image-container">
-                                                <img class="cart-item-image" src="{{ item.product.thumbnail.url }}" alt="{{ item.product.name }}">
-                                            </div>
-                                            <div class="cart-item-info">
-                                                <div class="cart-item-name">{{ item.product.name }}</div>
-                                                <div class="cart-item-price" data-price="{{ item.product.price }}">
-                                                    ${{ item.product.price }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="cart-item-quantity">
-                                            <form action="{% url 'decrease-cart-item' item.product.id %}" method="post">
-                                                {% csrf_token %}
-                                                <button class="quantity-btn decrease-quantity" type="submit">-</button>
-                                            </form>
-                                            <span class="item-quantity">{{ item.quantity }}</span>
-                                            <form action="{% url 'increase-cart-item' item.product.id %}" method="post">
-                                                {% csrf_token %}
-                                                <button class="quantity-btn increase-quantity" type="submit">+</button>
-                                            </form>
-                                        </div>
-                                        <form action="{% url 'remove-from-cart' item.product.id %}" method="post">
-                                            {% csrf_token %}
-                                            <button class="remove-from-cart-btn" type="submit">Remove</button>
-                                        </form>
-                                    </li>
-                                {% endfor %}
-                                <p class="total-price-data"><span id="item.total-price"></span></p>
-                                <a class="checkout-button" href="{% url 'shippingaddress' %}">Proceed</a>
-                            </table>
+<body>
+
+    {% block content %}
+
+    <div class="product-details-container" style="width: 100%; max-width: 800px;">
+        <h2>Your cart</h2>
+        {% for item in cart_items %}
+            <div class="product-container card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ item.product.thumbnail.url }}" alt="{{ item.product.product_name }}" style="max-width: 250px; height:210px;border: 2px solid #ddd;">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.product.brand_name  }}</h5>
+                            <p class="total-price" id="total-price-{{ item.product.price }}">Rs.{{ item.product.price  }}</p>
+    
+                            <!-- Plus-Minus quantity input -->
+                            <div class="cart-item-quantity">
+                                <form action="{% url 'increase-cart-item' item.product.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="quantity-btn increase-quantity" type="submit">+</button>
+                                </form>
+                                <span class="item-quantity">{{ item.quantity }}</span>
+                                <form action="{% url 'decrease-cart-item' item.product.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="quantity-btn decrease-quantity" type="submit">-</button>
+                                </form>
+    
+                                <form method="post" action="{% url 'remove-from-cart' item.product.id  %}">
+                                    {% csrf_token %}
+                                    <p class="total-price-data">Total amount: Rs.<span id="total-price-{{ item.product.price }}"> {{total_amount}}</span></p>
+                                    <p class="total-price-data">Total Price: <span id="total-price">Rs.0.00</span></p>
+                                    <div id="total-price">Rs.0.00</div>
+                                    <button type="remove-from-cart-btn" class="btn btn-danger">Remove</button> 
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        {% endfor %}
+    </div>
+        </div>
+        <a class="continue-shopping-link" href="{% url 'productlist' %}" style="display: inline-block; background-color: #007bff; color: #fff; text-align: center; text-decoration: none; padding: 15px; margin-top: 50px; border-radius: 4px; font-size: 16px;">Continue Shopping</a>
 
-                
+        <a class="checkout-button" href="{% url 'shippingaddress' %}" style="display: inline-block; background-color: #28a745; color: #fff; text-align: center; text-decoration: none; padding: 15px; margin-top: 50px; border-radius: 4px; font-size: 16px;">Place Order</a>
+        
+        
+        
+        
+           
+
+{% endblock %}
+
+</body>
+
+    
+
+    <!-- Start Brands -->
+    <section class="bg-light py-5">
+        <div class="container my-4">
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">Our Brands</h1>
+                    <p>
+                        “There's a reason good fabrics have a cost. They're done with good quality to last.”
+                    </p>
+                </div>
+                <div class="col-lg-9 m-auto tempaltemo-carousel">
+                    <div class="row d-flex flex-row">
+                        <!--Controls-->
+                        <div class="col-1 align-self-center">
+                            <a class="h1" href="#multi-item-example" role="button" data-bs-slide="prev">
+                                <i class="text-light fas fa-chevron-left"></i>
+                            </a>
+                        </div>
+                        <!--End Controls-->
+
+                        <!--Carousel Wrapper-->
+                        <div class="col">
+                            <div class="carousel slide carousel-multi-item pt-2 pt-md-0" id="multi-item-example" data-bs-ride="carousel">
+                                <!--Slides-->
+                                <div class="carousel-inner product-links-wap" role="listbox">
+
+                                    <!--First slide-->
+                                    <div class="carousel-item active">
+                                        <div class="row">
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_01.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_02.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_03.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_04.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End First slide-->
+
+                                    <!--Second slide-->
+                                    <div class="carousel-item">
+                                        <div class="row">
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_01.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_02.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_03.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_04.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End Second slide-->
+
+                                    <!--Third slide-->
+                                    <div class="carousel-item">
+                                        <div class="row">
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_01.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_02.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_03.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                            <div class="col-3 p-md-5">
+                                                <a href="#"><img class="img-fluid brand-img" src="{% static "assets/img/brand_04.png" %}" alt="Brand Logo"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End Third slide-->
+
+                                </div>
+                                <!--End Slides-->
+                            </div>
+                        </div>
+                        <!--End Carousel Wrapper-->
+
+                        <!--Controls-->
+                        <div class="col-1 align-self-center">
+                            <a class="h1" href="#multi-item-example" role="button" data-bs-slide="next">
+                                <i class="text-light fas fa-chevron-right"></i>
+                            </a>
+                        </div>
+                        <!--End Controls-->
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
+    <!--End Brands-->
+
+
+    <!-- Start Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">Step Guide</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li>
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                            Kottayam, Kerala 686513
+                        </li>
+                        <li>
+                            <i class="fa fa-phone fa-fw"></i>
+                            <a class="text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="mailto:info@company.com">info@stepguide.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="#">Sandals</a></li>
+                        <li><a class="text-decoration-none" href="#">Formal Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Men's Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Women's Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Kids Footwears</a></li>
+                        <li><a class="text-decoration-none" href="#">Shoes Accessories</a></li>
+                        <li><a class="text-decoration-none" href="#">Casual Shoes</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="#">Home</a></li>
+                        <li><a class="text-decoration-none" href="#">About Us</a></li>
+                        <li><a class="text-decoration-none" href="#">Company Locations</a></li>
+                        <li><a class="text-decoration-none" href="#">FAQs</a></li>
+                        <li><a class="text-decoration-none" href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="row text-light mb-4">
+                <div class="col-12 mb-3">
+                    <div class="w-100 my-3 border-top border-light"></div>
+                </div>
+                <div class="col-auto me-auto">
+                    <ul class="list-inline text-left footer-icons">
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://twitter.com/"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    <label class="sr-only" for="subscribeEmail">Email address</label>
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control bg-dark border-light" id="subscribeEmail" placeholder="Email address">
+                        <div class="input-group-text btn-success text-light">Subscribe</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            Copyright &copy; 2023 Step Guide 
+                            | Designed by <a rel="sponsored" href="https://www.linkedin.com/in/akhil-shine-051233224" target="_blank">Akhil Shine</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    <!-- End Footer -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    let total = 0; // Initialize total
+
+    updateTotalPrice();
+
+    const increaseButtons = document.querySelectorAll(".increase-quantity");
+    const decreaseButtons = document.querySelectorAll(".decrease-quantity");
+
+    increaseButtons.forEach((button, index) => {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            const currentItem = event.target.closest(".product-container");
+            if (currentItem) {
+                const quantityElement = currentItem.querySelector(".item-quantity");
+                const priceElement = currentItem.querySelector(".total-price");
+                const pricePerItem = parseFloat(priceElement.getAttribute("id").split('-')[2]);
+                let currentQuantity = parseInt(quantityElement.textContent);
+
+                currentQuantity += 1;
+                quantityElement.textContent = currentQuantity;
+                updateCartItemPrice(priceElement, pricePerItem, currentQuantity);
+                updateTotalPrice();
+                saveQuantityToStorage(currentItem.dataset.productId, currentQuantity);
+            } else {
+                console.error("Error: Unable to find the closest '.product-container' element.");
+            }
+        });
+    });
+
+    decreaseButtons.forEach((button, index) => {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            const currentItem = event.target.closest(".product-container");
+            if (currentItem) {
+                const quantityElement = currentItem.querySelector(".item-quantity");
+                const priceElement = currentItem.querySelector(".total-price");
+                const pricePerItem = parseFloat(priceElement.getAttribute("id").split('-')[2]);
+                let currentQuantity = parseInt(quantityElement.textContent);
+
+                if (currentQuantity > 1) {
+                    currentQuantity -= 1;
+                    quantityElement.textContent = currentQuantity;
+                    updateCartItemPrice(priceElement, pricePerItem, currentQuantity);
+                    updateTotalPrice();
+                    saveQuantityToStorage(currentItem.dataset.productId, currentQuantity);
+                }
+            } else {
+                console.error("Error: Unable to find the closest '.product-container' element.");
+            }
+        });
+    });
+
+    function updateCartItemPrice(priceElement, pricePerItem, quantity) {
+        const totalPrice = (pricePerItem * quantity).toFixed(2);
+        priceElement.innerHTML = "Rs." + totalPrice;
+    }
+
+    function updateTotalPrice() {
+        total = 0; // Reset total before updating
+
+        const itemElements = document.querySelectorAll(".product-container");
+
+        itemElements.forEach(function (itemElement) {
+            const priceElement = itemElement.querySelector(".total-price");
+            const quantityElement = itemElement.querySelector(".item-quantity");
+
+            if (priceElement && quantityElement) {
+                const pricePerItem = parseFloat(priceElement.getAttribute("id").split('-')[2]);
+                const quantity = parseInt(quantityElement.textContent);
+                total += pricePerItem * quantity;
+            } else {
+                console.error("Error: Unable to find '.total-price' or '.item-quantity' element.");
+            }
+        });
+
+        const totalPriceElement = document.getElementById("total-price");
+        if (totalPriceElement) {
+            totalPriceElement.innerHTML = "Rs." + total.toFixed(2);
+        } else {
+            console.error("Error: Unable to find the '#total-price' element.");
+        }
+    }
+
+    function saveQuantityToStorage(productId, quantity) {
+        // Save the quantity in localStorage
+        localStorage.setItem(`cart_quantity_${productId}`, quantity);
+    }
+
+    // On page load, retrieve and set the quantities from localStorage
+    const storedQuantities = Object.keys(localStorage)
+        .filter(key => key.startsWith('cart_quantity_'))
+        .map(key => ({
+            productId: key.replace('cart_quantity_', ''),
+            quantity: parseInt(localStorage.getItem(key), 10) || 0,
+        }));
+
+    storedQuantities.forEach(({ productId, quantity }) => {
+        const itemElement = document.querySelector(`[data-product-id="${productId}"]`);
+        if (itemElement) {
+            const quantityElement = itemElement.querySelector(".item-quantity");
+            quantityElement.textContent = quantity;
+        }
+    });
+});
+
+    </script>
+    
+    
+
+    
+    <!-- Start Script -->
+    <script src="{% static "assets/js/jquery-1.11.0.min.js" %}"></script>
+    <script src="{% static "assets/js/jquery-migrate-1.2.1.min.js" %}"></script>
+    <script src="{% static "assets/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "assets/js/templatemo.js" %}"></script>
+    <script src="{% static "assets/js/custom.js" %}"></script>
+    <!-- End Script -->
+</body>
+
+</html>

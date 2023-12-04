@@ -144,7 +144,7 @@ class BookCart(models.Model):
 
 # shipping Address
 class ShippingAddress(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=True, null=True)
     email = models.EmailField()
     phn1 = models.CharField(max_length=15)
     phn2 = models.CharField(max_length=15, blank=True, null=True)

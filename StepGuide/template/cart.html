@@ -22,85 +22,133 @@
     <!-- Load map styles -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
 
-    <style>        
-        .cart-items {
-            list-style: none;
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
             padding: 0;
         }
-        
-        .cart-item {
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+
+        .product-details-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #343a40;
+        }
+
+        .product-container {
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .product-container img {
+            width: 180px; /* Set the desired width */
+            height: 150px;
+            border: 1px solid #ddd;
+            border-radius: 10px; /* Adjust the border-radius to control the amount of curvature */
         }
         
-        .cart-item-details {
-            flex-grow: 1;
+
+        .card-body {
+            padding: 20px;
         }
-        
-        .cart-item-name {
-            font-weight: bold;
+
+        .card-title {
+            font-size: 22px;
+            color: #343a40;
+            margin-bottom: 10px;
         }
-        
-        .remove-from-cart-btn,
-        .quantity-btn {
-            background-color: #dc3545;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 4px;
-            margin-right: 5px;
+
+        .total-price {
+            font-size: 18px;
+            color: #007bff;
+            margin-bottom: 10px;
         }
-        
-        .increase-quantity,
-        .decrease-quantity {
-            background-color: #28a745;
-        }
-        
+
         .cart-item-quantity {
             display: flex;
             align-items: center;
         }
+
+        .quantity-btn {
+            background-color: #798680;
+            color: #fff;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: box-shadow 0.3s ease; /* Adding a smooth transition for the box shadow */
+        }
         
+        .quantity-btn:hover {
+            box-shadow: 0 0 10px rgba(0, 255, 128, 0.8); /* Adding a subtle shadow on hover */
+        }
+        
+
         .item-quantity {
-            margin: 0 10px;
-        }
-        
-        .cart-item-price {
+            font-size: 22px;
+            margin: 0 30px;
             font-weight: bold;
         }
         
-        .cart-item-image {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 4px;
-            transition: transform 0.3s ease-in-out;
+
+        .container {
+            position: relative;
         }
         
-        .cart-item-image:hover {
-            transform: scale(1.1);
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 16px;
+        
+            position: absolute;
+            top: 10px; /* Adjust the top position as needed */
+            right: 10px; /* Adjust the right position as needed */
         }
         
 
-
-        .total-price-data {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin: 20px 0;
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .continue-shopping-link,
+        .checkout-button {
+            display: inline-block;
             text-align: center;
-        }
-        
-        #total-price {
-            font-size: 1.5em;
-            color: #333;
+            text-decoration: none;
+            padding: 8px;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-size: 16px;
             font-weight: bold;
+            transition: background-color 0.3s ease;
         }
         
+        .continue-shopping-link {
+            background-color: #007bff;
+            color: #fff;
+            
+        }
         
+        .checkout-button {
+            background-color: #28a745;
+            color: #fff;
+        }
+        
+
+
     </style>
     
 </head>
@@ -169,7 +217,7 @@
                     {% comment %} <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
                         <i class="fa fa-fw fa-search text-dark mx-2"></i>
                     </a> {% endcomment %}
-                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                    <a class="nav-icon position-relative text-decoration-none" href="{% url 'cart'  %}">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mx-2"></i>
                         <!-- <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span> -->
                     </a>
@@ -234,20 +282,25 @@
                             <div class="cart-item-quantity">
                                 <form action="{% url 'increase-cart-item' item.product.id %}" method="post">
                                     {% csrf_token %}
-                                    <button class="quantity-btn increase-quantity" type="submit">+</button>
+                                    <button class="quantity-btn increase-quantity" type="submit"><i class="fas fa-plus"></i></button>
                                 </form>
                                 <span class="item-quantity">{{ item.quantity }}</span>
                                 <form action="{% url 'decrease-cart-item' item.product.id %}" method="post">
                                     {% csrf_token %}
-                                    <button class="quantity-btn decrease-quantity" type="submit">-</button>
+                                    <button class="quantity-btn decrease-quantity" type="submit"><i class="fas fa-minus"></i></button>
                                 </form>
+
     
                                 <form method="post" action="{% url 'remove-from-cart' item.product.id  %}">
                                     {% csrf_token %}
-                                    <p class="total-price-data">Total amount: Rs.<span id="total-price-{{ item.product.price }}"> {{total_amount}}</span></p>
+                                    {% comment %} <p class="total-price-data">Total amount: Rs.<span id="total-price-{{ item.product.price }}"> {{total_amount}}</span></p>
                                     <p class="total-price-data">Total Price: <span id="total-price">Rs.0.00</span></p>
-                                    <div id="total-price">Rs.0.00</div>
-                                    <button type="remove-from-cart-btn" class="btn btn-danger">Remove</button> 
+                                    <div id="total-price">Rs.0.00</div> {% endcomment %}
+
+                                    <button type="remove-from-cart-btn" class="btn btn-danger">
+                                        <i class="fas fa-times"></i> <!-- Font Awesome "times" icon -->
+                                    </button>
+                                    
                                 </form>
                             </div>
                         </div>
@@ -257,9 +310,20 @@
         {% endfor %}
     </div>
         </div>
-        <a class="continue-shopping-link" href="{% url 'productlist' %}" style="display: inline-block; background-color: #007bff; color: #fff; text-align: center; text-decoration: none; padding: 15px; margin-top: 50px; border-radius: 4px; font-size: 16px;">Continue Shopping</a>
+        {% comment %} <a class="continue-shopping-link" href="{% url 'productlist' %}" style="display: inline-block; background-color: #007bff; color: #fff; text-align: center; text-decoration: none; padding: 15px; margin-top: 50px; border-radius: 4px; font-size: 16px;">Continue Shopping</a>
 
-        <a class="checkout-button" href="{% url 'shippingaddress' %}" style="display: inline-block; background-color: #28a745; color: #fff; text-align: center; text-decoration: none; padding: 15px; margin-top: 50px; border-radius: 4px; font-size: 16px;">Place Order</a>
+        <a class="checkout-button" href="{% url 'shippingaddress' %}" style="display: inline-block; background-color: #28a745; color: #fff; text-align: center; text-decoration: none; padding: 15px; margin-top: 50px; border-radius: 4px; font-size: 16px;">Place Order</a> {% endcomment %}
+        
+        {% comment %} <div class="container" style="display: flex; justify-content: space-between;">
+            <a  class="btn btn-primary"  href="{% url 'productlist' %}">Continue Shopping</a>
+            <a class="btn btn-success"  href="{% url 'shippingaddress' %}">Place Order</a>
+        </div> {% endcomment %}
+
+        <div class="button1" style="display: flex; justify-content: space-between;">
+            <a href="{% url 'productlist' %}" class="btn btn-primary">Continue Shopping</a>
+            <a href="{% url 'shippingaddress' %}" id="add-product-button" class="btn btn-success">Place Order</a>
+        </div>
+        
         
         
         
@@ -472,111 +536,68 @@
     <!-- End Footer -->
 
     <script>
+    
+
+
         document.addEventListener("DOMContentLoaded", function () {
-    let total = 0; // Initialize total
 
-    updateTotalPrice();
 
-    const increaseButtons = document.querySelectorAll(".increase-quantity");
-    const decreaseButtons = document.querySelectorAll(".decrease-quantity");
-
-    increaseButtons.forEach((button, index) => {
-        button.addEventListener("click", (event) => {
-            event.preventDefault();
-            const currentItem = event.target.closest(".product-container");
-            if (currentItem) {
-                const quantityElement = currentItem.querySelector(".item-quantity");
-                const priceElement = currentItem.querySelector(".total-price");
-                const pricePerItem = parseFloat(priceElement.getAttribute("id").split('-')[2]);
-                let currentQuantity = parseInt(quantityElement.textContent);
-
-                currentQuantity += 1;
-                quantityElement.textContent = currentQuantity;
-                updateCartItemPrice(priceElement, pricePerItem, currentQuantity);
-                updateTotalPrice();
-                saveQuantityToStorage(currentItem.dataset.productId, currentQuantity);
-            } else {
-                console.error("Error: Unable to find the closest '.product-container' element.");
-            }
-        });
-    });
-
-    decreaseButtons.forEach((button, index) => {
-        button.addEventListener("click", (event) => {
-            event.preventDefault();
-            const currentItem = event.target.closest(".product-container");
-            if (currentItem) {
-                const quantityElement = currentItem.querySelector(".item-quantity");
-                const priceElement = currentItem.querySelector(".total-price");
-                const pricePerItem = parseFloat(priceElement.getAttribute("id").split('-')[2]);
-                let currentQuantity = parseInt(quantityElement.textContent);
-
-                if (currentQuantity > 1) {
-                    currentQuantity -= 1;
-                    quantityElement.textContent = currentQuantity;
-                    updateCartItemPrice(priceElement, pricePerItem, currentQuantity);
+            updateTotalPrice();
+        
+            const increaseButtons = document.querySelectorAll(".increase-quantity");
+            const decreaseButtons = document.querySelectorAll(".decrease-quantity");
+        
+            increaseButtons.forEach((button, index) => {
+                button.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    const currentItem = event.target.closest(".cart-item");
+                    const quantityElement = currentItem.querySelector(".cart-item-quantity");
+                    const priceElement = currentItem.querySelector(".cart-item-price");
+                    const pricePerItem = parseFloat(priceElement.getAttribute("data-price"));
+                    const currentQuantity = parseInt(quantityElement.textContent);
+        
+                    quantityElement.textContent = currentQuantity + 1;
+                    updateCartItemPrice(priceElement, pricePerItem, currentQuantity + 1);
                     updateTotalPrice();
-                    saveQuantityToStorage(currentItem.dataset.productId, currentQuantity);
-                }
-            } else {
-                console.error("Error: Unable to find the closest '.product-container' element.");
+                });
+            });
+        
+            decreaseButtons.forEach((button, index) => {
+                button.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    const currentItem = event.target.closest(".cart-item");
+                    const quantityElement = currentItem.querySelector(".cart-item-quantity");
+                    const priceElement = currentItem.querySelector(".cart-item-price");
+                    const pricePerItem = parseFloat(priceElement.getAttribute("data-price"));
+                    const currentQuantity = parseInt(quantityElement.textContent);
+        
+                    if (currentQuantity > 1) {
+                        quantityElement.textContent = currentQuantity - 1;
+                        updateCartItemPrice(priceElement, pricePerItem, currentQuantity - 1);
+                        updateTotalPrice();
+                    }
+                });
+            });
+        
+            function updateCartItemPrice(priceElement, pricePerItem, quantity) {
+                const totalPrice = (pricePerItem * quantity).toFixed(2);
+                priceElement.innerHTML = "&#8377;" + totalPrice;
+            }
+        
+            function updateTotalPrice() {
+                const itemElements = document.querySelectorAll(".cart-item");
+        
+                itemElements.forEach(function (itemElement) {
+                    const price = parseFloat(itemElement.querySelector(".cart-item-price").getAttribute("data-price"));
+                    const quantity = parseInt(itemElement.querySelector(".cart-item-quantity").textContent);
+                    total += price * quantity;
+                });
+        
+                const totalPriceElement = document.getElementById("total-price");
+                totalPriceElement.textContent = total.toFixed(2);
             }
         });
-    });
-
-    function updateCartItemPrice(priceElement, pricePerItem, quantity) {
-        const totalPrice = (pricePerItem * quantity).toFixed(2);
-        priceElement.innerHTML = "Rs." + totalPrice;
-    }
-
-    function updateTotalPrice() {
-        total = 0; // Reset total before updating
-
-        const itemElements = document.querySelectorAll(".product-container");
-
-        itemElements.forEach(function (itemElement) {
-            const priceElement = itemElement.querySelector(".total-price");
-            const quantityElement = itemElement.querySelector(".item-quantity");
-
-            if (priceElement && quantityElement) {
-                const pricePerItem = parseFloat(priceElement.getAttribute("id").split('-')[2]);
-                const quantity = parseInt(quantityElement.textContent);
-                total += pricePerItem * quantity;
-            } else {
-                console.error("Error: Unable to find '.total-price' or '.item-quantity' element.");
-            }
-        });
-
-        const totalPriceElement = document.getElementById("total-price");
-        if (totalPriceElement) {
-            totalPriceElement.innerHTML = "Rs." + total.toFixed(2);
-        } else {
-            console.error("Error: Unable to find the '#total-price' element.");
-        }
-    }
-
-    function saveQuantityToStorage(productId, quantity) {
-        // Save the quantity in localStorage
-        localStorage.setItem(`cart_quantity_${productId}`, quantity);
-    }
-
-    // On page load, retrieve and set the quantities from localStorage
-    const storedQuantities = Object.keys(localStorage)
-        .filter(key => key.startsWith('cart_quantity_'))
-        .map(key => ({
-            productId: key.replace('cart_quantity_', ''),
-            quantity: parseInt(localStorage.getItem(key), 10) || 0,
-        }));
-
-    storedQuantities.forEach(({ productId, quantity }) => {
-        const itemElement = document.querySelector(`[data-product-id="${productId}"]`);
-        if (itemElement) {
-            const quantityElement = itemElement.querySelector(".item-quantity");
-            quantityElement.textContent = quantity;
-        }
-    });
-});
-
+        
     </script>
     
     

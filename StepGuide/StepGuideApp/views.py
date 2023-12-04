@@ -1461,7 +1461,7 @@ def remove_from_cart(request, product_id):
     
     return redirect('cart')
 
-
+@login_required
 def view_cart(request):
     cart = request.user.cart
     cart_items = CartItem.objects.filter(cart=cart)
@@ -1555,7 +1555,7 @@ def create_order(request):
             return JsonResponse({'error': 'An error occurred. Please try again.'}, status=500)
         
         
-
+@login_required
 def summery(request):
     user = request.user
     cart_items = CartItem.objects.filter(cart=request.user.cart)
@@ -1577,6 +1577,36 @@ def summery(request):
 
 
 
+# @csrf_exempt
+# def handle_payment(request):
+#     if request.method == 'POST':
+#         data = json.loads(request.body)
+#         razorpay_order_id = data.get('order_id')
+#         payment_id = data.get('payment_id')
+
+#         try:
+#             order = Order.objects.get(payment_id=razorpay_order_id)
+
+#             client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+#             payment = client.payment.fetch(payment_id)
+
+#             if payment['status'] == 'captured':
+#                 order.payment_status = True
+#                 order.save()
+#                 user = request.user
+#                 user.cart.cartitem_set.all().delete()
+#                 return JsonResponse({'message': 'Payment successful'})
+#             else:
+#                 return JsonResponse({'message': 'Payment failed'})
+
+#         except Order.DoesNotExist:
+#             return JsonResponse({'message': 'Invalid Order ID'})
+#         except Exception as e:
+
+#             print(str(e))
+#             return JsonResponse({'message': 'Server error, please try again later.'})
+
+
 @csrf_exempt
 def handle_payment(request):
     if request.method == 'POST':
@@ -1592,12 +1622,24 @@ def handle_payment(request):
 
             if payment['status'] == 'captured':
                 order.payment_status = True
-                order.save()
+                order.save()        
                 user = request.user
                 user.cart.cartitem_set.all().delete()
-                return JsonResponse({'message': 'Payment successful'})
-            else:
-                return JsonResponse({'message': 'Payment failed'})
+
+                # for order_item in order.orderitem_set.all():
+                #         product = order_item.product
+                #         product.stock -= order_item.quantity
+                #         product.save()
+
+
+                data = {
+                  'order_id': order.id,
+                   'transID': order.payment_id,
+            }
+                return JsonResponse({'message': 'Payment successful', 'order_id': order.id, 'transID': order.payment_id})
+            #     return JsonResponse({'message': 'Payment successful'})
+            # else:
+            #     return JsonResponse({'message': 'Payment failed'})
 
         except Order.DoesNotExist:
             return JsonResponse({'message': 'Invalid Order ID'})
@@ -1607,6 +1649,33 @@ def handle_payment(request):
             return JsonResponse({'message': 'Server error, please try again later.'})
         
         
+@login_required       
+def order_complete(request):
+    order_id = request.GET.get('order_id')
+    transID = request.GET.get('payment_id')
+    print("Order ID from GET parameters:", order_id)
+    try:
+   
+        order = Order.objects.get(id=order_id, payment_status=True)
+        print("Retrieved Order:", order)
+        ordered_products = OrderItem.objects.filter(order_id=order.id)
+
+        # subtotal = 0
+        # for i in ordered_products: 
+        #     subtotal += i.product.sale_price * i.quantity
+        
+
+        context = {
+            'order': order,
+            'ordered_products': ordered_products,
+            'order_id': order.id,
+           'transID': transID,
+        #    'subtotal': subtotal,
+        }
+
+        return render(request, 'order_complete.html', context)
+    except Order.DoesNotExist:
+        return redirect('summery')
         
 
         

@@ -220,7 +220,7 @@
                     {% comment %} <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
                         <i class="fa fa-fw fa-search text-dark mx-2"></i>
                     </a> {% endcomment %}
-                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                    <a class="nav-icon position-relative text-decoration-none" href="{% url 'cart'  %}">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mx-2"></i>
                         <!-- <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span> -->
                     </a>
@@ -266,10 +266,10 @@
     <body>
         {% block content %}
         <div class="container12">
-            <div id="order-placed-section" style="display: none;">
+            {% comment %} <div id="order-placed-section" style="display: none;">
                 <h2>Order Placed</h2>
                 <p id="order-success-message"></p>
-            </div>
+            </div> {% endcomment %}
             <h1>Checkout</h1>
             
             <ul>
@@ -303,6 +303,7 @@
         </div>
         <script>
             var handlePaymentUrl = "{% url 'handle-payment' %}";
+            var orderCompleteUrl = "{% url 'order_complete' %}";
         </script>
         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
         {% endblock %}
@@ -548,7 +549,7 @@
                         "key": "rzp_test_urbnGhXdEwZA2J",
                         "amount": totalPrice * 100,
                         "currency": "INR",
-                        "name": "Ecommerce",
+                        "name": "Step Guide",
                         "description": "Order Payment",
                         "order_id": data['order_id'],
                         "prefill": {
@@ -577,17 +578,22 @@
                                     }
                                     return response.json();
                                 })
+
+
                                 .then(data => {
                                     if (data.message === 'Payment successful') {
-                                        const orderSection = document.getElementById('order-placed-section');
-                                        const orderMessage = document.getElementById('order-success-message');
-    
-                                        orderMessage.textContent = "Successfully placed order!";
-                                        orderSection.style.display = "block";
-                                    } else {
+                                        
+                                        window.location.href = orderCompleteUrl + '?order_id=' + data.order_id + '&payment_id=' + data.transID;
+                                        console.log('Order ID:', data.order_id);
+                                        console.log('Payment ID:', data.transID);
+                                    }
+                                    else {
                                         alert('Payment failed');
                                     }
-                                })
+                                    })
+                                
+
+
                                 .catch(error => {
                                     console.error('An error occurred while processing the payment.', error);
                                     alert('There was an issue processing your payment. Please try again.');
