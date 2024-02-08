@@ -10,6 +10,25 @@
   <link rel="stylesheet" href="{% static "dashboard1/css/styles.min.css" %}" />
 
   <style>
+
+    /* Table Styles */
+table {
+  width: 250%;
+  border-collapse: collapse;
+  margin-top: 20px; /* Adjust as needed */
+}
+
+th, td {
+  border: 1px solid #ddd; /* Border color */
+  padding: 8px; /* Padding inside cells */
+  text-align: left; /* Text alignment */
+}
+
+th {
+  background-color: #4CAF50; /* Header background color */
+  color: white; /* Header text color */
+}
+
     .custom-alert {
         position: fixed;
         top: 20px; /* Adjust as needed for desired vertical position */
@@ -157,6 +176,15 @@
                   <i class="ti ti-article"></i>
                 </span>
                 <span class="hide-menu">Stock Details</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href={% url "add_agent" %} aria-expanded="false">
+                <span>
+                  <i class="ti ti-layout-dashboard"></i>
+                </span>
+                <span class="hide-menu">Add Agent</span>
               </a>
             </li>
             

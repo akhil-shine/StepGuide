@@ -4,6 +4,7 @@ from django.contrib.auth import views as auth_views
 from . import views
 from django.urls import include
 from .views import filter_products
+from .views import my_orders
 
 urlpatterns = [
     path('',views.index,name='index'),
@@ -98,16 +99,16 @@ urlpatterns = [
     path('increase-cart-item/<int:product_id>/', views.increase_cart_item, name='increase-cart-item'),
     path('decrease-cart-item/<int:product_id>/', views.decrease_cart_item, name='decrease-cart-item'),
     path('fetch-cart-count/', views.fetch_cart_count, name='fetch-cart-count'),
-     
-     
     path('create-order/', views.create_order, name='create-order'),
     path('summery/', views.summery, name='summery'),
     path('handle-payment/', views.handle_payment, name='handle-payment'),
-
-
     path('order_complete/', views.order_complete, name='order_complete'),
 
-
+# main Project
+path('add_agent/',views.add_agent,name='add_agent'),
+path('my-orders/',my_orders, name='my_orders'),
+path('rating/<int:product_id>/', views.rating, name='rating'),
+path('rating0/<int:product_id>/', views.rating0, name='rating0'),
 
 
 ]

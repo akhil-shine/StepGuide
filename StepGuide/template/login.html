@@ -85,13 +85,13 @@
                 <div class="input-group mb-1">
                     <button class="btn btn-lg btn-success w-100 fs-6" type="submit" id-"sb">Login</button>
                 </div>
-                {% load socialaccount %}
+                {% comment %} {% load socialaccount %}
                 <div class="input-group mb-3">
                     <a href="{% provider_login_url 'google' %}" class="btn btn-lg btn-light w-100 fs-6">
                         <img src="{% static 'assets/img/google.jpg' %}" style="width:20px" class="me-2">
                         Sign In with Google
                     </a>
-                </div>
+                </div> {% endcomment %}
                 
                 <div class="row">
                     <small>Don't have account? <a href="{% url "register" %}">Sign Up asClient</a>/<a href="{% url "m_register" %}">Sign Up as Merchant</a> </small>

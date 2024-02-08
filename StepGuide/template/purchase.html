@@ -61,6 +61,12 @@
             font-size: 30px;
             cursor: pointer;
         }
+
+        .stars {
+            display: inline-block;
+            font-size: 20px;
+            color: #FFD700; /* Adjust color as needed */
+        }
     </style>
 </head>
 
@@ -139,6 +145,7 @@
 
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
                             {% comment %} <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}"> {{ user.first_name }}</a></li> {% endcomment %}
+                            <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "my_orders" %}" id="my_orders"> My Orders</a></li>
                             <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}"> Edit</a></li>
                             <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
                             <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
@@ -268,6 +275,15 @@
                                 <i class="fa fa-star text-secondary"></i>
                                 <span class="list-inline-item text-dark">Rating 4.8 | 36 Comments</span>
                             </p> {% endcomment %}
+
+                            <strong>Rating:</strong>
+                            {% if avg_rating %}
+                                <span class="stars" data-rating="{{ avg_rating }}"></span>
+                            {% else %}
+                                <p>No ratings available</p>
+                            {% endif %}
+
+
                             <ul class="list-inline">
                                 <li class="list-inline-item">
                                     <h6>Brand:</h6>
@@ -331,11 +347,11 @@
                                         <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Buy</button>
                                     </div> {% endcomment %}
 
-                                    <div class="col d-grid">
+                                    {% comment %} <div class="col d-grid">
                                         <a href="{% url 'shippingaddress' %}" class="btn btn-success mr-3">
                                             Buy Now
                                         </a>
-                                    </div>
+                                    </div> {% endcomment %}
 
                                     <div class="col d-grid">
                                         <button type="submit" class="btn btn-success">Add to Cart</button>                                   
@@ -1000,6 +1016,26 @@
                     }
                 }
             ]
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const starsContainers = document.querySelectorAll('.stars');
+    
+            starsContainers.forEach(container => {
+                const ratingValue = parseFloat(container.getAttribute('data-rating'));
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= ratingValue) {
+                        stars += '&#9733; '; // Full star
+                    } else {
+                        stars += '&#9734; '; // Empty star
+                    }
+                }
+                container.innerHTML = stars;
+            });
         });
     </script>
     <!-- End Slider Script -->

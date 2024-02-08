@@ -7,11 +7,14 @@ class CustomUser(AbstractUser):
     CLIENT = 1
     ADMIN = 2
     MERCHANT = 3
+    # AGENT = 4
 
     ROLE_CHOICE = (
         (CLIENT, 'Client'),
         (ADMIN,'Admin'),
-        (MERCHANT,'Merchant')
+        (MERCHANT,'Merchant'),
+        # (AGENT,'Agent')
+        
     )
 
 
@@ -240,3 +243,36 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.product.brand_name} in Order {self.order.id}"
+    
+    
+# Main Project
+# class AgentProfile(models.Model):
+    
+#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
+    
+#     def _str_(self):
+#         if self.user:
+#             return self.user.username
+#         else:
+#             return "UserProfile with no associated user"
+
+
+
+        
+# class AgentView(models.Model):
+#     agentProfile = models.ForeignKey('AgentProfile', on_delete=models.CASCADE)
+#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
+#     timestamp = models.DateTimeField(auto_now_add=True)
+    
+    
+    
+
+# Rating
+class Rating(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    products = models.ForeignKey(Product, on_delete=models.CASCADE)
+    value = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    comment = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+ 
+    

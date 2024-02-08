@@ -113,6 +113,7 @@
 
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
                             {% comment %} <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}"> {{ user.first_name }}</a></li> {% endcomment %}
+                            <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "my_orders" %}" id="my_orders"> My Orders</a></li>
                             <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}" id="edit_profile"> Edit</a></li>
                             <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
                             <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
@@ -120,6 +121,14 @@
                     {% else %}
                         <a class="nav-link fw-bold" href="{% url "login" %}">Login</a>
                     {% endif %}
+
+                    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+  intent="WELCOME"
+  chat-title="StepGuideBot"
+  agent-id="b8c199b0-ba6c-4132-abbf-21b717d36fe7"
+  language-code="en"
+></df-messenger>
                     </div>
                 </div>
             </div>

@@ -3,7 +3,7 @@ from django.contrib.auth import login as auth_login ,authenticate, logout
 from django.shortcuts import render, redirect
 from .models import CustomUser, Product
 from .decorators import user_not_authenticated
-from .models import CustomUser,UserProfile,Category,Subcategory,Image,Wishlist,BookCart,SizeStock,Cart,CartItem,Order, OrderItem
+from .models import CustomUser,UserProfile,Category,Subcategory,Image,Wishlist,BookCart,SizeStock,Cart,CartItem,Order, OrderItem, Rating
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.http import HttpResponseBadRequest, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
@@ -24,13 +24,13 @@ from decimal import Decimal
 from django.http import HttpResponseRedirect
 from decimal import Decimal, InvalidOperation, ConversionSyntax
 from .models import ShippingAddress
-
-
-
 from django.conf import settings
 import razorpay
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Avg
+
+
 razorpay_client = razorpay.Client(
     auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
 
@@ -162,76 +162,6 @@ def dashboard1(request):
     
     return render(request,'dashboard1.html',context)
 
-
-#login & Registration
-# def userlogin(request):
-#     if request.method == 'POST':
-#         email = request.POST.get('email')
-#         password = request.POST.get('password')
-#         print(email)  # Print the email for debugging
-#         print(password)  # Print the password for debugging
-
-#         if email and password:
-#             user = authenticate(request, email=email, password=password)
-#             print("Authenticated user:", user)  # Print the user for debugging
-#             if user is not None:
-#                 auth_login(request, user)
-#                 print("User authenticated:", user.email, user.role)
-#                 if request.user.role == CustomUser.CLIENT:
-#                     print("user is client")
-#                     return redirect('http://127.0.0.1:8000/')
-#                 elif request.user.role == CustomUser.THERAPIST:
-#                     print("user is therapist")
-#                     return redirect(reverse('therapist'))
-#                 elif request.user.role == CustomUser.ADMIN:
-#                     print("user is admin")                   
-#                     return redirect(reverse('adminindex'))
-#                 else:
-#                     print("user is normal")
-#                     return redirect('http://127.0.0.1:8000/')
-
-#             else:
-#                 error_message = "Invalid login credentials."
-#                 return render(request, 'login.html', {'error_message': error_message})
-#         else:
-#             error_message = "Please fill out all fields."
-#             return render(request, 'login.html', {'error_message': error_message})
-
-#     return render(request, 'login.html')
-
-# @user_not_authenticated
-# def register(request):
-#     if request.method == 'POST':
-#         first_name = request.POST.get('first_name', None)
-#         last_name = request.POST.get('last_name', None)
-#         email = request.POST.get('email', None)
-#         phone = request.POST.get('phone', None)
-#         password = request.POST.get('pass', None)
-#         confirm_password = request.POST.get('cpass', None)
-#         role = User.CLIENT
-
-#         if first_name and last_name and email and phone and password and role:
-#             if User.objects.filter(email=email).exists():
-#                 error_message = "Email is already registered."
-#                 return render(request, 'register2.html', {'error_message': error_message})
-            
-#             elif password!=confirm_password:
-#                 error_message = "Password's Don't Match, Enter correct Password"
-#                 return render(request, 'register2.html', {'error_message': error_message})
-
-            
-#             else:
-#             #     else:
-#                 user = User(first_name =first_name,last_name=last_name, email=email, phone=phone,role=role)
-#                 user.set_password(password)  # Set the password securely
-#                 user.is_active=False
-#                 user.save()
-#                 user_profile = UserProfile(user=user)
-#                 user_profile.save()
-#                 # activateEmail(request, user, email)
-#                 return redirect('login')  
-            
-#     return render(request, 'register2.html')
 
 # Login View
 def login_view(request):
@@ -441,38 +371,6 @@ def edit_profile(request):
     return render(request, 'edit_profile.html',context)
 
 
-# def userview(request):
-#     # Query all UserProfile objects from the database
-#     CustomUser = CustomUser.objects.all()
-    
-#     # Pass the data to the template
-#     context = {'CustomUser': CustomUser}
-    
-#     # Render the HTML template
-#     return render(request, 'userview.html', context)
-
-# def userview(request):
-#     # Fetch data from the database
-#     users = UserProfile.objects.all()
-#     return render(request, 'userview.html', {'users': users})
-    
-    
-# def userview(request):
-#     if request.user.is_authenticated:
-#         user=request.user
-#         if user.user_type == CustomUser.ADMIN and not request.path == reverse('userview'):
-#             return redirect(reverse('userview'))
-#         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
-#             return redirect(reverse('index'))
-#         elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('dashboard2'):
-#             return redirect(reverse('dashboard2'))
-#     else:
-#         return redirect(reverse('index'))
-#     # Fetch data from the database, including user roles
-#     users = CustomUser.objects.filter(~Q(is_superuser=True), is_active=True)
-#     inactive_users = CustomUser.objects.filter(~Q(is_superuser=True), is_active=False)
-#     return render(request, 'userview.html', {'users': users,'inactive_users':inactive_users})
-
 # Active Status
 def updateStatus(request,update_id):
     updateUser=User.objects.get(id=update_id)
@@ -666,102 +564,6 @@ def manage_categories(request):
         return redirect('index')
 
 
-# add product in merchant page
-# def sellerindex(request):
-#     stdata = Category.objects.filter(status=False)
-#     user = request.user
-#     userid = user.id
-
-#     if request.method == 'POST':
-#         product_name = request.POST.get('product_name')
-#         brand_name = request.POST.get('brand_name')
-#         product_description = request.POST.get('product_description')
-#         material_description = request.POST.get('material_description')
-#         measurements = request.POST.get('measurements')
-#         maintenance = request.POST.get('maintenance')
-#         price = request.POST.get('price')
-#         quantity = request.POST.get('quantity')
-#         category_name = request.POST.get('category')
-#         subcategory_name = request.POST.get('subcategory')
-#         gender = request.POST.get('gender')
-        
-#         # Check if the category and subcategory exist
-#         stdata1 = Category.objects.get(name__iexact=category_name)
-#         stdata2 = Subcategory.objects.get(name__iexact=subcategory_name)
-
-#         # Create a new Product instance and assign values
-#         new_product = Product(
-#             product_name=product_name,
-#             brand_name=brand_name,
-#             product_description=product_description,
-#             material_description=material_description,
-#             measurements=measurements,
-#             maintenance=maintenance,
-#             price=price,
-#             quantity=quantity,
-#             category_name=stdata1,
-#             subcategory_name=stdata2,
-#             gender=gender,
-            
-#             stock_16_18=request.POST.get('stock16-18'),
-#             stock_20_24=request.POST.get('stock20-24'),
-#             stock_25_29=request.POST.get('stock25-29'),
-#             stock_30_35=request.POST.get('stock30-35'),
-
-#             product_image=request.FILES.get('product_image'),
-#             user_id=userid
-#         )
-#         new_product.save()
-
-#         return redirect("product")
-    
-#     return render(request, "sellerindex.html", {'stdata': stdata})
-
-# def sellerindex(request):
-    
-#     stdata = Category.objects.filter(status=False)
-#     category_name = request.POST.get('category')
-#     sub = request.POST.get('subcategory')
-#     stdata1 = Category.objects.filter(pk__iexact=category_name)
-#     stdata2 = Subcategory.objects.filter(pk__iexact=sub)
-#     user = request.user
-#     userid = user.id
-#     if request.method == 'POST':
-#         print(request.POST.get('brand_name'))
-#         print(request.POST.get('category'))
-#         print(request.POST.get('subcategory'))
-#         # Create a new Category instance and assign values
-#         newproduct =    Product(
-#         brand_name = request.POST.get('brand_name'),
-#         product_description= request.POST.get('product_description'),
-#         material_description= request.POST.get('material_description'),
-#         stock_16_18= request.POST.get('stock1'),
-#         stock_20_24= request.POST.get('stock2'),
-#         stock_25_29= request.POST.get('stock3'),
-#         stock_30_35= request.POST.get('stock4'),
-#         price= request.POST.get('price'),
-#         price_16_19= request.POST.get('price1'),
-#         male = request.POST.get('male') == 'male',
-#         female = request.POST.get('female') == 'female',
-#         thumbnail= request.FILES.get('thumbnail'),
-
-
-#         category = stdata1[0],
-#         subcategory = stdata2[0],
-
-
-#         user_id=userid
-#         )
-#         newproduct.save() 
-
-        
-#         images = request.FILES.getlist('product_images1')
-#         for image in images:
-#             Image.objects.create(product=newproduct,images=image)
-            
-#         return redirect("dashboard2")
-#     return render(request, "dashboard2.html",{'stdata':stdata})
-
 # add new product
 def sellerindex(request):
     stdata = Category.objects.filter(status=False)
@@ -869,33 +671,7 @@ def categoryajax(request, category):
     # Return the data as a JSON response
     return JsonResponse(data,safe=False)
 
-# for display product
-# def productlist(request):
-#     products = Product.objects.all()
-#     wishlist_items = []
-#     wishlist_product_ids = []
-#     user_cart_ids = []
 
-#     if request.user.is_authenticated:
-#         wishlist_items = Wishlist.objects.filter(user=request.user)
-#         wishlist_product_ids = wishlist_items.values_list('product_id', flat=True)
-#         user_cart = BookCart.objects.filter(user=request.user)
-#         user_cart_ids = [item.product.id for item in user_cart]
-        
-#         # Get the associated user profile
-#         user_profile = UserProfile.objects.get(user=request.user)
-#         context = {
-#         'user': request.user,  # Use request.user instead of user
-#         'user_profile': user_profile,
-#     }
-#     return render(request, 'buy.html', {
-#         'products': products,
-#         'wishlist_items': wishlist_items,
-#         'wishlist_product_ids': wishlist_product_ids,
-#         'user_cart_ids': user_cart_ids,
-#     })
-
-# Buy.html page
 # @login_required
 def productlist(request):
     products = Product.objects.all()
@@ -989,6 +765,11 @@ def filter_products(request):
 def purchase(request, product_id):
     user = request.user
     product = get_object_or_404(Product, id=product_id)
+     # Annotate each FuelStation with its average rating
+    # avg_rating = product.annotate(avg_rating=Avg('rating__value'))
+    
+        # Calculate the average rating for the product
+    avg_rating = Rating.objects.filter(products=product).aggregate(avg_rating=Avg('value'))
 
     # Select sizes with stock_quantity > 0 for the specific product_id
     sizes_with_stock = SizeStock.objects.filter(product=product, stock_quantity__gt=0)
@@ -1000,6 +781,8 @@ def purchase(request, product_id):
         'images': images,
         'user': user,
         'sizes_with_stock': sizes_with_stock,
+        # 'avg_rating': avg_rating,
+        'avg_rating': avg_rating['avg_rating'],
     }
 
     return render(request, 'purchase.html', context)
@@ -1069,96 +852,6 @@ def add_wishlist(request, product_id):
     return redirect('productlist')
 
 
-# cart
-# def cart(request):
-#     # Assuming you have the user object for the currently logged-in user
-#     user_id = request.user.id  # Replace with your user retrieval logic if needed
-#     # Retrieve books in the user's cart
-#     books_in_cart = BookCart.objects.filter(user_id=user_id)
-#     products3 = Category.objects.filter(status=False)
-    
-
-# # Retrieve book details for the books in the cart
-#     book_details = Product.objects.filter(id__in=books_in_cart.values_list('product_id', flat=True))
-#     print(book_details)
-#     print("hai")
-#     total_price = sum(books_in_cart.product.price * books_in_cart.quantity for books_in_cart in books_in_cart)
-    
-#     #product_id=BookCart.request.get(product_id=product_id)
-#     st = BookCart.objects.filter(user_id=user_id)
-#     # return render(request,"cart.html",{'cart_books':book_details,'st':st,'total_price':total_price,'products3':products3})
-#     return render(request, "cart.html", {'cart_books': book_details, 'st': st, 'total_price': total_price, 'cart_id': books_in_cart.first().id if books_in_cart else None})
-
-# def increase_item(request, item_id):
-#     try:
-#         cart_item = BookCart.objects.get(product_id=item_id)
-#         product = Product.objects.get(id=cart_item.product_id)
-
-#         # Calculate the new quantity, ensuring it doesn't exceed the product's quantity
-#         new_quantity = min(int(cart_item.quantity) + 1, int(product.total_stock))
-
-#         cart_item.quantity = str(new_quantity)
-#         cart_item.save()
-#     except BookCart.DoesNotExist:
-#         pass  # Handle the case when the item does not exist in the cart
-#     except Product.DoesNotExist:
-#         pass  # Handle the case when the associated product doesn't exist
-
-#     return redirect('cart')
-
-# def decrease_item(request, item_id):
-#     try:
-#         cart_item = BookCart.objects.get(product_id=item_id)
-        
-#         # Decrease the quantity by 1, but ensure it doesn't go below 1
-#         new_quantity = max(int(cart_item.quantity) - 1, 1)
-        
-#         cart_item.quantity = str(new_quantity)
-#         cart_item.save()
-#     except BookCart.DoesNotExist:
-#         pass  # Handle the case when the item does not exist in the cart
-
-#     return redirect('cart')
-
-# def add_cart(request, bookid2):
-#     userid=request.user.id
-#     product = get_object_or_404(Product, id=bookid2)
-#     cart_item, created = BookCart.objects.get_or_create(user=request.user,product_id=product.id)
-
-#     if not created:
-#         cart_item.quantity += 1
-#         cart_item.save()
-#     return redirect('productlist')
-
-# def delete_cart(request, bookid2):
-#     remove=BookCart.objects.filter(product_id=bookid2)
-#     remove.delete()
-#     return redirect('cart')
-
-
-# def add_cart1(request, bookid2):
-#     if request.method == 'POST':
-#         product = get_object_or_404(Product, id=bookid2)
-
-#         # Get the selected size from the request
-#         selected_size = request.POST.get('product-size', '1')  # Default to '1' if not provided
-
-#         # Try to get an existing cart item with the same user, product, and size
-#         cart_item, created = BookCart.objects.get_or_create(user=request.user, product=product, size=selected_size)
-
-#         if not created:
-#             cart_item.quantity += 1
-#             cart_item.save()
-
-#         # Redirect to 'purchase' with the 'product_id' parameter
-#         return redirect('purchase', product_id=product.id)
-
-#     # Handle cases where the form is not submitted via POST (optional)
-#     return redirect('purchase', product_id=product.id)
-
-
-    
-
 
 # Search
 def search_product(request):
@@ -1190,83 +883,12 @@ def search_product(request):
 
     return JsonResponse({'product': product_data})
 
-# edit product
-# def edit_product(request, product_id):
-#     product = get_object_or_404(Product, pk=product_id)
 
-#     if request.method == 'POST':
-#         # Handle form submission to update the product
-#         # Update the product fields with the submitted data
-#         product.brand_name = request.POST['brand_name']
-#         product.category = request.POST['category']
-#         product.subcategory = request.POST['subcategory']
-#         product.product_description = request.POST['product_description']
-#         product.material_description = request.POST['material_description']
-#         # Update other fields accordingly
-
-#         # Save the updated product
-#         product.save()
-
-#         # Redirect to the product detail page or any other appropriate page
-#         return redirect('product_detail', product_id=product_id)
-
-#     stdata = Category.objects.filter(status=False)
-#     return render(request, 'edit_product.html', {'product': product, 'stdata': stdata})
-
-
-# def product_management(request):
-#     user = request.user
-#     products = Product.objects.filter(user=user)
-    
-#     if request.method == 'POST':
-#         # Handle form submissions for editing, activating, or deactivating products
-#         action = request.POST.get('action')
-#         product_id = request.POST.get('product_id')
-
-#         if action == 'edit':
-#             # Redirect to the product edit page for editing
-#             return redirect('edit_product', product_id=product_id)
-#         elif action == 'activate':
-#             # Implement activation logic
-#             product = get_object_or_404(Product, pk=product_id)
-#             product.is_active = True
-#             product.save()
-#         elif action == 'deactivate':
-#             # Implement deactivation logic
-#             product = get_object_or_404(Product, pk=product_id)
-#             product.is_active = False
-#             product.save()
-
-#     return render(request, 'product_management.html', {'products': products})
 
 @login_required
 def product_list(request):
     products = Product.objects.filter(user=request.user)
     return render(request, 'product_list.html', {'products': products})
-
-# def edit_product(request, product_id):
-#     product = get_object_or_404(Product, id=product_id)
-#     # Add your edit logic here
-#     if request.method == 'POST':
-#         # Handle form submission and update the product
-#         # You can use a similar form as in your 'sellerindex' view
-#         # Make sure to save the updated product
-#         return redirect('product_list')
-#     return render(request, 'edit_product.html', {'product': product})
-
-# def activate_product(request, product_id):
-#     product = get_object_or_404(Product, id=product_id)
-#     product.active = True
-#     product.save()
-#     return redirect('product_list')
-
-# def deactivate_product(request, product_id):
-#     product = get_object_or_404(Product, id=product_id)
-#     product.active = False
-#     product.save()
-#     return redirect('product_list')
-
-
 
 
 @login_required
@@ -1337,101 +959,8 @@ def shipping_address(request):
     return render(request, 'shippingaddress.html')
 
 
-# shipping details
-# @login_required
-# def buyNowComplete(request, product_id):
-#     user = request.user
-
-#     profile = UserProfile.objects.get(user=user)
-
-#     try:
-
-#         product = get_object_or_404(Product, id=product_id)
-#         total_price = Decimal(product.price * 1)
-#         print(total_price)
-#         amount = int(total_price * 100)
-
-#         razorpay_order = razorpay_client.order.create(dict(
-#             amount=amount,
-#             currency='INR',
-#             payment_capture='0'
-#         ))
-
-#         razorpay_order_id = razorpay_order['id']
-#         callback_url = '/paymenthandler/'
-
-#         order = Payment.objects.create(
-#             user=request.user,
-#             amount=amount/100,
-#             razorpay_order_id=razorpay_order_id,
-#             payment_status=Payment.PaymentStatusChoices.PENDING,
-#         )
-
-#         order_item = OrderItem.objects.create(
-#             order=order,
-#             user=user,
-#             product=product,
-#             quantity=1,
-#             price=product.price,
-#             total_price=amount,
-#             # Add other fields as needed
-#         )
-
-#         if request.method == 'POST':
-#             # Get address information from the form
-#             name = request.POST.get('name')
-#             email = request.POST.get('email')
-#             phone_no = request.POST.get('phone_no')
-#             aphone_no = request.POST.get('aphone_no')
-#             addressline1 = request.POST.get('addressline1')
-#             addressline2 = request.POST.get('addressline2')
-#             city = request.POST.get('city')
-#             district = request.POST.get('district')
-#             state = request.POST.get('state')
-#             country = request.POST.get('country')
-#             pin_code = request.POST.get('pin_code')
-
-#             # Update the existing OrderItem with the address information
-#             order_item.name = name
-#             order_item.email = email
-#             order_item.phone_no = phone_no
-#             order_item.aphone_no = aphone_no
-#             order_item.addressline1 = addressline1
-#             order_item.addressline2 = addressline2
-#             order_item.city = city
-#             order_item.district = district
-#             order_item.state = state
-#             order_item.country = country
-#             order_item.pin_code = pin_code
-
-#             order_item.save()
-
-#         context = {
-#             'product': product,
-#             'total_price': total_price,
-#             'razorpay_order_id': razorpay_order_id,
-#             'razorpay_merchant_key': settings.RAZOR_KEY_ID,
-#             'razorpay_amount': amount,
-#             'currency': 'INR',
-#             'callback_url': callback_url,
-#             'profile': profile,
-#         }
-
-#         return render(request, 'shipping_details.html', context=context)
-
-#     except Product.DoesNotExist:
-#         return HttpResponseBadRequest("Product does not exist.")
-    
-
-
-
-
-
-
-
 
 # new cart
-
 @login_required
 def add_to_cart(request, product_id):
     product = Product.objects.get(pk=product_id)
@@ -1514,10 +1043,6 @@ def get_cart_count(request):
 
 
 
-
-
-
-
 @csrf_exempt
 def create_order(request):
     if request.method == 'POST':
@@ -1573,38 +1098,6 @@ def summery(request):
     }
     return render(request, 'summery.html', context)
 
-
-
-
-
-# @csrf_exempt
-# def handle_payment(request):
-#     if request.method == 'POST':
-#         data = json.loads(request.body)
-#         razorpay_order_id = data.get('order_id')
-#         payment_id = data.get('payment_id')
-
-#         try:
-#             order = Order.objects.get(payment_id=razorpay_order_id)
-
-#             client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
-#             payment = client.payment.fetch(payment_id)
-
-#             if payment['status'] == 'captured':
-#                 order.payment_status = True
-#                 order.save()
-#                 user = request.user
-#                 user.cart.cartitem_set.all().delete()
-#                 return JsonResponse({'message': 'Payment successful'})
-#             else:
-#                 return JsonResponse({'message': 'Payment failed'})
-
-#         except Order.DoesNotExist:
-#             return JsonResponse({'message': 'Invalid Order ID'})
-#         except Exception as e:
-
-#             print(str(e))
-#             return JsonResponse({'message': 'Server error, please try again later.'})
 
 
 @csrf_exempt
@@ -1676,8 +1169,113 @@ def order_complete(request):
         return render(request, 'order_complete.html', context)
     except Order.DoesNotExist:
         return redirect('summery')
-        
+    
+# Main Project
+def add_agent(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name', None)
+        last_name = request.POST.get('last_name', None)
+        email = request.POST.get('email', None)
+        phone = request.POST.get('phone', None)
+        password = generate_password(first_name)
+        username = generate_username(first_name, last_name)
 
-        
-        
+        if username and first_name and last_name and email and phone and password:
+
+            if User.objects.filter(username=username).exists():
+                return HttpResponseRedirect(reverse('add_agent') + '?alert=username_is_already_registered')
+
+            elif User.objects.filter(email=email).exists():
+                return HttpResponseRedirect(reverse('add_agent') + '?alert=email_is_already_registered')
+
+            elif User.objects.filter(phone_no=phone).exists():
+                return HttpResponseRedirect(reverse('add_agent') + '?alert=phone_no_is_already_registered')
+
+            else:
+                user = User(username=username, first_name=first_name, last_name=last_name, email=email, phone_no=phone)
+                user.set_password(password)
+                user.user_type = CustomUser.AGENT
+                user.save()
+
+                user_profile = UserProfile(user=user)
+                user_profile.save()
+                agent_profile = AgentProfile(user=user)
+                agent_profile.save()
+
+                # Send welcome email
+                send_welcome_emaila(user.username,user.first_name,user.last_name,user.email,password)
+
+                response = HttpResponseRedirect(reverse('add_agent') + '?alert=registered')
+                response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+                response['Pragma'] = 'no-cache'
+                response['Expires'] = '0'
+                return response
+
+    return render(request, 'add_agent.html')
+
+def send_welcome_emaila(username,first_name,last_name,email,password):
+    subject = 'Welcome to StepGuide'
+    message = f"Hello {first_name},\n\n"
+    message += f"Welcome to StepGuide,We are excited to have you join us!\n\n"
+    
+    # Retrieve the associated subscription object # Assuming sub_type is a ManyToMany field
+
+    message += f"You login credentials are {username} plan, which is valid for {password}.\n\n"
+    
+    # message += "Please feel free to contact the property owner for more information or to schedule a viewing of the property.\n\n"
+    # message += "Thank you for choosing FindMyNest. We wish you the best in your property search!\n\n"
+    message += "Warm regards,\nThe StepGuide Team\n\n"
+    
+    from_email = 'stepguide0@gmail.com'  # Replace with your actual email
+    recipient_list = [email]
+
+    # Create a PDF invoice and attach it to the email
+
+    # Send the email
+    send_mail(subject, message, from_email, recipient_list)
+    
+# nxt
+
+
+
+@login_required 
+def my_orders(request):
+    # Retrieve orders with payment_status set to True for the current user, ordered by date created (most recent first)
+    orders = Order.objects.filter(user=request.user, payment_status=True).order_by('-created_at')
+    return render(request, 'my_orders.html', {'orders': orders})
+
+
+def rating0(request, product_id):
+    products = get_object_or_404(Product,id=product_id)
+    orders = Order.objects.filter(user=request.user, payment_status=True).order_by('-created_at')
+    ratings = Rating.objects.filter(products=products)
+
+    context = {
+        'products': products,
+        'ratings': ratings,
+        'orders': orders,
+    }
+
+    return render(request, 'rating.html', context)
+
+
+def rating(request, product_id):
+    if request.method == 'POST':
+        user = request.user
+        value = int(request.POST['rating'])
+        comment = request.POST.get('comment', '')
+        product=Product.objects.get(pk=product_id)
+
+        rating, created = Rating.objects.get_or_create(user=user, products=product, defaults={'value': value, 'comment': comment})
+
+        if not created:
+            rating.value = value
+            rating.comment = comment
+            rating.save()
+
+        return redirect('rating0', product_id=product_id)
+    else:
+        return redirect('index')
+
+
 
