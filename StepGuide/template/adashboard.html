@@ -86,13 +86,6 @@
     color: #dcebe0; /* Adjust the title color (in this case, a green color) */
 }
 
-.custom-background-3 {
-  background-color: #f9b116; /* Lightest gray background color */
-  color: #333;
-  border: 2px solid #ccc;
-}
-
-
 
 
 </style>
@@ -123,7 +116,7 @@
       <!-- Sidebar scroll-->
       <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-          <a class="font-weight-bold logo h1 align-self-center text-decoration-none" href="{% url "index" %}" style="color: #59ab6e;"> StepGuide </a>
+          <a class="font-weight-bold logo h1 align-self-center text-decoration-none" href="{% url "adashboard" %}" style="color: #59ab6e;"> StepGuide </a>
           
 
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -134,45 +127,11 @@
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
           <ul id="sidebarnav">
             <li class="sidebar-item">
-              <a class="sidebar-link" href={% url "mdashboard2" %} aria-expanded="false">
+              <a class="sidebar-link" href={% url "adashboard" %} aria-expanded="false">
                 <span>
                   <i class="ti ti-article"></i>
                 </span>
                 <span class="hide-menu">Home</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href={% url "dashboard2" %} aria-expanded="false">
-                <span>
-                  <i class="ti ti-layout-dashboard"></i>
-                </span>
-                <span class="hide-menu">Add Product</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url "product_list" %}" aria-expanded="false">
-                <span>
-                  <i class="ti ti-article"></i>
-                </span>
-                <span class="hide-menu">My Products</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url "stock_details" %}" aria-expanded="false">
-                <span>
-                  <i class="ti ti-article"></i>
-                </span>
-                <span class="hide-menu">Stock Details</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href={% url "add_agent" %} aria-expanded="false">
-                <span>
-                  <i class="ti ti-layout-dashboard"></i>
-                </span>
-                <span class="hide-menu">Add Agent</span>
               </a>
             </li>
 
@@ -186,6 +145,33 @@
                 <span class="hide-menu">Chat</span>
               </a>
             </li>
+            {% comment %} <li class="sidebar-item">
+              <a class="sidebar-link" href={% url "dashboard2" %} aria-expanded="false">
+                <span>
+                  <i class="ti ti-layout-dashboard"></i>
+                </span>
+                <span class="hide-menu">Add Product</span>
+              </a>
+            </li> {% endcomment %}
+            {% comment %} <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "product_list" %}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                <span class="hide-menu">My Products</span>
+              </a>
+            </li> {% endcomment %}
+
+
+
+            {% comment %} <li class="sidebar-item">
+              <a class="sidebar-link" href={% url "add_agent" %} aria-expanded="false">
+                <span>
+                  <i class="ti ti-layout-dashboard"></i>
+                </span>
+                <span class="hide-menu">Add Agent</span>
+              </a>
+            </li> {% endcomment %}
             
             
           </ul>
@@ -215,7 +201,7 @@
           </ul>
 
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Merchant!</p>
+            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Agent!</p>
           </div>
 
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
@@ -229,10 +215,10 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="message-body">
-                    {% comment %} <a href="http://127.0.0.1:8000/admin/StepGuideApp/customuser/1/change/" class="d-flex align-items-center gap-2 dropdown-item">
+                    <a href="{% url "agent_profile" %}" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-user fs-6"></i>
                       <p  class="mb-0 fs-3" >My Profile</p>
-                    </a> {% endcomment %}
+                    </a>
                     {% comment %} <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-mail fs-6"></i>
                       <p class="mb-0 fs-3">My Account</p>
@@ -258,24 +244,12 @@
                 <div class="card w-100 custom-background-1">
                     <div class="card-body p-4">
                         <div class="mb-6">
-                            <h5 class="card-title fw-bold green-text">Total Products</h5>
-                            <p class="white-text fw-bold">Product Count: <strong>{{ product_count }}</strong></p>
+                            <h5 class="card-title fw-bold green-text">Comming Soon!</h5>
+                            {% comment %} <p class="white-text fw-bold">User Count: <strong>{{ product_count }}</strong></p> {% endcomment %}
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-lg-3 d-flex align-items-stretch">
-              <!-- Merchant Users Section -->
-              <div class="card w-100 custom-background-3">
-                  <div class="card-body p-4">
-                      <div class="mb-6">
-                          <h5 class="card-title fw-bold green-text">No: Of Agents</h5>
-                          <p class="white-text fw-bold">Agent Count: <strong>{{ agent_count }}</strong></p>
-                      </div>
-                  </div>
-              </div>
-          </div>
 
 
                

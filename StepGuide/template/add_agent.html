@@ -9,6 +9,7 @@
   <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
   <link rel="stylesheet" href="{% static "dashboard1/css/styles.min.css" %}" />
 
+
   <style>
     .custom-alert {
         position: fixed;
@@ -168,6 +169,17 @@
                 <span class="hide-menu">Add Agent</span>
               </a>
             </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "messages_page" %}" aria-expanded="false">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
+                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
+                  </svg>
+                </span>
+                <span class="hide-menu">Chat</span>
+              </a>
+            </li>
             
             
           </ul>
@@ -235,236 +247,240 @@
 
       <br> <br> <br> <br> <br> 
 
-      <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-lg-7 col-md-8">
-                <div class="dashboard-body">
-                    <div class="dashboard-wraper">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                      <h2 class="card-title" style="color: #59ab6e; text-align: center;">Add Agent</h2>     
-                                            <form method="POST" id="save" enctype="multipart/form-data">
-                                              {% csrf_token %}
-                                              <section class="gray pt-7 pb-7">
-                                                  <div class="container-fluid">
-                                                      <div class="row justify-content-center">
-                                                          <div class="col-lg-10 col-md-8">
-                                                              <div class="dashboard-body">
-                                                                  <div class="dashboard-wraper">
-                                                                      <div class="row">
-                                                                          <div class="col-lg-12 col-md-12">
-                                                                              <!-- Basic Information -->
-                                                          
-                                                          <div class="d-flex mb-3 gap-5">
-                                                            <div class="col-md-6 ml-md-1 mb-3">
-                                                              <input type="text" class="form-control form-control-sm bg-light fs-6" onkeyup="validateFirst_Name()" placeholder="First Name" id="first_name" name="first_name" required>
-                                                              <div class="invalid-feedback"></div>
-                                                              <div class="valid-feedback"></div>
-                                                            </div>
-                                                          
-                                                            <div class="col-md-6 ml-md-1 mb-3">
-                                                              <input type="text" class="form-control form-control-sm bg-light fs-6" onkeyup="validateLast_Name()" placeholder="Last Name" id="last_name" name="last_name" required>
-                                                              <div class="invalid-feedback"></div>
-                                                              <div class="valid-feedback"></div>
-                                                            </div>
-                                                          </div>
-                                                          
-                                                          <div class="d-flex mb-3 gap-5">
-                                                            <div class="col-md-6 ml-md-1 mb-3">
-                                                              <input type="text" class="form-control form-control-lg bg-light fs-6" onkeyup="validateEmail()" placeholder="Email Address" id="email" name="email" required><br>
-                                                              <div class="invalid-feedback"></div>
-                                                              <div class="valid-feedback"></div>
-                                                            </div>
-                                                            <div class="col-md-6 ml-md-1 mb-3">
-                                                              <input type="text" class="form-control form-control-lg bg-light fs-6" onkeyup="validatePhoneNumber()" placeholder="Phone no" id="phone" name="phone" required><br>
-                                                              <div class="invalid-feedback"></div>
-                                                              <div class="valid-feedback"></div>
-                                                            </div>
-                                                          </div>
-                                                          
-                                                          <div class="input-group mb-3">
-                                                            <button class="btn btn-lg btn-primary w-100 fs-6" id="submit" type="submit" onclick="return checkall()" >ADD</button>
-                                                          </div>
-                                                                          <div class="form-group col-lg-12 col-md-12 text-center">
-                                                                </div>
-                                                              </div>
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                        <!-- row -->
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </section>
-                                          </form>
-                                        </div>
-                                      </div>
-                                  </div>
-                              </div>
-                              <!-- row -->
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const first_nameInput = document.getElementById('first_name');
-        const last_nameInput = document.getElementById('last_name');
-       
-        const emailInput = document.getElementById('email');
-        const phoneInput = document.getElementById('phone');
-       
-    
-        first_nameInput.addEventListener('blur', function(event) { validateFirst_Name(); });
-        last_nameInput.addEventListener('blur', function(event) { validateLast_Name(); });
-        emailInput.addEventListener('blur', function(event) { validateEmail(); });
-        phoneInput.addEventListener('blur', function(event) { validatePhoneNumber(); });
-        
-    
-    
-        function validateFirst_Name() {
-        const namePattern = /^[A-Za-z ]+$/;
-        if (!namePattern.test(first_nameInput.value)) {
-          first_nameInput.classList.add('is-invalid');
-          first_nameInput.classList.remove('is-valid');
-          return false;
-        } else {
-          first_nameInput.classList.remove('is-invalid');
-          first_nameInput.classList.add('is-valid');
-          return true;
-        }
-        }
-    
-        function validateLast_Name() {
-        const namePattern = /^[A-Za-z]+$/;
-        if (!namePattern.test(last_nameInput.value)) {
-          last_nameInput.classList.add('is-invalid');
-          last_nameInput.classList.remove('is-valid');
-          return false;
-        } else {
-          last_nameInput.classList.remove('is-invalid');
-          last_nameInput.classList.add('is-valid');
-          return true;
-        }
-        }
-    
-    
-    
-        function isValidEmail(email) {
-        const validTLDs = ["com", "org", "net", "edu", "gov", "mil", "co", "info", "io", "uk", "in"];
-        
-        const emailParts = email.split("@");
-        if (emailParts.length !== 2) {
-          return false;
-        }
-        
-        const domain = emailParts[1];
-        const domainParts = domain.split(".");
-        const tld = domainParts[domainParts.length - 1].toLowerCase();
-        
-        if (
-          domainParts.length < 2 ||
-          !domainParts.slice(0, domainParts.length - 1).every(part => /^[a-z-]+$/.test(part)) ||
-          !validTLDs.includes(tld)
-        ) {
-          return false;
-        }
-        
-        // Check for repeated provider, like .com.com or .in.in
-        if (domainParts.length >= 3 && domainParts[domainParts.length - 2] === domainParts[domainParts.length - 1]) {
-          return false;
-        }
-        
-        // Check for prohibited combinations
-        const prohibitedCombinations = [".in.com", ".com.in"];
-        for (const combination of prohibitedCombinations) {
-          if (domain.includes(combination)) {
-          return false;
-          }
-        }
-        
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+$/;
-        return emailRegex.test(email);
-        }
-        
-        
-        
-        
-        function validateEmail() {
-        const emailInput = document.getElementById('email');
-        if (!isValidEmail(emailInput.value)) {
-          emailInput.classList.add('is-invalid');
-          emailInput.classList.remove('is-valid');
-          return false;
-        } else {
-          emailInput.classList.remove('is-invalid');
-          emailInput.classList.add('is-valid');
-          return true;
-        }
-        }
-        
-        
-    
-      function validatePhoneNumber() {
-        const phoneNumberPattern = /^(?!.*0{10})[6-9][0-9]{9}$/;
-        if (!phoneNumberPattern.test(phoneInput.value)) {
-          phoneInput.classList.add('is-invalid');
-          phoneInput.classList.remove('is-valid');
-          return false;
-        } else {
-          phoneInput.classList.remove('is-invalid');
-          phoneInput.classList.add('is-valid');
-          return true;
-        }
-      }
-    
+      <div class="app-wrapper" style="background-color: rgb(255, 255, 255); ">
+        <div class="app-content pt-3 p-md-3 p-lg-4">
+          <div class="custom-container">
   
-    
-        function checkall() {
-        if (validateFirst_Name() && validateLast_Name()  && validateEmail() && validatePhoneNumber()) {
-          return true;
-        }
-        return false;
-        }
-    
-        const urlParams = new URLSearchParams(window.location.search);    
-        const alertType = urlParams.get('alert');
-    
-        if (alertType === 'username_is_already_registered') {
-          showAlert('Username is already registered', 'danger');
-        } else if (alertType === 'email_is_already_registered') {
-          showAlert('Email is already registered', 'danger');
-        } else if (alertType === 'phone_no_is_already_registered') {
-          showAlert('Phone number is already registered.', 'danger');
-        }else if (alertType === 'passwords_do_not_match') {
-        showAlert('Password And Conform Password Not Matching', 'danger');
-        }else if (alertType === 'registered') {
-        showAlert('Registered', 'success');
-      }
-    
-    
-        function showAlert(message, alertType) {
-          const alertDiv = document.createElement('div');
-          alertDiv.classList.add('alert', alert-${alertType}, 'alert-top');
-          alertDiv.textContent = message;
-    
-          const container = document.querySelector('.container');
-          container.insertBefore(alertDiv, container.firstChild);
-    
-          setTimeout(function() {
-            alertDiv.remove();
-          }, 5000);  // Remove after 5 seconds
-        }
-      });
-    
-    
-    
-      </script>
+  
+            <section class="intro-single">
+              <div class="container" style="max-width: 1700px;">
+                <div class="row">
+                  <div class="col-md-12 col-lg-8">
+                    <div class="title-single-box">
+                      <h1 class="title-single" style="color:#59ab6e">Add Agent</h1>
+                     
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <form method="POST" id="save" enctype="multipart/form-data">
+              {% csrf_token %}
+              <section class="gray pt-5 pb-5">
+                  <div class="container-fluid">
+                      <div class="row justify-content-center">
+                          <div class="col-lg-9 col-md-8">
+                              <div class="dashboard-body">
+                                  <div class="dashboard-wraper">
+                                      <div class="row">
+                                          <div class="col-lg-12 col-md-12">
+                                              <!-- Basic Information -->
+                          
+                          <div class="d-flex mb-3 gap-5">
+                            <div class="col-md-6 ml-md-1 mb-3">
+                              <input type="text" class="form-control form-control-sm bg-light fs-6" onkeyup="validateFirst_Name()" placeholder="First Name" id="first_name" name="first_name" required>
+                              <div class="invalid-feedback" id="fnamevalid">Numbers and special characters are not allowed</div>
+                              <div class="valid-feedback" id="fnvalid">Looks good!</div>
+                            </div>
+                          
+                            <div class="col-md-6 ml-md-1 mb-3">
+                              <input type="text" class="form-control form-control-sm bg-light fs-6" onkeyup="validateLast_Name()" placeholder="Last Name" id="last_name" name="last_name" required>
+                              <div class="invalid-feedback" id="fnamevalid">Numbers and special characters are not allowed</div>
+                              <div class="valid-feedback" id="fnvalid">Looks good!</div>
+                            </div>
+                          </div>
+                          
+                          <div class="d-flex mb-3 gap-5">
+                            <div class="col-md-6 ml-md-1 mb-3">
+                              <input type="text" class="form-control form-control-lg bg-light fs-6" onkeyup="validateEmail()" placeholder="Email Address" id="email" name="email" required><br>
+                              <div class="invalid-feedback" id="emailInvalid">Invalid email address</div>
+                              <div class="valid-feedback" id="emailValid">Looks good!</div>
+                            </div>
+                            <div class="col-md-6 ml-md-1 mb-3">
+                              <input type="text" class="form-control form-control-lg bg-light fs-6" onkeyup="validatePhoneNumber()" placeholder="Phone no" id="phone" name="phone" required><br>
+                              <div class="invalid-feedback" id="phonevalid">Phone number must have 10 digits</div>
+                              <div class="valid-feedback" id="pvalid">Looks good!</div>
+                            </div>
+                          </div>
+                          
+                          <div class="input-group mb-3">
+                            <button class="btn btn-lg btn-primary w-100 fs-6" id="submit" type="submit" onclick="return checkall()" >ADD</button>
+                          </div>
+                                          <div class="form-group col-lg-12 col-md-12 text-center">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- row -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+          </form>
+          </div>
+        </div>
+      </div>
+
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              const first_nameInput = document.getElementById('first_name');
+              const last_nameInput = document.getElementById('last_name');
+             
+              const emailInput = document.getElementById('email');
+              const phoneInput = document.getElementById('phone');
+             
+          
+              first_nameInput.addEventListener('keyup', function(event) { validateFirst_Name(); });
+              last_nameInput.addEventListener('keyup', function(event) { validateLast_Name(); });
+              emailInput.addEventListener('keyup', function(event) { validateEmail(); });
+              phoneInput.addEventListener('keyup', function(event) { validatePhoneNumber(); });
+              
+          
+          
+              function validateFirst_Name() {
+              const namePattern = /^[A-Za-z ]+$/;
+              if (!namePattern.test(first_nameInput.value)) {
+                first_nameInput.classList.add('is-invalid');
+                first_nameInput.classList.remove('is-valid');
+                return false;
+              } else {
+                first_nameInput.classList.remove('is-invalid');
+                first_nameInput.classList.add('is-valid');
+                return true;
+              }
+              }
+          
+              function validateLast_Name() {
+              const namePattern = /^[A-Za-z]+$/;
+              if (!namePattern.test(last_nameInput.value)) {
+                last_nameInput.classList.add('is-invalid');
+                last_nameInput.classList.remove('is-valid');
+                return false;
+              } else {
+                last_nameInput.classList.remove('is-invalid');
+                last_nameInput.classList.add('is-valid');
+                return true;
+              }
+              }
+          
+          
+          
+              function isValidEmail(email) {
+              const validTLDs = ["com", "org", "net", "edu", "gov", "mil", "co", "info", "io", "uk", "in"];
+              
+              const emailParts = email.split("@");
+              if (emailParts.length !== 2) {
+                return false;
+              }
+              
+              const domain = emailParts[1];
+              const domainParts = domain.split(".");
+              const tld = domainParts[domainParts.length - 1].toLowerCase();
+              
+              if (
+                domainParts.length < 2 ||
+                !domainParts.slice(0, domainParts.length - 1).every(part => /^[a-z-]+$/.test(part)) ||
+                !validTLDs.includes(tld)
+              ) {
+                return false;
+              }
+              
+              // Check for repeated provider, like .com.com or .in.in
+              if (domainParts.length >= 3 && domainParts[domainParts.length - 2] === domainParts[domainParts.length - 1]) {
+                return false;
+              }
+              
+              // Check for prohibited combinations
+              const prohibitedCombinations = [".in.com", ".com.in"];
+              for (const combination of prohibitedCombinations) {
+                if (domain.includes(combination)) {
+                return false;
+                }
+              }
+              
+              const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+$/;
+              return emailRegex.test(email);
+              }
+              
+              
+              
+              
+              function validateEmail() {
+              const emailInput = document.getElementById('email');
+              if (!isValidEmail(emailInput.value)) {
+                emailInput.classList.add('is-invalid');
+                emailInput.classList.remove('is-valid');
+                return false;
+              } else {
+                emailInput.classList.remove('is-invalid');
+                emailInput.classList.add('is-valid');
+                return true;
+              }
+              }
+              
+              
+          
+              function validatePhoneNumber() {
+                const phoneNumberPattern = /^(?!.*0{10})(?!(\d)\1{9})[6-9][0-9]{9}$/;
+                const phonevalid = document.getElementById('phonevalid');
+                const pvalid = document.getElementById('pvalid');
+                if (!phoneNumberPattern.test(phoneInput.value)) {
+                    phoneInput.classList.add('is-invalid');
+                    phoneInput.classList.remove('is-valid');
+                    phonevalid.style.display = 'block';
+                    pvalid.style.display = 'none';
+                } else {
+                    phoneInput.classList.remove('is-invalid');
+                    phoneInput.classList.add('is-valid');
+                    phonevalid.style.display = 'none';
+                    pvalid.style.display = 'block';
+                }
+            }
+          
+        
+          
+              function checkall() {
+              if (validateFirst_Name() && validateLast_Name()  && validateEmail() && validatePhoneNumber()) {
+                return true;
+              }
+              return false;
+              }
+          
+              const urlParams = new URLSearchParams(window.location.search);    
+              const alertType = urlParams.get('alert');
+          
+              if (alertType === 'username_is_already_registered') {
+                showAlert('Username is already registered', 'danger');
+              } else if (alertType === 'email_is_already_registered') {
+                showAlert('Email is already registered', 'danger');
+              } else if (alertType === 'phone_no_is_already_registered') {
+                showAlert('Phone number is already registered.', 'danger');
+              }else if (alertType === 'passwords_do_not_match') {
+              showAlert('Password And Conform Password Not Matching', 'danger');
+              }else if (alertType === 'registered') {
+              showAlert('Registered', 'success');
+            }
+          
+          
+              function showAlert(message, alertType) {
+                const alertDiv = document.createElement('div');
+                alertDiv.classList.add('alert', `alert-${alertType}`, 'alert-top');
+                alertDiv.textContent = message;
+          
+                const container = document.querySelector('.container');
+                container.insertBefore(alertDiv, container.firstChild);
+          
+                setTimeout(function() {
+                  alertDiv.remove();
+                }, 5000);  // Remove after 5 seconds
+              }
+            });
+          
+          
+          
+            </script>
 
 
                
@@ -475,6 +491,7 @@
   <script src="{% static "dashboard1/libs/apexcharts/dist/apexcharts.min.js" %}"></script>
   <script src="{% static "dashboard1/libs/simplebar/dist/simplebar.js" %}"></script>
   <script src="{% static "dashboard1/js/dashboard.js" %}"></script>
+  
 </body>
 
 </html>

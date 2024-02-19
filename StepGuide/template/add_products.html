@@ -143,11 +143,14 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
           <ul id="sidebarnav">
-            <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">Home</span>
-            </li>
             <li class="sidebar-item">
+              <a class="sidebar-link" href={% url "mdashboard2" %} aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                <span class="hide-menu">Home</span>
+              </a>
+            </li>
               {% comment %} <a class="sidebar-link" href="http://127.0.0.1:8000/admin/" aria-expanded="false"> {% endcomment %}
               {% comment %} <a class="sidebar-link" href="{% url "userview" %}" aria-expanded="false">
                 <span>

@@ -10,6 +10,25 @@
   <link rel="stylesheet" href="{% static "dashboard1/css/styles.min.css" %}" />
 
   <style>
+
+    /* Table Styles */
+table {
+  width: 250%;
+  border-collapse: collapse;
+  margin-top: 20px; /* Adjust as needed */
+}
+
+th, td {
+  border: 1px solid #ddd; /* Border color */
+  padding: 8px; /* Padding inside cells */
+  text-align: left; /* Text alignment */
+}
+
+th {
+  background-color: #4CAF50; /* Header background color */
+  color: white; /* Header text color */
+}
+
     .custom-alert {
         position: fixed;
         top: 20px; /* Adjust as needed for desired vertical position */
@@ -33,64 +52,81 @@
   background-color: #d1d0cf;
 }
 
-.form-container {
-  max-width: 700px;
-  margin: 0 auto;
-  
-  padding: 40px;
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+
+    /* CSS for the modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 100px;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    
+    .modal-content {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        width: 70%;
+        margin-left: 15%; /* Add left margin */
+    }
+    
+    
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    /* Custom background styles */
+    .custom-background-1 {
+        background-color: #919193; /* Light gray background color */
+        color: #dcebe0; /* Dark text color */
+        border: 2px solid #ccc; /* Light gray border */
+    }
+
+    /* Bold text styles */
+.white-text {
+    font-weight: bold;
 }
 
-h1 {
-  text-align: center;
+/* Bold text styles with larger font size */
+.white-text {
+    font-weight: bold;
+    font-size: 18px; /* Adjust the font size as needed */
 }
 
-form {
-  text-align: left;
+/* Larger font size for the card titles */
+.card-title {
+    font-size: 22px; /* Adjust the font size for card titles */
+    color: #dcebe0; /* Adjust the title color (in this case, a green color) */
 }
 
-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
 
-input[type="text"],
-textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
 
-input[type="submit"] {
-  background-color: #007BFF;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.alert-top {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 500px; /* Adjust this width as needed */
-  z-index: 1000; /* Ensure the alert is on top of other content */
-}
 </style>
 </head>
 
 <body>
-  <div class="containera">
-    <!-- Alerts will be inserted here -->
-</div>
+  {% if messages %}
+  <script>
+      {% for message in messages %}
+          var alertMessage = '{{ message|safe }}';
+          var customAlert = document.createElement('div');
+          customAlert.classList.add('custom-alert');
+          customAlert.textContent = alertMessage;
+          document.body.appendChild(customAlert);
+
+          // Automatically close the alert after 3 seconds
+          setTimeout(function() {
+              customAlert.style.display = 'none';
+          }, 3000); // 3000 milliseconds = 3 seconds
+      {% endfor %}
+  </script>
+{% endif %}
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
@@ -109,46 +145,6 @@ input[type="submit"] {
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
           <ul id="sidebarnav">
-            {% comment %} <li class="sidebar-item">
-              <a class="sidebar-link" href={% url "dashboard1" %} aria-expanded="false">
-                <span>
-                  <i class="ti ti-article"></i>
-                </span>
-                <span class="hide-menu">Home</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url "userview" %}" aria-expanded="false">
-                <span>
-                  <i class="ti ti-layout-dashboard"></i>
-                </span>
-                <span class="hide-menu">Users List</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url "add_category" %}" aria-expanded="false">
-                <span>
-                  <i class="ti ti-article"></i>
-                </span>
-                <span class="hide-menu">Add Category</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url "add_subcategory" %}" aria-expanded="false">
-                <span>
-                  <i class="ti ti-article"></i>
-                </span>
-                <span class="hide-menu">Add Sub Category</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url "manage_categories" %}" aria-expanded="false">
-                <span>
-                  <i class="ti ti-article"></i>
-                </span>
-                <span class="hide-menu">Manage Categories</span>
-              </a>
-            </li> {% endcomment %}
 
             <li class="sidebar-item">
               <a class="sidebar-link" href={% url "dashboard1" %} aria-expanded="false">
@@ -231,9 +227,13 @@ input[type="submit"] {
               </a>
             </li>
 
+
+            
           </ul>
         </nav>
+        <!-- End Sidebar navigation -->
       </div>
+      <!-- End Sidebar scroll-->
     </aside>
     <!--  Sidebar End -->
     <!--  Main wrapper -->
@@ -246,10 +246,17 @@ input[type="submit"] {
               <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
                 <i class="ti ti-menu-2"></i>
               </a>
+            </li>
+            {% comment %} <li class="nav-item">
+              <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                <i class="ti ti-bell-ringing"></i>
+                <div class="notification bg-primary rounded-circle"></div>
+              </a>
+            </li> {% endcomment %}
           </ul>
 
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Admin!</p>
+            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Agent!</p>
           </div>
 
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
@@ -284,50 +291,42 @@ input[type="submit"] {
           </div>
         </nav>
       </header>
-      <!--  Header End -->
-      <br> <br> <br> <br> <br>
-      <div class="form-container">
-            <h1>Add Category</h1>
-            <form method="post" enctype="multipart/form-data" >
-                {% csrf_token %}
-                <label for="categoryName">Category Name:</label>
-                <input type="text" id="categoryName" name="category_name" required><br><br>
-        
-                <label for="categoryDescription">Category Description:</label><br>
-                <textarea id="categoryDescription" name="descriptioncat" rows="4" cols="50"></textarea><br><br>
-        
-                <input type="submit" value="Add Category">
-            </form>
+      
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 d-flex align-items-stretch">
+                <!-- Total Users Section -->
+                      {% block content %}
+        <div class="container-fluid">
+          <div class="container table-container">
+            {% comment %} <p class="text-success logo h1 align-self-center" style="font-size: 28px;">My Product</p> {% endcomment %}
+            <h1>Stock Details</h1>
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Size</th>
+                  <th>Stock Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for size_stock in size_stocks %}
+                  <tr>
+                    <td>{{ size_stock.product }}</td>
+                    <td>{{ size_stock.size }}</td>
+                    <td>{{ size_stock.stock_quantity }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
-    </div>
-  </div> 
+        </div>
+      {% endblock %}
+                    </div>
+                </div>
+            </div>
 
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const alertType = urlParams.get('alert');
-
-        if (alertType === 'Error') {
-            showAlert('Category Already Exists.', 'danger');
-        } else if (alertType === 'Success') {
-            showAlert('Category Added Successfully.', 'success');
-        }
-
-        function showAlert(message, alertType) {
-            const alertDiv = document.createElement('div');
-            alertDiv.classList.add('alert', `alert-${alertType}`, 'alert-top');
-            alertDiv.textContent = message;
-
-            const container = document.querySelector('.containera');
-            container.insertBefore(alertDiv, container.firstChild);
-
-            setTimeout(function() {
-                alertDiv.remove();
-            }, 5000);  // Remove after 5 seconds
-        }
-    });
-</script>
                
   <script src="{% static "dashboard1/libs/jquery/dist/jquery.min.js" %}"></script>
   <script src="{% static "dashboard1/libs/bootstrap/dist/js/bootstrap.bundle.min.js" %}"></script>

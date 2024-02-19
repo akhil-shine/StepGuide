@@ -110,5 +110,14 @@ path('my-orders/',my_orders, name='my_orders'),
 path('rating/<int:product_id>/', views.rating, name='rating'),
 path('rating0/<int:product_id>/', views.rating0, name='rating0'),
 
+path('adashboard.html/',views.adashboard,name='adashboard'),
+path('astock_details/', views.astock_details, name='astock_details'),
+
+# Chat
+path('messages_page/', views.messages_page, name='messages_page'),
+
+path('agent_profile.html/',views.agent_profile,name='agent_profile'),
+
+
 
 ]

@@ -7,13 +7,13 @@ class CustomUser(AbstractUser):
     CLIENT = 1
     ADMIN = 2
     MERCHANT = 3
-    # AGENT = 4
+    AGENT = 4
 
     ROLE_CHOICE = (
         (CLIENT, 'Client'),
         (ADMIN,'Admin'),
         (MERCHANT,'Merchant'),
-        # (AGENT,'Agent')
+        (AGENT,'Agent'),
         
     )
 
@@ -110,6 +110,7 @@ class Image(models.Model):
     
 # Total Stock Details
 class SizeStock(models.Model):
+    # user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True,related_name="user")
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     size = models.CharField(max_length=50)
     stock_quantity = models.IntegerField(default=0)
@@ -259,10 +260,21 @@ class OrderItem(models.Model):
 
 
         
-# class AgentView(models.Model):
-#     agentProfile = models.ForeignKey('AgentProfile', on_delete=models.CASCADE)
-#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
-#     timestamp = models.DateTimeField(auto_now_add=True)
+class AgentProfile(models.Model):
+    
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
+    bio = models.CharField(max_length=100, blank=True, null=True)
+    experience = models.CharField(max_length=15, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    working_area = models.CharField(max_length=100, blank=True, null=True)
+    
+    def _str_(self):
+        if self.user:
+            return self.user.username
+        else:
+            return "UserProfile with no associated user"
+
     
     
     
@@ -274,5 +286,36 @@ class Rating(models.Model):
     value = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
     comment = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    
+    
+    
+# Chat
+from django.db.models import Q
+class ThreadManager(models.Manager):
+    def by_user(self, **kwargs):
+        user = kwargs.get('user')
+        lookup = Q(first_person=user) | Q(second_person=user)
+        qs = self.get_queryset().filter(lookup).distinct()
+        return qs
+
+
+class Thread(models.Model):
+    first_person = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, related_name='thread_first_person')
+    second_person = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True,
+                                     related_name='thread_second_person')
+    updated = models.DateTimeField(auto_now=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    objects = ThreadManager()
+    class Meta:
+        unique_together = ['first_person', 'second_person']
+
+
+class ChatMessage(models.Model):
+    thread = models.ForeignKey(Thread, null=True, blank=True, on_delete=models.CASCADE, related_name='chatmessage_thread')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
  
     

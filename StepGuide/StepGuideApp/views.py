@@ -1,7 +1,9 @@
+import random
+import string
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth import login as auth_login ,authenticate, logout
 from django.shortcuts import render, redirect
-from .models import CustomUser, Product
+from .models import AgentProfile, CustomUser, Product
 from .decorators import user_not_authenticated
 from .models import CustomUser,UserProfile,Category,Subcategory,Image,Wishlist,BookCart,SizeStock,Cart,CartItem,Order, OrderItem, Rating
 from django.contrib.auth import get_user_model
@@ -61,6 +63,8 @@ def index(request):
             return redirect(reverse('index'))
         elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('mdashboard2'):
             return redirect(reverse('mdashboard2'))
+        elif user.user_type == CustomUser.AGENT and not request.path == reverse('adashboard'):
+            return redirect(reverse('adashboard'))
         
         # Get the associated user profile
         # user_profile = UserProfile.objects.get(user=user)
@@ -92,12 +96,16 @@ def mdashboard2(request):
         elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
             return redirect(reverse('index'))
         elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('mdashboard2'):
-            return redirect(reverse('mdashboard2'))  
+            return redirect(reverse('mdashboard2')) 
+        elif user.user_type == CustomUser.AGENT and not request.path == reverse('adashboard'):
+            return redirect(reverse('adashboard')) 
     else:
         return redirect(reverse('index'))
     merchant_products = Product.objects.filter(user=request.user)
     product_count = merchant_products.count()
-    return render(request,'mdashboard2.html',{'merchant_products': merchant_products, 'product_count': product_count})
+    agent_count = CustomUser.objects.filter(user_type=CustomUser.AGENT).count()
+    
+    return render(request,'mdashboard2.html',{'merchant_products': merchant_products, 'product_count': product_count, 'agent_count': agent_count})
 
 
 # Merchant Product add 
@@ -136,6 +144,8 @@ def dashboard1(request):
             return redirect(reverse('index'))
         elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('mdashboard2'):
             return redirect(reverse('mdashboard2'))
+        elif user.user_type == CustomUser.AGENT and not request.path == reverse('adashboard'):
+            return redirect(reverse('adashboard'))
     else:
         return redirect(reverse('index')) 
     
@@ -173,6 +183,8 @@ def login_view(request):
             return redirect(reverse('index'))
         elif user.user_type == CustomUser.MERCHANT:
             return redirect(reverse('mdashboard2'))
+        elif user.user_type == CustomUser.AGENT:
+            return redirect(reverse('adashboard'))
         else:
             return redirect('/')
     elif request.method == 'POST':
@@ -765,11 +777,8 @@ def filter_products(request):
 def purchase(request, product_id):
     user = request.user
     product = get_object_or_404(Product, id=product_id)
-     # Annotate each FuelStation with its average rating
-    # avg_rating = product.annotate(avg_rating=Avg('rating__value'))
-    
-        # Calculate the average rating for the product
     avg_rating = Rating.objects.filter(products=product).aggregate(avg_rating=Avg('value'))
+    comments = Rating.objects.filter(products=product).exclude(comment__exact='')
 
     # Select sizes with stock_quantity > 0 for the specific product_id
     sizes_with_stock = SizeStock.objects.filter(product=product, stock_quantity__gt=0)
@@ -781,8 +790,8 @@ def purchase(request, product_id):
         'images': images,
         'user': user,
         'sizes_with_stock': sizes_with_stock,
-        # 'avg_rating': avg_rating,
         'avg_rating': avg_rating['avg_rating'],
+        'comments': comments,
     }
 
     return render(request, 'purchase.html', context)
@@ -1171,6 +1180,24 @@ def order_complete(request):
         return redirect('summery')
     
 # Main Project
+
+# Add Agent
+def generate_username(first_name, last_name):
+    base_username = (first_name + last_name).lower()
+    potential_username = base_username + ''.join(random.choices(string.ascii_letters, k=5)).lower()
+
+    while User.objects.filter(username=potential_username).exists():
+        potential_username = base_username + ''.join(random.choices(string.ascii_letters, k=5)).lower()
+
+    return potential_username
+
+def generate_password(name):
+    # Use a simple password generation logic (you may want to implement a more secure approach)
+    password = name.lower() + '123'
+    return password
+
+
+@login_required
 def add_agent(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name', None)
@@ -1220,7 +1247,9 @@ def send_welcome_emaila(username,first_name,last_name,email,password):
     
     # Retrieve the associated subscription object # Assuming sub_type is a ManyToMany field
 
-    message += f"You login credentials are {username} plan, which is valid for {password}.\n\n"
+    # message += f"You login credentials are {username} plan, which is valid for {password}.\n\n"
+    message += f"You login credentials are\nusername: {username}\nPassword: {password} \n\n"
+
     
     # message += "Please feel free to contact the property owner for more information or to schedule a viewing of the property.\n\n"
     # message += "Thank you for choosing FindMyNest. We wish you the best in your property search!\n\n"
@@ -1259,6 +1288,8 @@ def rating0(request, product_id):
     return render(request, 'rating.html', context)
 
 
+# Rating
+@login_required
 def rating(request, product_id):
     if request.method == 'POST':
         user = request.user
@@ -1279,3 +1310,93 @@ def rating(request, product_id):
 
 
 
+# Agent Dashboard
+@login_required
+def adashboard(request):
+    user=request.user
+    if request.user.is_authenticated:
+        if user.user_type == CustomUser.ADMIN and not request.path == reverse('dashboard1'):
+            return redirect(reverse('dashboard1'))
+        elif user.user_type == CustomUser.CLIENT and not request.path == reverse('index'):
+            return redirect(reverse('index'))
+        elif user.user_type == CustomUser.MERCHANT and not request.path == reverse('mdashboard2'):
+            return redirect(reverse('mdashboard2'))  
+        elif user.user_type == CustomUser.AGENT and not request.path == reverse('adashboard'):
+            return redirect(reverse('adashboard')) 
+    else:
+        return redirect(reverse('index'))
+    merchant_products = Product.objects.filter(user=request.user)
+    product_count = merchant_products.count()
+    return render(request,'adashboard.html',{'merchant_products': merchant_products, 'product_count': product_count})
+
+
+# Agent Stock View
+@login_required
+def astock_details(request):
+    # Retrieve all SizeStock objects
+    size_stocks = SizeStock.objects.all()
+
+    context = {
+        'size_stocks': size_stocks,
+    }
+
+    return render(request, 'astock_details.html', context)
+
+
+
+# Chat
+from StepGuideApp.models import Thread
+@login_required
+def messages_page(request):
+    threads = Thread.objects.by_user(user=request.user).prefetch_related('chatmessage_thread').order_by('timestamp')
+    context = {
+        'Threads': threads
+    }
+    return render(request, 'messages.html', context)
+
+
+# Agent Edit Profile
+@login_required
+def agent_profile(request):
+    user = request.user
+    user_profile = UserProfile.objects.get(user=user)
+    # user_product = product.objects.filter(user=request.user)
+
+    if request.method == 'POST':
+        # Get the phone number entered by the user
+        new_phone_no = request.POST.get('phone_no')
+
+        # Check if the phone number already exists for a different user
+        existing_user = UserProfile.objects.filter(user__phone_no=new_phone_no).exclude(user=request.user).first()
+        if existing_user:
+            error_message = "Phone number is already registered by another user."
+            return HttpResponseRedirect(reverse('edit_profile') + f'?alert={error_message}')
+        
+        if new_phone_no:
+            user.phone_no = new_phone_no
+            user.save()
+
+        # Update user fields
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.save()
+
+        new_profile_pic = request.FILES.get('profile_pic')
+        if new_profile_pic:
+            user_profile.profile_pic = new_profile_pic
+            user_profile.save()
+            print("profile_get")
+
+        # Update user profile fields
+        user_profile.country = request.POST.get('country')
+        user_profile.state = request.POST.get('state')
+        user_profile.city = request.POST.get('city')
+        user_profile.pin_code = request.POST.get('pin_code')
+        user_profile.save()
+
+        return redirect('agent_profile')
+    context = {
+        'user': user,
+        'user_profile': user_profile,
+    }
+    return render(request, 'agent_profile.html',context)

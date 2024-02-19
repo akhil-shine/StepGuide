@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'channels',
     
 ]
 
@@ -82,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'StepGuide.wsgi.application'
+ASGI_APPLICATION = 'StepGuide.asgi.application'
 
 
 # Database
@@ -142,6 +143,15 @@ MEDIA_URL=''
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        # 'CONFIG': {
+        #     'hosts': [('127.0.0.1', 6379)],
+        # }
+    }
+}
+
 # Emailing settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -176,3 +186,4 @@ LOGOUT_URL = 'logout'
 
 RAZOR_KEY_ID = 'rzp_test_urbnGhXdEwZA2J'
 RAZOR_KEY_SECRET = 'FCjGpWkUtzkkn4udio7VRe6q'
+

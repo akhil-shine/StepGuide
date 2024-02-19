@@ -67,6 +67,46 @@
             font-size: 20px;
             color: #FFD700; /* Adjust color as needed */
         }
+
+        .comments-section {
+            margin-top: 20px;
+            max-width: 600px; /* Adjust the maximum width as needed */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .comments-section h2 {
+            font-size: 24px;
+            color: #333;
+        }
+        
+        .comments-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .comment-item {
+            margin-bottom: 20px;
+        }
+        
+        .comment-content {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        
+        .username {
+            font-weight: bold;
+            color: #007bff; /* Username color */
+        }
+        
+        .comment-text {
+            margin-left: 10px;
+            color: #333; /* Comment text color */
+        }
+        
+        
     </style>
 </head>
 
@@ -406,6 +446,23 @@
             </div>
         </div>
     </section>
+    
+<!-- Display the comments -->
+<div class="comments-section">
+    <h2>Comments</h2>
+    <ul class="comments-list">
+        {% for comment in comments %}
+            <li class="comment-item">
+                <div class="comment-content">
+                    <span class="username">{{ comment.user.username }}</span>:
+                    <span class="comment-text">{{ comment.comment }}</span>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+
     <!-- Close Content -->
 
     <!-- Start Article -->
