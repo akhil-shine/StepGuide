@@ -349,6 +349,7 @@
                             <form action="{% url 'add-to-cart' product_id=product.id %}" method="POST" id="product-form">
                                 {% csrf_token %}
                                 <input type="hidden" name="product-title" value="Activewear">
+                                <input type="hidden" name="selected-size" id="selected-size" value=""> <!-- Hidden input field for selected size -->
                                 <div class="row">
                                     <div class="col-auto">
                                         <ul class="list-inline pb-3">
@@ -363,8 +364,7 @@
                                         </ul>
                                         <script>
                                             function updateSize(size) {
-                                                document.getElementById('product-size').value = size.toString();
-                                                console.log(`Selected Size: ${size}`);
+                                                document.getElementById('selected-size').value = size.toString(); // Update the hidden input field with selected size                                                console.log(`Selected Size: ${size}`);
                                                 console.log(`product-size value: ${document.getElementById('product-size').value}`);
                                             }
                                         </script>
@@ -405,6 +405,25 @@
                                             Size Chart
                                         </a>
                                     </div>
+
+                                    <div class="col d-grid">
+                                        {% if product.user == request.user %}
+                                        <!-- If the property is added by the logged-in user -->
+                                        <span class="btn btn-info disabled">Added by You</span>
+                                    {% elif product in compare_product %}
+                                        <!-- If the property is already in the compare list -->
+                                        <a href="{% url 'compare_product' %}" class="btn btn-secondary">Go to Compare</a>
+                                    {% elif disable_compare_button %}
+                                        <!-- If the user cannot add more product to compare -->
+                                        <span class="btn btn-danger disabled">Cannot add more product to compare </span>
+                                        <a href="{% url 'compare_product' %}" class="btn btn-warning">Go to Compare</a>
+                                        
+                                    {% else %}
+                                        <!-- If the property is not added by the logged-in user and not in the compare list -->
+                                        <a href="{% url 'add_to_compare' product.id %}" class="btn btn-success">Add to Compare</a>
+                                    {% endif %}
+                                     </div>     
+
                                     
                                     
                                     <div id="imageModal" class="modal">
@@ -413,6 +432,8 @@
                                             <img src="{% static "./assets/img/chart.png" %}" alt="Image">
                                         </div>
                                     </div>
+                                    
+
                                     
                                     <script>
                                         // Get the modal and close button elements

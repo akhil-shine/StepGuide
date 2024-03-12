@@ -1,0 +1,394 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Step Guide</title>
+  <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
+  <link rel="stylesheet" href="{% static "dashboard1/css/styles.min.css" %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+  <style>
+    .custom-alert {
+        position: fixed;
+        top: 20px; /* Adjust as needed for desired vertical position */
+        right: 20px; /* Adjust as needed for desired horizontal position */
+        background-color: #4CAF50; /* Green background color */
+        color: white; /* White text color */
+        padding: 10px; /* Padding */
+        text-align: center; /* Center text */
+        font-weight: bold; /* Bold text */
+        z-index: 9999; /* Set a high z-index to ensure it appears above other content */
+}
+.green-text {
+  color: green;
+}
+
+.white-text {
+  color: Black;
+}
+
+.gray-background {
+  background-color: #d1d0cf;
+}
+
+
+    /* CSS for the modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 100px;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    
+    .modal-content {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        width: 70%;
+        margin-left: 15%; /* Add left margin */
+    }
+    
+    
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    /* Custom background styles */
+    .custom-background-1 {
+        background-color: #919193; /* Light gray background color */
+        color: #dcebe0; /* Dark text color */
+        border: 2px solid #ccc; /* Light gray border */
+    }
+
+    /* Bold text styles */
+.white-text {
+    font-weight: bold;
+}
+
+/* Bold text styles with larger font size */
+.white-text {
+    font-weight: bold;
+    font-size: 18px; /* Adjust the font size as needed */
+}
+
+/* Larger font size for the card titles */
+.card-title {
+    font-size: 22px; /* Adjust the font size for card titles */
+    color: #dcebe0; /* Adjust the title color (in this case, a green color) */
+}
+
+
+.container {
+    width: 400px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+p {
+    margin-bottom: 20px;
+    color: #555;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+}
+
+button[type="submit"] {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #c82333;
+}
+
+#startButton{
+  z-index: 1;
+      position: fixed;
+      
+      right: 230px;
+      height: 30px;
+      width: 30px;
+      border-radius: 100%;
+      border: none;
+      background-color: #ff0000;
+}
+
+
+</style>
+</head>
+
+<body>
+  {% if messages %}
+  <script>
+      {% for message in messages %}
+          var alertMessage = '{{ message|safe }}';
+          var customAlert = document.createElement('div');
+          customAlert.classList.add('custom-alert');
+          customAlert.textContent = alertMessage;
+          document.body.appendChild(customAlert);
+
+          // Automatically close the alert after 3 seconds
+          setTimeout(function() {
+              customAlert.style.display = 'none';
+          }, 3000); // 3000 milliseconds = 3 seconds
+      {% endfor %}
+  </script>
+{% endif %}
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <aside class="left-sidebar">
+      <!-- Sidebar scroll-->
+      <div>
+        <div class="brand-logo d-flex align-items-center justify-content-between">
+          <a class="font-weight-bold logo h1 align-self-center text-decoration-none" href="{% url "adashboard" %}" style="color: #59ab6e;"> StepGuide </a>
+          
+
+          <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+            <i class="ti ti-x fs-8"></i>
+          </div>
+        </div>
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+          <ul id="sidebarnav">
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href={% url "adashboard" %} aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                <span class="hide-menu">Home</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "add_new_arrival" %}" aria-expanded="false">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-plus-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M8.5 8a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V12a.5.5 0 0 0 1 0v-1.5H10a.5.5 0 0 0 0-1H8.5z"/>
+                      </svg>
+                </span>
+                <span class="hide-menu">Add New Arrival's</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "new_arrival_list" %}" aria-expanded="false">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                  </svg>
+                </span>
+                <span class="hide-menu">Manage Added Arrival's</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "view_returns" %}" aria-expanded="false">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-kanban" viewBox="0 0 16 16">
+                    <path d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                    <path d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/>
+                  </svg>
+                </span>
+                <span class="hide-menu">Returned Products</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "messages_page" %}" aria-expanded="false">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
+                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
+                  </svg>
+                </span>
+                <span class="hide-menu">Chat</span>
+              </a>
+            </li>
+            
+            
+          </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+      </div>
+      <!-- End Sidebar scroll-->
+    </aside>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      <header class="app-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <ul class="navbar-nav">
+            <li class="nav-item d-block d-xl-none">
+              <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+            {% comment %} <li class="nav-item">
+              <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                <i class="ti ti-bell-ringing"></i>
+                <div class="notification bg-primary rounded-circle"></div>
+              </a>
+            </li> {% endcomment %}
+          </ul>
+
+          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Agent!</p>
+          </div>
+          <button id="startButton"><i class="bi bi-mic-mute-fill text-white"></i></button>
+
+          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+              {% comment %} <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary">Download Free</a> {% endcomment %}
+              Welcome, {{ user.first_name }}
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <img src="{% static "dashboard1/images/profile/user-1.jpg" %}" alt="" width="35" height="35" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                  <div class="message-body">
+                    <a href="{% url "agent_profile" %}" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-user fs-6"></i>
+                      <p  class="mb-0 fs-3" >My Profile</p>
+                    </a>
+                    {% comment %} <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-mail fs-6"></i>
+                      <p class="mb-0 fs-3">My Account</p>
+                    </a>
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-list-check fs-6"></i>
+                      <p class="mb-0 fs-3">My Task</p>
+                    </a> {% endcomment %}
+                    <a href="{% url "logout" %}" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                    {% comment %} <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li> {% endcomment %}
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+
+      <br> <br> <br> <br> <br> <br>
+      
+      <div class="container">
+        <h1>Delete New Arrival</h1>
+        <p>Are you sure you want to delete "{{ new_arrival.product_name }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Confirm Delete</button>
+        </form>
+    </div>
+
+    <script>
+      const startButton = document.getElementById('startButton');
+  
+      const recognition = new webkitSpeechRecognition(); // Create a new instance of SpeechRecognition
+  
+      recognition.lang = 'en-US'; // Set recognition language
+  
+      recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          console.log('Recognition result:', transcript);
+          
+          // Check if the transcript contains the word "home"
+          if (transcript.toLowerCase().includes('home')) {
+            window.location.href = "http://127.0.0.1:8000/adashboard.html/"; // Redirect to the agent list URL
+        }
+        // Check if the transcript contains the word "property"
+        else if (transcript.toLowerCase().includes('arrival')) {
+          window.location.href = "http://127.0.0.1:8000/add_new_arrival/";
+           // Redirect to the property list URL
+      }
+      else if (transcript.toLowerCase().includes('manage')) {
+        window.location.href = "http://127.0.0.1:8000/new-arrivals/";
+         // Redirect to the property list URL
+    }
+    else if (transcript.toLowerCase().includes('edit')) {
+      window.location.href = "http://127.0.0.1:8000/new-arrival/6/edit/";
+       // Redirect to the property list URL
+  }
+    else if (transcript.toLowerCase().includes('delete')) {
+      window.location.href = "http://127.0.0.1:8000/new-arrival/6/delete/";
+       // Redirect to the property list URL
+
+  }
+    else if (transcript.toLowerCase().includes('chat')) {
+      window.location.href = "http://127.0.0.1:8000/messages_page/";
+      // Redirect to the property list URL
+
+  }
+    else if (transcript.toLowerCase().includes('product')) {
+      window.location.href = "http://127.0.0.1:8000/view-returns/";
+      // Redirect to the property list URL
+  }
+      };
+  
+      recognition.onerror = (event) => {
+          console.error('Recognition error:', event.error);
+      };
+  
+      let isRecognizing = false;
+  
+      recognition.onstart = () => {
+          startButton.innerHTML = '<i class="bi bi-mic-fill text-white"></i>';
+          isRecognizing = true;
+      };
+  
+      recognition.onend = () => {
+          isRecognizing = false;
+      };
+  
+      startButton.addEventListener('click', () => {
+          if (isRecognizing) {
+              recognition.stop();
+          } else {
+              recognition.start();
+          }
+      });
+  </script>
+
+               
+  <script src="{% static "dashboard1/libs/jquery/dist/jquery.min.js" %}"></script>
+  <script src="{% static "dashboard1/libs/bootstrap/dist/js/bootstrap.bundle.min.js" %}"></script>
+  <script src="{% static "dashboard1/js/sidebarmenu.js" %}"></script>
+  <script src="{% static "dashboard1/js/app.min.js" %}"></script>
+  <script src="{% static "dashboard1/libs/apexcharts/dist/apexcharts.min.js" %}"></script>
+  <script src="{% static "dashboard1/libs/simplebar/dist/simplebar.js" %}"></script>
+  <script src="{% static "dashboard1/js/dashboard.js" %}"></script>
+</body>
+
+</html>

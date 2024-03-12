@@ -8,7 +8,8 @@
   <title>Step Guide</title>
   <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
   <link rel="stylesheet" href="{% static "dashboard1/css/styles.min.css" %}" />
-  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 
   <style>
     .custom-alert {
@@ -65,6 +66,12 @@
   border: 2px solid #ccc;
 }
 
+.custom-background-8 {
+  background-color: #7367ef; /* Lightest gray background color */
+  color: #333;
+  border: 2px solid #ccc;
+}
+
 /* Bold text styles */
 .white-text {
     font-weight: bold;
@@ -82,10 +89,24 @@
     color: #dcebe0; /* Adjust the title color (in this case, a green color) */
 }
 
+#startButton{
+  z-index: 1;
+      position: fixed;
+      
+      right: 200px;
+      height: 30px;
+      width: 30px;
+      border-radius: 100%;
+      border: none;
+      background-color: #ff0000;
+}
+
+
 </style>
 </head>
 
 <body>
+  
   {% if messages %}
   <script>
       {% for message in messages %}
@@ -102,6 +123,8 @@
       {% endfor %}
   </script>
 {% endif %}
+
+
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
@@ -332,7 +355,7 @@
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Admin!</p>
           </div>
-
+          <button id="startButton"><i class="bi bi-mic-mute-fill text-white"></i></button>
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
               {% comment %} <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary">Download Free</a> {% endcomment %}
@@ -404,6 +427,18 @@
                 </div>
             </div>
 
+            <div class="col-lg-3 d-flex align-items-stretch">
+              <!-- Merchant Users Section -->
+              <div class="card w-100 custom-background-8">
+                  <div class="card-body p-4">
+                      <div class="mb-6">
+                          <h5 class="card-title fw-bold green-text">Agent Users</h5>
+                          <p class="white-text fw-bold">Agent User Count: <strong>{{ agent_count }}</strong></p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
         <!-- Active Users Section -->
         <div class="col-lg-3 d-flex align-items-stretch">
           <div class="card w-100 custom-background-4">
@@ -432,7 +467,77 @@
         </div>
     </div>
     
+
+    <script>
+      const startButton = document.getElementById('startButton');
+  
+      const recognition = new webkitSpeechRecognition(); // Create a new instance of SpeechRecognition
+  
+      recognition.lang = 'en-US'; // Set recognition language
+  
+      recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          console.log('Recognition result:', transcript);
+          
+          // Check if the transcript contains the word "home"
+          if (transcript.toLowerCase().includes('home')) {
+            window.location.href = "http://127.0.0.1:8000/dashboard1.html/"; // Redirect to the agent list URL
+        }
+        // Check if the transcript contains the word "hello"
+        else if (transcript.toLowerCase().includes('list')) {
+          window.location.href = "http://127.0.0.1:8000/userview.html/";
+           // Redirect to the property list URL
+      }
+      else if (transcript.toLowerCase().includes('category')) {
+        window.location.href = "http://127.0.0.1:8000/add_category/";
+         // Redirect to the property list URL
+    }
+    else if (transcript.toLowerCase().includes('sub')) {
+      window.location.href = "http://127.0.0.1:8000/add_subcategory/";
+       // Redirect to the property list URL
+  }
+    else if (transcript.toLowerCase().includes('manage')) {
+      window.location.href = "http://127.0.0.1:8000/manage_categories/";
+       // Redirect to the property list URL
+
+  }
+    else if (transcript.toLowerCase().includes('chat')) {
+      window.location.href = "http://127.0.0.1:8000/messages_page/";
+      // Redirect to the property list URL
+
+  }
+    else if (transcript.toLowerCase().includes('stock')) {
+      window.location.href = "http://127.0.0.1:8000/astock_details/";
+      // Redirect to the property list URL
+  }
+      };
+  
+      recognition.onerror = (event) => {
+          console.error('Recognition error:', event.error);
+      };
+  
+      let isRecognizing = false;
+  
+      recognition.onstart = () => {
+          startButton.innerHTML = '<i class="bi bi-mic-fill text-white"></i>';
+          isRecognizing = true;
+      };
+  
+      recognition.onend = () => {
+          isRecognizing = false;
+      };
+  
+      startButton.addEventListener('click', () => {
+          if (isRecognizing) {
+              recognition.stop();
+          } else {
+              recognition.start();
+          }
+      });
+  </script>
     
+
+  
     
     
     

@@ -350,8 +350,13 @@
               <input type="file" id="product-image" name="thumbnail" class="form-control">
           </div>
             
-          <button type="submit" id="update-product-button" class="btn btn-primary">Update Product</button>
-          <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">Cancel</a
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update Product</button>
+        </form>
+          {% comment %} <button type="submit" id="update-product-button" class="btn btn-primary">Update Product</button> {% endcomment %}
+          {% comment %} <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">Cancel</a {% endcomment %}
               
         
         <!-- The Modal -->

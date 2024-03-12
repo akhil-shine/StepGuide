@@ -8,6 +8,7 @@
   <title>Step Guide</title>
   <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
   <link rel="stylesheet" href="{% static "dashboard1/css/styles.min.css" %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
   <style>
     .custom-alert {
@@ -83,6 +84,18 @@ input[type="submit"] {
   width: 100%;
   max-width: 500px; /* Adjust this width as needed */
   z-index: 1000; /* Ensure the alert is on top of other content */
+}
+
+#startButton{
+  z-index: 1;
+      position: fixed;
+      
+      right: 200px;
+      height: 30px;
+      width: 30px;
+      border-radius: 100%;
+      border: none;
+      background-color: #ff0000;
 }
 </style>
 </head>
@@ -231,6 +244,17 @@ input[type="submit"] {
               </a>
             </li>
 
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "messages_page" %}" aria-expanded="false">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
+                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
+                  </svg>
+                </span>
+                <span class="hide-menu">Chat</span>
+              </a>
+            </li>
+
           </ul>
         </nav>
       </div>
@@ -251,6 +275,7 @@ input[type="submit"] {
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Admin!</p>
           </div>
+          <button id="startButton"><i class="bi bi-mic-mute-fill text-white"></i></button>
 
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
@@ -327,6 +352,74 @@ input[type="submit"] {
             }, 5000);  // Remove after 5 seconds
         }
     });
+</script>
+
+<script>
+  const startButton = document.getElementById('startButton');
+
+  const recognition = new webkitSpeechRecognition(); // Create a new instance of SpeechRecognition
+
+  recognition.lang = 'en-US'; // Set recognition language
+
+  recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      console.log('Recognition result:', transcript);
+      
+      // Check if the transcript contains the word "home"
+      if (transcript.toLowerCase().includes('home')) {
+        window.location.href = "http://127.0.0.1:8000/dashboard1.html/"; // Redirect to the agent list URL
+    }
+    // Check if the transcript contains the word "hello"
+    else if (transcript.toLowerCase().includes('list')) {
+      window.location.href = "http://127.0.0.1:8000/userview.html/";
+       // Redirect to the property list URL
+  }
+  else if (transcript.toLowerCase().includes('category')) {
+    window.location.href = "http://127.0.0.1:8000/add_category/";
+     // Redirect to the property list URL
+}
+else if (transcript.toLowerCase().includes('sub')) {
+  window.location.href = "http://127.0.0.1:8000/add_subcategory/";
+   // Redirect to the property list URL
+}
+else if (transcript.toLowerCase().includes('manage')) {
+  window.location.href = "http://127.0.0.1:8000/manage_categories/";
+   // Redirect to the property list URL
+
+}
+else if (transcript.toLowerCase().includes('chat')) {
+  window.location.href = "http://127.0.0.1:8000/messages_page/";
+  // Redirect to the property list URL
+
+}
+else if (transcript.toLowerCase().includes('stock')) {
+  window.location.href = "http://127.0.0.1:8000/astock_details/";
+  // Redirect to the property list URL
+}
+  };
+
+  recognition.onerror = (event) => {
+      console.error('Recognition error:', event.error);
+  };
+
+  let isRecognizing = false;
+
+  recognition.onstart = () => {
+      startButton.innerHTML = '<i class="bi bi-mic-fill text-white"></i>';
+      isRecognizing = true;
+  };
+
+  recognition.onend = () => {
+      isRecognizing = false;
+  };
+
+  startButton.addEventListener('click', () => {
+      if (isRecognizing) {
+          recognition.stop();
+      } else {
+          recognition.start();
+      }
+  });
 </script>
                
   <script src="{% static "dashboard1/libs/jquery/dist/jquery.min.js" %}"></script>

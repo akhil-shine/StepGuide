@@ -8,27 +8,14 @@
   <title>Step Guide</title>
   <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
   <link rel="stylesheet" href="{% static "dashboard1/css/styles.min.css" %}" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.17.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
   <style>
-
-    /* Table Styles */
-table {
-  width: 250%;
-  border-collapse: collapse;
-  margin-top: 20px; /* Adjust as needed */
-}
-
-th, td {
-  border: 1px solid #ddd; /* Border color */
-  padding: 8px; /* Padding inside cells */
-  text-align: left; /* Text alignment */
-}
-
-th {
-  background-color: #4CAF50; /* Header background color */
-  color: white; /* Header text color */
-}
-
     .custom-alert {
         position: fixed;
         top: 20px; /* Adjust as needed for desired vertical position */
@@ -51,62 +38,38 @@ th {
 .gray-background {
   background-color: #d1d0cf;
 }
+</style>
 
+<style>
+  .thumbnail-cell {
+      width: 50px; /* Set width for the cell */
+      text-align: center; /* Center align content */
+  }
+  
+  .thumbnail-wrapper {
+      width: 40px; /* Set width for the wrapper */
+      height: 40px; /* Set height for the wrapper */
+      border-radius: 50%; /* Make it circular */
+      overflow: hidden; /* Hide overflow */
+      margin: 0 auto; /* Center horizontally */
+  }
+  
+  .thumbnail-wrapper img {
+      max-width: 100%; /* Ensure image fits inside wrapper */
+      border-radius: 50%; /* Maintain circular shape */
+  }
 
-    /* CSS for the modal */
-    .modal {
-        display: none;
+  #startButton{
+    z-index: 1;
         position: fixed;
-        z-index: 1;
-        left: 100px;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.4);
-    }
-    
-    .modal-content {
-        background-color: #fff;
-        margin: 15% auto;
-        padding: 20px;
-        width: 70%;
-        margin-left: 15%; /* Add left margin */
-    }
-    
-    
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-    /* Custom background styles */
-    .custom-background-1 {
-        background-color: #919193; /* Light gray background color */
-        color: #dcebe0; /* Dark text color */
-        border: 2px solid #ccc; /* Light gray border */
-    }
-
-    /* Bold text styles */
-.white-text {
-    font-weight: bold;
-}
-
-/* Bold text styles with larger font size */
-.white-text {
-    font-weight: bold;
-    font-size: 18px; /* Adjust the font size as needed */
-}
-
-/* Larger font size for the card titles */
-.card-title {
-    font-size: 22px; /* Adjust the font size for card titles */
-    color: #dcebe0; /* Adjust the title color (in this case, a green color) */
-}
-
-
-
+        
+        right: 205px;
+        height: 30px;
+        width: 30px;
+        border-radius: 100%;
+        border: none;
+        background-color: #ff0000;
+  }
 </style>
 </head>
 
@@ -145,6 +108,53 @@ th {
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
           <ul id="sidebarnav">
+            {% comment %} <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu"></span>
+            </li> {% endcomment %}
+            
+            {% comment %} <li class="sidebar-item">
+              <a class="sidebar-link" href={% url "dashboard1" %} aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                <span class="hide-menu">Home</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "userview" %}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-layout-dashboard"></i>
+                </span>
+                <span class="hide-menu">Users List</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "add_category" %}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                <span class="hide-menu">Add Category</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "add_subcategory" %}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                <span class="hide-menu">Add Sub Category</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "manage_categories" %}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                <span class="hide-menu">Manage Categories</span>
+              </a>
+            </li> {% endcomment %}
+
 
             <li class="sidebar-item">
               <a class="sidebar-link" href={% url "dashboard1" %} aria-expanded="false">
@@ -227,9 +237,105 @@ th {
               </a>
             </li>
 
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "messages_page" %}" aria-expanded="false">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
+                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
+                  </svg>
+                </span>
+                <span class="hide-menu">Chat</span>
+              </a>
+            </li>
 
-            
+            {% comment %} <li class="sidebar-item">
+              <a class="sidebar-link" href="./ui-alerts.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-alert-circle"></i>
+                </span>
+                <span class="hide-menu">Alerts</span>
+              </a>
+            </li> {% endcomment %}
+            {% comment %} <li class="sidebar-item">
+              <a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-cards"></i>
+                </span>
+                <span class="hide-menu">Card</span>
+              </a>
+            </li> {% endcomment %}
+            {% comment %} <li class="sidebar-item">
+              <a class="sidebar-link" href="./ui-forms.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-file-description"></i>
+                </span>
+                <span class="hide-menu">Forms</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-typography"></i>
+                </span>
+                <span class="hide-menu">Typography</span>
+              </a>
+
+              
+            </li> {% endcomment %}
+            {% comment %} <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">AUTHENTICATION</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "login" %}"aria-expanded="false">
+                <span>
+                  <i class="ti ti-login"></i>
+                </span>
+                <span class="hide-menu">Login</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "m_register" %}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-user-plus"></i>
+                </span>
+                <span class="hide-menu">Register</span>
+              </a>
+            </li> {% endcomment %}
+
+
+            {% comment %} <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">EXTRA</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./icon-tabler.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-mood-happy"></i>
+                </span>
+                <span class="hide-menu">Icons</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./sample-page.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-aperture"></i>
+                </span>
+                <span class="hide-menu">Sample Page</span>
+              </a>
+            </li> {% endcomment %}
           </ul>
+          {% comment %} <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
+            <div class="d-flex">
+              <div class="unlimited-access-title me-3">
+                <h6 class="fw-semibold fs-4 mb-6 text-dark w-85">Upgrade to pro</h6>
+                <a href="https://adminmart.com/product/modernize-bootstrap-5-admin-template/" target="_blank" class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
+              </div>
+              <div class="unlimited-access-img">
+                <img src="{% static "dashboard1/images/backgrounds/rocket.png" %}" alt="" class="img-fluid">
+              </div>
+            </div>
+          </div> {% endcomment %}
         </nav>
         <!-- End Sidebar navigation -->
       </div>
@@ -256,8 +362,9 @@ th {
           </ul>
 
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Agent!</p>
+            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Admin!</p>
           </div>
+          <button id="startButton"><i class="bi bi-mic-mute-fill text-white"></i></button>
 
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
@@ -291,50 +398,149 @@ th {
           </div>
         </nav>
       </header>
+      <!--  Header End -->
+
       
       <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-3 d-flex align-items-stretch">
-                <!-- Total Users Section -->
-                      {% block content %}
-        <div class="container-fluid">
-          <div class="container table-container">
-            {% comment %} <p class="text-success logo h1 align-self-center" style="font-size: 28px;">My Product</p> {% endcomment %}
-            <h1>Stock Details</h1>
-            <table>
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Size</th>
-                  <th>Stock Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for size_stock in size_stocks %}
+        <div class="container table-container">
+            <p class="text-success logo h1 align-self-center" style="font-size: 28px;">Stock Details</p>
+            {% block content %}
+            <table id="userTable" class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                      <th>Sl.No</th>
+                      <th>Image</th>
+                      <th>Product</th>
+                      <th>Category</th>
+                      <th>Subcategory</th>
+                      <th>Size</th>
+                      <th>Gender</th>
+                      <th>Stock Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for size_stock in size_stocks %}
                   <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="thumbnail-cell">
+                      <div class="thumbnail-wrapper">
+                          <img src="{{ size_stock.product.thumbnail.url }}" alt="Thumbnail">
+                      </div>
+                  </td>
                     <td>{{ size_stock.product }}</td>
+                    <td>{{ size_stock.product.category }}</td>
+                    <td>{{ size_stock.product.subcategory }}</td>
                     <td>{{ size_stock.size }}</td>
+                    <td>
+                      {% if size_stock.product.male %}
+                          Male
+                      {% endif %}
+                      {% if size_stock.product.female %}
+                          {% if size_stock.product.male %}
+                              &amp;
+                          {% endif %}
+                          Female
+                      {% endif %}
+                      {% if not size_stock.product.male and not size_stock.product.female %}
+                          Not Specified
+                      {% endif %}
+                  </td>
                     <td>{{ size_stock.stock_quantity }}</td>
                   </tr>
-                {% endfor %}
-              </tbody>
+                    {% endfor %}
+                </tbody>
             </table>
-          </div>
         </div>
-      {% endblock %}
-                    </div>
-                </div>
-            </div>
-
-
+    </div>
+    {% endblock %}
+</div>
+</div>
                
-  <script src="{% static "dashboard1/libs/jquery/dist/jquery.min.js" %}"></script>
-  <script src="{% static "dashboard1/libs/bootstrap/dist/js/bootstrap.bundle.min.js" %}"></script>
-  <script src="{% static "dashboard1/js/sidebarmenu.js" %}"></script>
-  <script src="{% static "dashboard1/js/app.min.js" %}"></script>
-  <script src="{% static "dashboard1/libs/apexcharts/dist/apexcharts.min.js" %}"></script>
-  <script src="{% static "dashboard1/libs/simplebar/dist/simplebar.js" %}"></script>
-  <script src="{% static "dashboard1/js/dashboard.js" %}"></script>
-</body>
+      <script src="{% static "dashboard1/libs/jquery/dist/jquery.min.js" %}"></script>
+      <script src="{% static "dashboard1/libs/bootstrap/dist/js/bootstrap.bundle.min.js" %}"></script>
+      <script src="{% static "dashboard1/js/sidebarmenu.js" %}"></script>
+      <script src="{% static "dashboard1/js/app.min.js" %}"></script>
+      <script src="{% static "dashboard1/libs/apexcharts/dist/apexcharts.min.js" %}"></script>
+      <script src="{% static "dashboard1/libs/simplebar/dist/simplebar.js" %}"></script>
+      <script src="{% static "dashboard1/js/dashboard.js" %}"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    
+    <script>
+    $(document).ready(function () {
+        $('#userTable').DataTable();
+    });
+    </script>
 
-</html>
+    <script>
+      const startButton = document.getElementById('startButton');
+  
+      const recognition = new webkitSpeechRecognition(); // Create a new instance of SpeechRecognition
+  
+      recognition.lang = 'en-US'; // Set recognition language
+  
+      recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          console.log('Recognition result:', transcript);
+          
+          // Check if the transcript contains the word "home"
+          if (transcript.toLowerCase().includes('home')) {
+            window.location.href = "http://127.0.0.1:8000/dashboard1.html/"; // Redirect to the agent list URL
+        }
+        // Check if the transcript contains the word "hello"
+        else if (transcript.toLowerCase().includes('list')) {
+          window.location.href = "http://127.0.0.1:8000/userview.html/";
+           // Redirect to the property list URL
+      }
+      else if (transcript.toLowerCase().includes('category')) {
+        window.location.href = "http://127.0.0.1:8000/add_category/";
+         // Redirect to the property list URL
+    }
+    else if (transcript.toLowerCase().includes('sub')) {
+      window.location.href = "http://127.0.0.1:8000/add_subcategory/";
+       // Redirect to the property list URL
+  }
+    else if (transcript.toLowerCase().includes('manage')) {
+      window.location.href = "http://127.0.0.1:8000/manage_categories/";
+       // Redirect to the property list URL
+
+  }
+    else if (transcript.toLowerCase().includes('chat')) {
+      window.location.href = "http://127.0.0.1:8000/messages_page/";
+      // Redirect to the property list URL
+
+  }
+    else if (transcript.toLowerCase().includes('stock')) {
+      window.location.href = "http://127.0.0.1:8000/astock_details/";
+      // Redirect to the property list URL
+  }
+      };
+  
+      recognition.onerror = (event) => {
+          console.error('Recognition error:', event.error);
+      };
+  
+      let isRecognizing = false;
+  
+      recognition.onstart = () => {
+          startButton.innerHTML = '<i class="bi bi-mic-fill text-white"></i>';
+          isRecognizing = true;
+      };
+  
+      recognition.onend = () => {
+          isRecognizing = false;
+      };
+  
+      startButton.addEventListener('click', () => {
+          if (isRecognizing) {
+              recognition.stop();
+          } else {
+              recognition.start();
+          }
+      });
+  </script>
+    </body>
+    
+    </html>

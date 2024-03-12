@@ -103,21 +103,47 @@ urlpatterns = [
     path('summery/', views.summery, name='summery'),
     path('handle-payment/', views.handle_payment, name='handle-payment'),
     path('order_complete/', views.order_complete, name='order_complete'),
+    
+    
+    
+    
+    
 
-# main Project
-path('add_agent/',views.add_agent,name='add_agent'),
-path('my-orders/',my_orders, name='my_orders'),
-path('rating/<int:product_id>/', views.rating, name='rating'),
-path('rating0/<int:product_id>/', views.rating0, name='rating0'),
+    # main Project
+    path('add_agent/',views.add_agent,name='add_agent'),
+    path('my-orders/',my_orders, name='my_orders'),
+    path('rating/<int:product_id>/', views.rating, name='rating'),
+    path('rating0/<int:product_id>/', views.rating0, name='rating0'),
 
-path('adashboard.html/',views.adashboard,name='adashboard'),
-path('astock_details/', views.astock_details, name='astock_details'),
+    path('adashboard.html/',views.adashboard,name='adashboard'),
+    path('astock_details/', views.astock_details, name='astock_details'),
 
-# Chat
-path('messages_page/', views.messages_page, name='messages_page'),
+    # Chat
+    path('messages_page/', views.messages_page, name='messages_page'),
+    path('agent_profile.html/',views.agent_profile,name='agent_profile'),
 
-path('agent_profile.html/',views.agent_profile,name='agent_profile'),
+    # Product Comparison
+    path('add_to_compare/<int:product_id>/', views.add_to_compare, name='add_to_compare'),
+    path('compare/', views.compare_product, name='compare_product'),
+    path('remove_product/<int:product_id>/', views.remove_product, name='remove_product'),
+
+    # Product Edit & Desiable
+    path('update/<int:pk>/', views.update_product, name='update_product'),
+    path('disable/<int:pk>/', views.disable_product, name='disable_product'),
+    path('enable/<int:pk>/', views.enable_product, name='enable_product'),
+    path('clear_all_notifications/', views.clear_all_notifications, name='clear_all_notifications'),
+    path('stock_details1/', views.stock_details1, name='stock_details1'),
+    
+    # New Arrivals
+    path('add_new_arrival/', views.add_new_arrival, name='add_new_arrival'),
+    path('new-arrivals/', views.new_arrival_list, name='new_arrival_list'),
+    path('new-arrival/<int:pk>/edit/', views.new_arrival_edit, name='new_arrival_edit'),
+    path('new-arrival/<int:pk>/delete/', views.new_arrival_delete, name='new_arrival_delete'),
+    path('view_arrival/', views.view_arrival, name='view_arrival'),
 
 
-
+    # Return Product
+    path('return-product/', views.return_product, name='return_product'),
+    path('view-returns/', views.view_returns, name='view_returns'),
+    path('returned_product_list/', views.returned_product_list, name='returned_product_list'),
 ]

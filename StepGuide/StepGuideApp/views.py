@@ -3,9 +3,9 @@ import string
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth import login as auth_login ,authenticate, logout
 from django.shortcuts import render, redirect
-from .models import AgentProfile, CustomUser, Product
+from .models import AgentProfile, CustomUser, Product, ProductReturn
 from .decorators import user_not_authenticated
-from .models import CustomUser,UserProfile,Category,Subcategory,Image,Wishlist,BookCart,SizeStock,Cart,CartItem,Order, OrderItem, Rating
+from .models import CustomUser,UserProfile,Category,Subcategory,Image,Wishlist,BookCart,SizeStock,Cart,CartItem,Order, OrderItem, Rating, CompareProduct,Notification,NewArrival
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.http import HttpResponseBadRequest, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
@@ -31,6 +31,12 @@ import razorpay
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Avg
+from django import forms
+from django.utils import timezone
+from .forms import NewArrivalForm, ProductReturnForm
+from django.core.exceptions import ObjectDoesNotExist
+
+
 
 
 razorpay_client = razorpay.Client(
@@ -105,7 +111,12 @@ def mdashboard2(request):
     product_count = merchant_products.count()
     agent_count = CustomUser.objects.filter(user_type=CustomUser.AGENT).count()
     
-    return render(request,'mdashboard2.html',{'merchant_products': merchant_products, 'product_count': product_count, 'agent_count': agent_count})
+    notifications = Notification.objects.filter(
+    recipient=request.user, is_read=False)
+    
+    
+    return render(request,'mdashboard2.html',{'notifications': notifications,'merchant_products': merchant_products, 'product_count': product_count, 'agent_count': agent_count})
+    
 
 
 # Merchant Product add 
@@ -161,6 +172,7 @@ def dashboard1(request):
     # Client and Merchant Counts
     client_count = CustomUser.objects.filter(user_type=CustomUser.CLIENT).count()
     merchant_count = CustomUser.objects.filter(user_type=CustomUser.MERCHANT).count()
+    agent_count = CustomUser.objects.filter(user_type=CustomUser.AGENT).count()
 
     context = {
         'user_count': user_count,
@@ -168,6 +180,7 @@ def dashboard1(request):
         'inactive_user_count': inactive_user_count,
         'client_count': client_count,
         'merchant_count': merchant_count,
+        'agent_count': agent_count
     }
     
     return render(request,'dashboard1.html',context)
@@ -774,6 +787,7 @@ def filter_products(request):
 
 
 # display in single page
+@login_required
 def purchase(request, product_id):
     user = request.user
     product = get_object_or_404(Product, id=product_id)
@@ -784,6 +798,9 @@ def purchase(request, product_id):
     sizes_with_stock = SizeStock.objects.filter(product=product, stock_quantity__gt=0)
 
     images = Image.objects.filter(product=product)
+    
+    compare_product = CompareProduct.objects.filter(user=user).first()
+    compare_product_list = compare_product.Product.all() if compare_product else []
 
     context = {
         'product': product,
@@ -792,7 +809,11 @@ def purchase(request, product_id):
         'sizes_with_stock': sizes_with_stock,
         'avg_rating': avg_rating['avg_rating'],
         'comments': comments,
+        'compare_product': compare_product_list,  # Pass the compare properties to the context
     }
+    if len(compare_product_list) >= 4 and product not in compare_product_list:
+        messages.error(request, "You cannot add more properties to compare. Remove a property from compare to add another.")
+        context['disable_compare_button'] = True
 
     return render(request, 'purchase.html', context)
 
@@ -911,14 +932,58 @@ def order_details(request):
 # Display Stock Details
 @login_required
 def stock_details(request):
-    # Retrieve all SizeStock objects
-    size_stocks = SizeStock.objects.all()
+    user = request.user
+    
+    # Filter SizeStock objects based on the user
+    size_stocks = SizeStock.objects.filter(product__user=user)
+    
+    # Function to check if stock is zero and create notification
+    zero_stock_sizes = []
+    for stock in size_stocks:
+        if stock.stock_quantity == 0:
+            zero_stock_sizes.append(stock)
+            
+            # Create a notification
+            Notification.objects.create(
+                recipient=user,
+                message=f"{stock.product.brand_name} size- {stock.size} is out of stock.",
+                timestamp=timezone.now()
+            )
 
     context = {
         'size_stocks': size_stocks,
+        'zero_stock_sizes': zero_stock_sizes,  # Pass the list of SizeStock objects with zero stock
     }
 
     return render(request, 'stock_details.html', context)
+
+
+@login_required
+def stock_details1(request):
+    user = request.user
+    
+    # Filter SizeStock objects based on the user
+    size_stocks = SizeStock.objects.filter(product__user=user)
+    
+    # Function to check if stock is zero and create notification
+    zero_stock_sizes = []
+    for stock in size_stocks:
+        if stock.stock_quantity == 0:
+            zero_stock_sizes.append(stock)
+            
+            # Create a notification
+            Notification.objects.create(
+                recipient=user,
+                message=f"The stock for {stock.product.brand_name} - {stock.size} is out of stock.",
+                timestamp=timezone.now()
+            )
+
+    context = {
+        'size_stocks': size_stocks,
+        'zero_stock_sizes': zero_stock_sizes,  # Pass the list of SizeStock objects with zero stock
+    }
+
+    return render(request, 'mdashboard2.html', context)
 
 
 @login_required
@@ -974,16 +1039,18 @@ def shipping_address(request):
 def add_to_cart(request, product_id):
     product = Product.objects.get(pk=product_id)
     cart, created = Cart.objects.get_or_create(user=request.user)
-    cart_item, item_created = CartItem.objects.get_or_create(cart=cart, product=product)
-    selected_size = request.POST.get('product-size', '1')  # Default to '1' if not provided
+    selected_size = request.POST.get('selected-size', '1')  # Extract selected size from POST data
     print(selected_size)
+    
+    # Assuming CartItem has a 'size' field to store the selected size
+    cart_item, item_created = CartItem.objects.get_or_create(cart=cart, product=product, size=selected_size)
     
     if not item_created:
         cart_item.quantity += 1
-        cart_item.size = selected_size  # Fix the typo here
         cart_item.save()
         
-    return redirect('productlist')
+    return redirect('cart')
+
 
 
 
@@ -1020,13 +1087,18 @@ def increase_cart_item(request, product_id):
 def decrease_cart_item(request, product_id):
     product = Product.objects.get(pk=product_id)
     cart = request.user.cart
-    cart_item = cart.cartitem_set.get(product=product)
-
-    if cart_item.quantity > 1:
-        cart_item.quantity -= 1
-        cart_item.save()
-    else:
-        cart_item.delete()
+    
+    try:
+        cart_item = cart.cartitem_set.filter(product=product).first()
+        
+        if cart_item:
+            if cart_item.quantity > 1:
+                cart_item.quantity -= 1
+                cart_item.save()
+            else:
+                cart_item.delete()
+    except ObjectDoesNotExist:
+        pass
 
     return redirect('cart')
 
@@ -1274,6 +1346,7 @@ def my_orders(request):
     return render(request, 'my_orders.html', {'orders': orders})
 
 
+@login_required
 def rating0(request, product_id):
     products = get_object_or_404(Product,id=product_id)
     orders = Order.objects.filter(user=request.user, payment_status=True).order_by('-created_at')
@@ -1327,7 +1400,11 @@ def adashboard(request):
         return redirect(reverse('index'))
     merchant_products = Product.objects.filter(user=request.user)
     product_count = merchant_products.count()
-    return render(request,'adashboard.html',{'merchant_products': merchant_products, 'product_count': product_count})
+    new_arrival_count = NewArrival.objects.filter(user=request.user).count()
+    return_request_count = ProductReturn.objects.filter(user=request.user).count()
+    approved_return_count = ProductReturn.objects.filter(agent=request.user, status='Accepted').count()
+    rejected_return_count = ProductReturn.objects.filter(agent=request.user, status='Rejected').count()
+    return render(request,'adashboard.html',{'merchant_products': merchant_products, 'product_count': product_count, 'new_arrival_count': new_arrival_count, 'return_request_count': return_request_count, 'approved_return_count': approved_return_count, 'rejected_return_count': rejected_return_count})
 
 
 # Agent Stock View
@@ -1400,3 +1477,178 @@ def agent_profile(request):
         'user_profile': user_profile,
     }
     return render(request, 'agent_profile.html',context)
+
+
+# Comparison
+@login_required
+def add_to_compare(request, product_id):
+    # Retrieve the property object
+    product_obj = get_object_or_404(Product, pk=product_id)
+
+    # Check if the user is authenticated
+    if request.user.is_authenticated:
+        # Get or create CompareProperty object for the user
+        compare_product, created = CompareProduct.objects.get_or_create(user=request.user)
+
+        # Check if the property is already in the compare list
+        if product_obj in compare_product.Product.all():
+            messages.error(request, "This property is already in your compare list.")
+        elif compare_product.Product.count() >= 4:
+            messages.error(request, "You can only compare up to 4 properties.")
+        else:
+            # Add the property to the compare list
+            compare_product.Product.add(product_obj)
+            messages.success(request, "Property added to compare list successfully.")
+    else:
+        messages.error(request, "You need to be logged in to add properties to compare list.")
+
+    return redirect('purchase', product_id=product_id)
+
+@login_required
+def compare_product(request):
+    # Get the CompareProperty objects for the logged-in user
+    compare_product = CompareProduct.objects.filter(user=request.user)
+
+    context = {'compare_product': compare_product}
+
+    return render(request, 'compare_product.html', context)
+
+@login_required
+def remove_product(request, product_id):
+    try:
+        user = request.user
+        compare_product = CompareProduct.objects.get(user=user)
+        product_to_remove = compare_product.Product.get(id=product_id)
+        compare_product.Product.remove(product_to_remove)
+        return redirect(reverse('compare_product'))  # Redirect to another view after removal
+    except CompareProduct.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'CompareProduct not found'})
+    except Product.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Product not found'})
+    
+    
+# update Product
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['brand_name', 'category', 'subcategory', 'product_description', 'material_description', 'male', 'female', 'price', 'thumbnail'] 
+
+
+@login_required
+def update_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('product_list')  # Redirect to product list page after successful update
+    else:
+        form = ProductForm(instance=product)
+    return render(request, 'update_product.html', {'form': form})
+
+
+@login_required
+def disable_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    product.status = False
+    product.save()
+    return redirect('product_list')  # Redirect to product list page after disabling the product
+
+
+@login_required
+def enable_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    product.status = True
+    product.save()
+    return redirect('product_list') 
+
+@login_required
+def clear_all_notifications(request):
+    if request.method == 'POST':
+        Notification.objects.filter(recipient=request.user).delete()
+    return redirect('mdashboard2')
+
+@login_required
+def add_new_arrival(request):
+    if request.method == 'POST':
+        form = NewArrivalForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_arrival = form.save(commit=False)
+            new_arrival.user = request.user
+            new_arrival.save()
+            return redirect('new_arrival_list')  # Redirect to the merchant dashboard or any other appropriate page
+    else:
+        form = NewArrivalForm()
+    return render(request, 'add_new_arrival.html', {'form': form})
+
+
+@login_required
+def new_arrival_list(request):
+    new_arrivals = NewArrival.objects.filter(user=request.user)
+    return render(request, 'new_arrival_list.html', {'new_arrivals': new_arrivals})
+
+
+@login_required
+def new_arrival_edit(request, pk):
+    new_arrival = get_object_or_404(NewArrival, pk=pk)
+    if request.method == 'POST':
+        form = NewArrivalForm(request.POST, instance=new_arrival)
+        if form.is_valid():
+            form.save()
+            return redirect('new_arrival_list')
+    else:
+        form = NewArrivalForm(instance=new_arrival)
+    return render(request, 'new_arrival_edit.html', {'form': form})
+
+
+@login_required
+def new_arrival_delete(request, pk):
+    new_arrival = get_object_or_404(NewArrival, pk=pk)
+    if request.method == 'POST':
+        new_arrival.delete()
+        return redirect('new_arrival_list')
+    return render(request, 'new_arrival_delete.html', {'new_arrival': new_arrival})
+
+
+@login_required
+def view_arrival(request):
+    new_arrivals = NewArrival.objects.all()
+    return render(request, 'view_arrival.html', {'new_arrivals': new_arrivals})
+
+
+# Retun Product
+@login_required
+def return_product(request):
+    if request.method == 'POST':
+        form = ProductReturnForm(request.POST, request.FILES)
+        if form.is_valid():
+            product_return = form.save(commit=False)
+            product_return.user = request.user
+            product_return.save()
+            return redirect('mdashboard2')  # Redirect to the merchant dashboard
+    else:
+        form = ProductReturnForm()
+    return render(request, 'return_product.html', {'form': form})
+
+
+@login_required
+def view_returns(request):
+    if request.method == 'POST':
+        product_return = ProductReturn.objects.get(pk=request.POST['product_return_id'])
+        if 'approve' in request.POST:
+            product_return.status = 'Accepted'
+            product_return.agent = request.user
+        elif 'reject' in request.POST:
+            product_return.status = 'Rejected'
+        product_return.save()
+        return redirect('view_returns')  # Redirect to the agent dashboard
+
+    returns = ProductReturn.objects.filter(agent=request.user)
+    return render(request, 'view_returns.html', {'returns': returns})
+
+
+@login_required
+def returned_product_list(request):
+    # Filter returned products based on the current user's ID
+    returned_products = ProductReturn.objects.filter(user=request.user)
+    return render(request, 'returned_product_list.html', {'returned_products': returned_products})

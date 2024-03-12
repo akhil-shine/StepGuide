@@ -29,6 +29,86 @@ TemplateMo 559 Zay Shop
 https://templatemo.com/tm-559-zay-shop
 
 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<style>
+    /* Container styles */
+    .contact-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    /* Button styles */
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-call-us {
+      background-color: #007bff; /* Blue color for Call Us button */
+    }
+
+    .btn-call-us:hover {
+      background-color: #0056b3; /* Darker shade of blue on hover */
+    }
+
+    .btn-whatsapp {
+      background-color: #25d366; /* WhatsApp green color */
+    }
+
+    .btn-whatsapp:hover {
+      background-color: #128c7e; /* Darker shade of WhatsApp green on hover */
+    }
+
+    /* Social icons */
+    .social-icons {
+      margin-top: 10px;
+      list-style: none;
+      padding: 0;
+    }
+
+    .social-icons li {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .social-icons li:last-child {
+      margin-right: 0;
+    }
+
+    .social-icons a {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      font-size: 24px;
+      color: #fff;
+      text-align: center;
+      line-height: 40px;
+      border-radius: 50%;
+      background-color: #007bff; /* Blue color for social icons */
+      transition: background-color 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      background-color: #0056b3; /* Darker shade of blue on hover */
+    }
+
+    /* WhatsApp icon */
+    .whatsapp-icon {
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -211,6 +291,24 @@ https://templatemo.com/tm-559-zay-shop
     </div> {% endcomment %}
     <!-- End Contact -->
 
+
+    <div class="contact-container">
+        <!-- Call Us Button -->
+        <a href="tel:+917994247484" class="btn btn-call-us">Call Us</a>
+        
+        <!-- Social Media Links -->
+        <ul class="social-icons">
+          <li><a href="https://facebook.com/yourpage" target="_blank"><i class="fab fa-facebook"></i></a></li>
+          <li><a href="https://twitter.com/yourpage" target="_blank"><i class="fab fa-twitter"></i></a></li>
+          <li><a href="https://instagram.com/yourpage" target="_blank"><i class="fab fa-instagram"></i></a></li>
+        </ul>
+      
+        <!-- WhatsApp Button -->
+        <a href="https://api.whatsapp.com/send/?phone=%2B917994247484&text=Your%20message%20goes%20here&app_absent=0" target="_blank" class="btn btn-whatsapp rounded-5 py-2 px-4 btn-smaller-font">
+          <img src="https://cdn.icon-icons.com/icons2/2716/PNG/512/whatsapp_logo_icon_172797.png" alt="WhatsApp Logo" class="whatsapp-icon">
+          Chat on WhatsApp
+        </a>
+      </div>
 
     <!-- Start Brands -->
     <section class="bg-light py-5">

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser,UserProfile,Category,Subcategory,Product,Image,Wishlist,BookCart,SizeStock,ShippingAddress,Cart,CartItem,Order,OrderItem,AgentProfile
+from .models import CustomUser,UserProfile,Category,Subcategory,Product,Image,Wishlist,BookCart,SizeStock,ShippingAddress,Cart,CartItem,Order,OrderItem,AgentProfile,NewArrival,ProductReturn
 from .models import Thread, ChatMessage
 
 
@@ -23,6 +23,9 @@ admin.site.register(CartItem)
 admin.site.register(Order)
 admin.site.register(OrderItem)
 admin.site.register(AgentProfile)
+admin.site.register(NewArrival)
+admin.site.register(ProductReturn)
+
 
 
 

@@ -1,0 +1,570 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Comparison</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="{% static "assets/img/apple-icon.png" %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.ico" %}">
+
+    <link rel="stylesheet" href="{% static "assets/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/templatemo.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/custom.css" %}">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="{% static "assets/css/fontawesome.min.css" %}">
+
+    <style>
+        .product-wap {
+            transition: transform 0.3s ease;
+        }
+    
+        .product-wap:hover {
+            transform: scale(1.1); /* Adjust the scale factor as needed */
+        }
+
+        .wishlist-container {
+            text-align: center;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .wishlist-heading {
+            color: #69bb7e; /* Replace with your custom color */
+            font-size: 60px; /* Adjust the font size as needed */
+            line-height: 100px; /* Adjust the value to vertically center the text */
+            margin: 20px 0; /* Add margin top and bottom for spacing */
+        }
+
+        .container1 {
+            max-width: 1500px;
+            margin: auto; /* Center the container */
+            padding: 20px; /* Add some padding */
+            border: 1px solid #ccc; /* Optional: Add a border around the container */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px; /* Optional: Add some space below the container */
+          }
+        
+
+            .text-custom-truncate {
+              display: -webkit-box !important;
+              max-width: 500px;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+              font-size: 25px;
+            }
+        
+            .table thead tr th {
+              background-color: white;
+              margin-right: 100px !important;
+              z-index: 10;
+              position: sticky;
+              font-size: 18px;
+              
+          }
+          
+        
+        
+            table {
+              text-align: left;
+              position: relative;
+              border-collapse: collapse; 
+              font-size: 20px;
+              padding-bottom: 20px;
+              margin-bottom: 10px;
+            }
+        
+            th {
+              background-color: rgb(67, 170, 36);
+              top: 0;
+              margin-right: 100px !important;
+              box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+              font-size: 20px;
+            }
+        
+            .table-responsive {
+              overflow-x: inherit !important;
+            }
+        
+            /* Add green shade */
+            .green-shade {
+              background-color: #69bb7e;
+              /* Green shade */
+            }
+        
+            .price {
+              font-size: 24px;
+            }
+        
+        /* Add space between each <tr> in the table body */
+          tbody tr {
+            margin-bottom: 10px;
+          }
+          
+          /* Make the background of <th> elements inside <tbody> */
+          tbody th {
+            background-color: lightblue; /* Change to your desired background color */
+          }
+        
+        
+    </style>
+
+    
+
+</head>
+
+<body>
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between" >
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@stepguide.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
+                </div>
+                {% comment %} <div>
+                    <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
+                </div> {% endcomment %}
+            </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow" style="padding: 1px 0;">
+        <div class="container d-flex justify-content-between align-items-center">
+    
+            <a class="navbar-brand text-success logo h2 align-self-center" href="{% url "index" %}">
+                StepGuide
+            </a>
+    
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="templatemo_main_nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-center align-items-center mx-lg-auto fs-5 py-0">
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "index" %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "about" %}">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "productlist" %}">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 fw-bold" href="{% url "contact" %}">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <div class="d-lg-none flex-sm-fill mt-2 mb-2 col-7 col-sm-auto pr-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                            <div class="input-group-text">
+                                <i class="fa fa-fw fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                        <i class="fa fa-fw fa-search text-dark mx-2"></i>
+                    </a> {% endcomment %}
+                    <a class="nav-icon position-relative text-decoration-none" href="{% url 'cart'  %}">
+                        <i class="fa fa-fw fa-cart-arrow-down text-dark mx-2"></i>
+                        <!-- <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span> -->
+                    </a>
+                    <div class="ml-2 dropdown">
+                        {% if user.is_authenticated %}
+                            <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Welcome, {{ user.username }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "my_orders" %}" id="my_orders"> My Orders</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "edit_profile" %}">Edit</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "wishlist_view" %}">Wishlist</a></li>
+                                <li><a class="dropdown-item text-decoration-none fw-bold" href="{% url "logout" %}">Logout</a></li>
+                            </ul>
+                        {% else %}
+                            <a class="nav-link fw-bold" href="{% url "login" %}">Login</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <!-- Close Header -->
+
+    <!-- Modal -->
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="w-100 pt-1 mb-5 text-right">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!-- Start Content -->
+    <div class="container py-5">
+        
+        <div class="wishlist-container">
+            <h1 class="wishlist-heading"> Product Comparison </h1>
+        </div>
+
+        <div class="container1">    
+        <div class="container" style="max-width: 1500px;">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr class="simple-head">
+                      <th width="150px">
+                          <div class="bg-white h-100 w-100"> </div>
+                      </th>
+                      {% for compare_product in compare_product %}
+                      {% for product in compare_product.Product.all %}
+    
+                      <th width="300px" class="green-shade">
+                          <div class="mb-2">
+                              <div class="d-flex justify-content-between align-items-center">
+                                  <img src="{{ product.thumbnail.url }}" width="150">
+                                  <!-- Add cross symbol here -->
+                                  
+                              </div>
+                              <form action="{% url 'remove_product' product.id %}" method="post">
+                                {% csrf_token %}
+                                <center><button type="submit" class="remove-property" style="cursor: pointer; border: none; background: none;">&#10006;</button></center>
+                            </form>                                            
+    
+                              <hr>
+                              <div class="d-flex justify-content-between align-items-center">
+                                  <h6 class="mb-0 price"> &#8360; {{ product.price }}</h6>
+                              </div>
+                          </div>
+                      </th>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+              </thead>
+                <tbody style="background-color: #f2f2f2;">
+                  <!-- Rows for other property details -->
+              
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Brand Name</th>
+                      {% for compare_product in compare_product %}
+                      {% for product in compare_product.Product.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ product.brand_name }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">category</th>
+                      {% for compare_product in compare_product %}
+                      {% for product in compare_product.Product.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ product.category }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">subcategory</th>
+                      {% for compare_product in compare_product %}
+                      {% for product in compare_product.Product.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ product.subcategory }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Description</th>
+                      {% for compare_product in compare_product %}
+                      {% for product in compare_product.Product.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ product.product_description }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Material</th>
+                      {% for compare_product in compare_product %}
+                      {% for product in compare_product.Product.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ product.material_description }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Gender</th>
+                      {% for compare_product in compare_product %}
+                      {% for product in compare_product.Product.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">
+                        {% if product.male %}
+                            Male
+                        {% elif product.female %}
+                            Female
+                        {% else %}
+                            Other
+                        {% endif %}
+                    </td>
+                    
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+
+
+                  {% comment %} <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Area</th>
+                      {% for compare_product in compare_product %}
+                      {% for product in compare_product.Product.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.area }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Total Rooms</th>
+                      {% for compare_property in compare_properties %}
+                      {% for property in compare_property.properties.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.rooms }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Bedrooms</th>
+                      {% for compare_property in compare_properties %}
+                      {% for property in compare_property.properties.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.bedrooms }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Bathrooms</th>
+                      {% for compare_property in compare_properties %}
+                      {% for property in compare_property.properties.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.bathrooms }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Attached bathrooms</th>
+                      {% for compare_property in compare_properties %}
+                      {% for property in compare_property.properties.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.bathrooms_attached }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Total Rooms</th>
+                      {% for compare_property in compare_properties %}
+                      {% for property in compare_property.properties.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.rooms }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">No. Garage</th>
+                      {% for compare_property in compare_properties %}
+                      {% for property in compare_property.properties.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.garage }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Building Age</th>
+                      {% for compare_property in compare_properties %}
+                      {% for property in compare_property.properties.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.building_age }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Last Renovated</th>
+                      {% for compare_property in compare_properties %}
+                      {% for property in compare_property.properties.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.last_renovated }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Distance To Major Road</th>
+                      {% for compare_property in compare_properties %}
+                      {% for property in compare_property.properties.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.major_road }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Distance To Nearest Hospital</th>
+                      {% for compare_property in compare_properties %}
+                      {% for property in compare_property.properties.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.near_hospital }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Distance To Nearest Supermarket</th>
+                      {% for compare_property in compare_properties %}
+                      {% for property in compare_property.properties.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.near_supermarket }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Posted At</th>
+                      {% for compare_property in compare_properties %}
+                      {% for property in compare_property.properties.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.created_at }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr>
+                  <tr style="margin-bottom: 10px; margin-top: 10px;">
+                      <th scope="row" class="table-header" style=" margin-right: 20px; background-color: #45ad25; color: white; padding: 10px;">Details Modified At</th>
+                      {% for compare_property in compare_properties %}
+                      {% for property in compare_property.properties.all %}
+                      <td class="base-item" style="margin-right: 10px !important; padding: 10px; border-right: 1px solid white;border-top: 1px solid #45ad25; border-bottom: 1px solid #45ad25;">{{ property.modified_at }}</td>
+                      {% endfor %}
+                      {% endfor %}
+                  </tr> {% endcomment %}
+                  <!-- Repeat the above rows for additional property details -->
+              </tbody>
+              
+              
+              </table>
+            </div>
+          </div>
+        </div>
+
+        
+    </div>
+    <!-- End Content -->
+
+
+
+    
+    {% comment %} <!-- Start Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">Step Guide</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li>
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                            Kottayam, Kerala 686513
+                        </li>
+                        <li>
+                            <i class="fa fa-phone fa-fw"></i>
+                            <a class="text-decoration-none" href="tel:010-020-0340">+91 7994247484</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="mailto:info@company.com">info@stepguide.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="#">Sandals</a></li>
+                        <li><a class="text-decoration-none" href="#">Formal Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Men's Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Women's Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Kids Footwears</a></li>
+                        <li><a class="text-decoration-none" href="#">Shoes Accessories</a></li>
+                        <li><a class="text-decoration-none" href="#">Casual Shoes</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="#">Home</a></li>
+                        <li><a class="text-decoration-none" href="#">About Us</a></li>
+                        <li><a class="text-decoration-none" href="#">Company Locations</a></li>
+                        <li><a class="text-decoration-none" href="#">FAQs</a></li>
+                        <li><a class="text-decoration-none" href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="row text-light mb-4">
+                <div class="col-12 mb-3">
+                    <div class="w-100 my-3 border-top border-light"></div>
+                </div>
+                <div class="col-auto me-auto">
+                    <ul class="list-inline text-left footer-icons">
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://twitter.com/"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    <label class="sr-only" for="subscribeEmail">Email address</label>
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control bg-dark border-light" id="subscribeEmail" placeholder="Email address">
+                        <div class="input-group-text btn-success text-light">Subscribe</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            Copyright &copy; 2023 Step Guide 
+                            | Designed by <a rel="sponsored" href="https://www.linkedin.com/in/akhil-shine-051233224" target="_blank">Akhil Shine</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    <!-- End Footer --> {% endcomment %}
+
+    <!-- Start Script -->
+    <script src="{% static "assets/js/jquery-1.11.0.min.js" %}"></script>
+    <script src="{% static "assets/js/jquery-migrate-1.2.1.min.js" %}"></script>
+    <script src="{% static "assets/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "assets/js/templatemo.js" %}"></script>
+    <script src="{% static "assets/js/custom.js" %}"></script>
+    <!-- End Script -->
+</body>
+
+</html>
