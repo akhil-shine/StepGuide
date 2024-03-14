@@ -92,60 +92,88 @@
 
 
 .container {
-    width: 400px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+  width: 500px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-left: 300px; /* Move the container to the left */
+  margin-top: 50px; /* Move the container to the left */
 }
 
 h1 {
-    margin-bottom: 20px;
-    color: #333;
-    text-align: center;
+  margin-bottom: 20px;
+  color: #cc9b47;
+  text-align: center;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
+  display: flex;
+  flex-direction: column; /* Change to column */
+  margin-bottom: 16px;
 }
 
 label {
-    font-weight: bold;
-    margin-right: 10px;
-    color: #555;
-    width: 40%; /* Adjust width as needed */
-    text-align: right;
+  font-weight: bold;
+  margin-bottom: 5px; /* Adjust margin */
+  color: #555;
+  width: 100%; /* Adjust width */
+  text-align: left; /* Align left */
 }
 
 input[type="text"],
 input[type="number"] {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 button[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px; /* Add some margin to the top */
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
+
+.invalid-feedback,
+.valid-feedback {
+    display: none;
+    font-size: 14px; /* Adjust font size */
+    margin-top: 5px; /* Add margin to the top */
+}
+
+.is-invalid input[type="text"],
+.is-invalid input[type="number"] {
+    border-color: #dc3545; /* Red border color for invalid inputs */
+}
+
+.is-valid input[type="text"],
+.is-valid input[type="number"] {
+    border-color: #28a745; /* Green border color for valid inputs */
+}
+
+.invalid-feedback {
+    color: #dc3545; /* Red color for invalid feedback */
+}
+
+.valid-feedback {
+    color: #28a745; /* Green color for valid feedback */
+}
+
+
 
 #startButton{
   z-index: 1;
@@ -323,28 +351,107 @@ button[type="submit"]:hover {
       
       <div class="container">
         <h1>Edit New Arrival</h1>
-        <form method="post">
+        <form method="post" id="edit-new-arrival-form">
             {% csrf_token %}
             <div class="form-group">
                 <label for="id_product_name">Product Name:</label>
                 <input type="text" id="id_product_name" name="product_name" value="{{ form.product_name.value }}">
+                <div class="invalid-feedback" id="pname-invalid-feedback">Only letters and spaces are allowed</div>
+                <div class="valid-feedback" id="pname-valid-feedback">Looks good!</div>
             </div>
             <div class="form-group">
                 <label for="id_given_price">Given Price:</label>
                 <input type="number" id="id_given_price" name="given_price" value="{{ form.given_price.value }}">
+                <div class="invalid-feedback" id="gprice-invalid-feedback">Invalid given price</div>
+                <div class="valid-feedback" id="gprice-valid-feedback">Looks good!</div>
             </div>
             <div class="form-group">
                 <label for="id_mrp">MRP:</label>
                 <input type="number" id="id_mrp" name="mrp" value="{{ form.mrp.value }}">
+                <div class="invalid-feedback" id="mrp-invalid-feedback">Invalid MRP</div>
+                <div class="valid-feedback" id="mrp-valid-feedback">Looks good!</div>
             </div>
             <div class="form-group">
                 <label for="id_size_available">Size Available:</label>
                 <input type="text" id="id_size_available" name="size_available" value="{{ form.size_available.value }}">
+                <div class="invalid-feedback" id="size-invalid-feedback">Invalid size</div>
+                <div class="valid-feedback" id="size-valid-feedback">Looks good!</div>
             </div>
             <!-- Add other form groups for additional fields -->
             <button type="submit">Save Changes</button>
         </form>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('edit-new-arrival-form');
+            const productNameInput = document.getElementById('id_product_name');
+            const givenPriceInput = document.getElementById('id_given_price');
+            const mrpInput = document.getElementById('id_mrp');
+            const sizeAvailableInput = document.getElementById('id_size_available');
+    
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+                if (validateForm()) {
+                    form.submit(); // Submit the form if validation passes
+                }
+            });
+    
+            // Attach keyup event listeners to the input fields
+            productNameInput.addEventListener('keyup', validateProductName);
+            givenPriceInput.addEventListener('keyup', validateGivenPrice);
+            mrpInput.addEventListener('keyup', validateMRP);
+            sizeAvailableInput.addEventListener('keyup', validateSizeAvailable);
+    
+            function validateForm() {
+                return (
+                    validateProductName() &&
+                    validateGivenPrice() &&
+                    validateMRP() &&
+                    validateSizeAvailable()
+                );
+            }
+    
+            function validateProductName() {
+                const pattern = /^[A-Za-z0-9-& ]+$/; // Allow letters, numbers, hyphens, and spaces
+                return validateField(productNameInput, pattern, 'pname-invalid-feedback', 'pname-valid-feedback');
+            }
+    
+            function validateGivenPrice() {
+                const pattern = /^\d+(\.\d{1,2})?$/;
+                return validateField(givenPriceInput, pattern, 'gprice-invalid-feedback', 'gprice-valid-feedback');
+            }
+    
+            function validateMRP() {
+                const pattern = /^\d+(\.\d{1,2})?$/;
+                return validateField(mrpInput, pattern, 'mrp-invalid-feedback', 'mrp-valid-feedback');
+            }
+    
+            function validateSizeAvailable() {
+                const pattern = /^(\d{1,2}-\d{1,2}|\d{1,2}|-)$/; // Allow any sequence of digits and hyphens, single digits, or just a hyphen
+                return validateField(sizeAvailableInput, pattern, 'size-invalid-feedback', 'size-valid-feedback');
+            }
+    
+            function validateField(inputElement, pattern, invalidFeedbackId, validFeedbackId) {
+                const invalidFeedback = document.getElementById(invalidFeedbackId);
+                const validFeedback = document.getElementById(validFeedbackId);
+                if (!pattern.test(inputElement.value)) {
+                    inputElement.classList.add('is-invalid');
+                    inputElement.classList.remove('is-valid');
+                    invalidFeedback.style.display = 'block';
+                    validFeedback.style.display = 'none';
+                    return false;
+                } else {
+                    inputElement.classList.remove('is-invalid');
+                    inputElement.classList.add('is-valid');
+                    invalidFeedback.style.display = 'none';
+                    validFeedback.style.display = 'block';
+                    return true;
+                }
+            }
+        });
+    </script>
+    
 
     <script>
       const startButton = document.getElementById('startButton');

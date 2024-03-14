@@ -91,66 +91,66 @@
 }
 
 .container {
-    width: 650px; /* Adjust the width as needed */
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    text-align: left;
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Arrange items vertically */
+  width: 600px; /* Adjust the width as needed */
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  text-align: left;
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Arrange items vertically */
+  margin-left: 240px; /* Move the container to the left */
 }
 
 .container h1 {
-    margin-bottom: 20px;
-    color: #59ab6e;
-    text-align: center; /* Center the text */
+  margin-bottom: 20px;
+  color: #59ab6e;
+  text-align: center; /* Center the text */
 }
 
 .form-group {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Spacing between label and input */
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column; /* Arrange label and input vertically */
 }
 
 .form-group label {
-    flex: 1; /* Take up 1/3 of container width */
-    margin-right: 10px;
-    font-weight: bold;
-    color: #555555;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555555;
 }
 
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group input[type="file"] {
-    flex: 2; /* Take up 2/3 of container width */
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #dddddd;
-    transition: border-color 0.3s ease;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #dddddd;
+  transition: border-color 0.3s ease;
 }
 
 .form-group input[type="text"]:focus,
 .form-group input[type="number"]:focus,
 .form-group input[type="file"]:focus {
-    border-color: #007bff;
-    outline: none;
+  border-color: #007bff;
+  outline: none;
 }
 
 button[type="submit"] {
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: flex-end; /* Align button to the right */
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
+
 
 #startButton{
   z-index: 1;
@@ -324,35 +324,126 @@ button[type="submit"]:hover {
         </nav>
       </header>
 
-      <br> <br> <br> <br> <br> <br>
+      <br> <br> <br> <br> <br>
       
       <div class="container">
         <h1>Add New Arrival</h1>
-        <form method="post" enctype="multipart/form-data" class="arrival-form">
+        <form method="post" enctype="multipart/form-data" class="arrival-form" id="new-arrival-form">
             {% csrf_token %}
             <div class="form-group">
                 <label for="id_product_name">Product Name:</label>
                 {{ form.product_name }}
+                <div class="invalid-feedback" id="pnamevalid">Only letters and spaces are allowed</div>
+                <div class="valid-feedback" id="pnvalid">Looks good!</div>
             </div>
             <div class="form-group">
                 <label for="id_image">Image:</label>
                 {{ form.image }}
+                <!-- Add invalid and valid feedback elements if needed -->
             </div>
             <div class="form-group">
                 <label for="id_given_price">Given Price:</label>
                 {{ form.given_price }}
+                <div class="invalid-feedback" id="gpricevalid">Please enter a valid price</div>
+                <div class="valid-feedback" id="gpvalid">Looks good!</div>
             </div>
             <div class="form-group">
                 <label for="id_mrp">MRP:</label>
                 {{ form.mrp }}
+                <div class="invalid-feedback" id="mrpvalid">Please enter a valid price</div>
+                <div class="valid-feedback" id="mvalid">Looks good!</div>
             </div>
             <div class="form-group">
                 <label for="id_size_available">Size Available:</label>
                 {{ form.size_available }}
+                <div class="invalid-feedback" id="savalid">Only numbers and - are allowed</div>
+                <div class="valid-feedback" id="svalid">Looks good!</div>
             </div>
             <button type="submit" class="btn btn-primary">Add New Arrival</button>
         </form>
     </div>
+    
+
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const form = document.getElementById('new-arrival-form');
+          const productNameInput = document.getElementById('id_product_name');
+          const givenPriceInput = document.getElementById('id_given_price');
+          const mrpInput = document.getElementById('id_mrp');
+          const sizeAvailableInput = document.getElementById('id_size_available');
+  
+          form.addEventListener('submit', function(event) {
+              event.preventDefault(); // Prevent default form submission
+              if (validateForm()) {
+                  form.submit(); // Submit the form if validation passes
+              }
+          });
+  
+          // Attach keyup event listeners to the input fields
+          productNameInput.addEventListener('keyup', validateProductName);
+          givenPriceInput.addEventListener('keyup', validateGivenPrice);
+          mrpInput.addEventListener('keyup', validateMRP);
+          sizeAvailableInput.addEventListener('keyup', validateSizeAvailable);
+  
+          function validateForm() {
+              return (
+                  validateProductName() &&
+                  validateGivenPrice() &&
+                  validateMRP() &&
+                  validateSizeAvailable()
+              );
+          }
+  
+          function validateProductName() {
+            const pattern = /^[A-Za-z0-9-& ]+$/; // Allow letters, numbers, hyphens, and spaces
+            return validateField(productNameInput, pattern, 'pnamevalid', 'pnvalid');
+        }
+        
+  
+          function validateGivenPrice() {
+              const pattern = /^\d+(\.\d{1,2})?$/;
+              return validateField(givenPriceInput, pattern, 'gpricevalid', 'gpvalid');
+          }
+  
+          function validateMRP() {
+              const pattern = /^\d+(\.\d{1,2})?$/;
+              return validateField(mrpInput, pattern, 'mrpvalid', 'mvalid');
+          }
+  
+          function validateSizeAvailable() {
+            const pattern = /^(\d{1,2}-\d{1,2}|\d{1,2}|-)$/; // Allow any sequence of digits and hyphens, single digits, or just a hyphen
+            return validateField(sizeAvailableInput, pattern, 'savalid', 'svalid');
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+  
+          function validateField(inputElement, pattern, invalidFeedbackId, validFeedbackId) {
+              const invalidFeedback = document.getElementById(invalidFeedbackId);
+              const validFeedback = document.getElementById(validFeedbackId);
+              if (!pattern.test(inputElement.value)) {
+                  inputElement.classList.add('is-invalid');
+                  inputElement.classList.remove('is-valid');
+                  invalidFeedback.style.display = 'block';
+                  validFeedback.style.display = 'none';
+                  return false;
+              } else {
+                  inputElement.classList.remove('is-invalid');
+                  inputElement.classList.add('is-valid');
+                  invalidFeedback.style.display = 'none';
+                  validFeedback.style.display = 'block';
+                  return true;
+              }
+          }
+      });
+  </script>
+  
     
 
     <script>
