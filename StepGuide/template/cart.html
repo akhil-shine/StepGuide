@@ -164,6 +164,27 @@
         
 
 
+        /* CSS for the pop-up message */
+        .popup-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f8d7da;
+            padding: 20px;
+            border: 2px solid #f5c6cb;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            display: none; /* Hide pop-up by default */
+        }
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+        }
+
     </style>
     
 </head>
@@ -284,6 +305,7 @@
     <div class="wishlist-container">
         <h1 class="wishlist-heading"> Cart </h1>
     </div>
+
     <div class="product-details-container" style="width: 100%; max-width: 700px;">
         {% for item in cart_items %}
             <div class="product-container card mb-3">
@@ -298,8 +320,9 @@
                             <p class="address-details"><strong>Size:</strong> {{ item.size }}</p>
     
                             <!-- Plus-Minus quantity input -->
+                            
                             <div class="cart-item-quantity">
-                                <form action="{% url 'increase-cart-item' item.product.id %}" method="post">
+                                <form id="increase-form" action="{% url 'increase-cart-item' item.product.id %}" method="post">
                                     {% csrf_token %}
                                     <button class="quantity-btn increase-quantity" type="submit"><i class="fas fa-plus"></i></button>
                                 </form>
@@ -343,13 +366,12 @@
             <a href="{% url 'shippingaddress' %}" id="add-product-button" class="btn btn-success">Place Order</a>
         </div>
         
-        
-        
-        
-        
-           
-
 {% endblock %}
+
+<div id="popup" class="popup-container">
+    <span class="close-btn" onclick="closePopup()">&times;</span>
+    <p id="error-message">{{ error_message }}</p>
+</div>
 
 </body>
 
@@ -553,6 +575,24 @@
 
     </footer>
     <!-- End Footer -->
+
+
+    <script>
+        // JavaScript function to close the pop-up message
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        // JavaScript function to show the pop-up message
+        function showPopup() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        // Call the showPopup function if error message exists
+        {% if error_message %}
+            showPopup();
+        {% endif %}
+    </script>
 
     <script>
     

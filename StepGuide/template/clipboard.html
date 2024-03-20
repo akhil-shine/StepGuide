@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foot Size Measurement Result</title>
+</head>
+<body>
+    <h1>Foot Size Measurement Result</h1>
+    <p>Predicted feet size (cm): <span id="predictedFootSize">{{ foot_size_cm }}</span></p>
+    <p>Labeled size: <span id="labeledSize"></span></p>
+
+    <script>
+        function findLabelNumber(centimeters) {
+            // Given data points
+            var dataPoints = [
+                { cm: 24.6, label: 6 },
+                { cm: 25.4, label: 7 },
+                { cm: 26.2, label: 8 }
+            ];
+
+            // Find the index of the closest data point with centimeters less than or equal to the given centimeters
+            var index = 0;
+            for (var i = 1; i < dataPoints.length; i++) {
+                if (centimeters >= dataPoints[i].cm) {
+                    index = i;
+                } else {
+                    break;
+                }
+            }
+
+            // Calculate the label number using linear interpolation
+            var labelDifference = 0.8; // Difference between consecutive label sizes
+            var labelSize = dataPoints[index].label - Math.floor((dataPoints[index].cm - centimeters) / labelDifference);
+
+            return labelSize;
+        }
+
+        // Fetch predicted foot size (in centimeters) from the HTML page
+        var predictedFootSizeCm = parseFloat(document.getElementById('predictedFootSize').innerText);
+
+        // Call findLabelNumber function to calculate the labeled size
+        var labeledSize = findLabelNumber(predictedFootSizeCm);
+
+        // Display the labeled size in the HTML page
+        document.getElementById('labeledSize').innerText = labeledSize;
+    </script>
+</body>
+</html>

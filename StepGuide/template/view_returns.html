@@ -94,12 +94,80 @@
           z-index: 1;
               position: fixed;
               
-              right: 230px;
+              right: 390px;
               height: 30px;
               width: 30px;
               border-radius: 100%;
               border: none;
               background-color: #ff0000;
+        }
+
+        #google_translate_element .skiptranslate{
+          display: inline !important;
+        
+        }
+        .goog-te-gadget{
+          color: transparent !important;
+        }
+        /* Dark Theme for the select dropdown */
+        .goog-te-combo {
+          padding: 8px; /* Add padding for spacing */
+          font-size: 14px; /* Set font size */
+          border: 1px solid #666; /* Dark border */
+          border-radius: 4px; /* Add rounded corners */
+          background-color: #333; /* Dark background color */
+          color: #fff; /* Light text color */
+        }
+        
+        /* Style the select dropdown when it's hovered */
+        .goog-te-combo:hover {
+          border-color: #999; /* Darker border color on hover */
+        }
+        
+        /* Style the select dropdown when it's focused (clicked) */
+        .goog-te-combo:focus {
+          outline: none; /* Remove the default focus outline */
+          border-color: #007bff; /* Change border color on focus */
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a shadow on focus */
+        }
+        
+        /* Style the dropdown arrow */
+        .goog-te-combo-arrow {
+          font-size: 12px; /* Adjust arrow size */
+          color: #fff; /* Light arrow color */
+        }
+        
+        /* Style the dropdown options */
+        .goog-te-menu-value {
+          font-size: 14px; /* Set font size for options */
+          color: #fff; /* Light text color for options */
+          background-color: #333; /* Dark background color for options */
+        }
+        
+        /* Style the dropdown options on hover */
+        .goog-te-menu-value:hover {
+          background-color: #007bff; /* Change background color on hover */
+          color: #fff; /* Light text color on hover */
+        }
+        
+        #google_translate_element .skiptranslate{
+          display: inline !important;
+        
+        }
+        .VIpgJd-ZVi9od-l4eHX-hSRGPd {
+          display: none;
+        }
+        .skiptranslate span {
+          display: none;
+        }
+        
+        
+        .VIpgJd-ZVi9od-ORHb-OEVmcd.skiptranslate {
+          display: none;
+        }
+        
+        .gg {
+          color: white;
         }
         
     </style>
@@ -231,6 +299,8 @@
 
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+              <div ><span class="gg">Select Language: </span>
+                <div id="google_translate_element"></div></div>
               {% comment %} <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary">Download Free</a> {% endcomment %}
               Welcome, {{ user.first_name }}
               <li class="nav-item dropdown">
@@ -294,6 +364,15 @@
           {% endfor %}
       </div>
       {% endblock %}
+
+
+      <script type="text/javascript"> 
+        function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+      }
+      </script>
+      
+      <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
       
 
 

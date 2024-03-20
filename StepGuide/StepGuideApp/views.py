@@ -35,6 +35,15 @@ from django import forms
 from django.utils import timezone
 from .forms import NewArrivalForm, ProductReturnForm
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import F
+
+from django.shortcuts import render
+from django.conf import settings
+from .utils import preprocess, kMeans_cluster, edgeDetection, getBoundingBox, cropOrig, overlayImage, calcFeetSize
+import os
+import cv2
+from skimage.io import imread
+import numpy as np
 
 
 
@@ -1074,14 +1083,23 @@ def view_cart(request):
 
 
 def increase_cart_item(request, product_id):
-    product = Product.objects.get(pk=product_id)
-    cart = request.user.cart
-    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+    try:
+        product = Product.objects.get(pk=product_id)
+        cart = request.user.cart
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
 
-    cart_item.quantity += 1
-    cart_item.save()
-
-    return redirect('cart')
+        # Check if there is enough stock for the selected size
+        size_stock = SizeStock.objects.get(product=product, size=cart_item.size)
+        if cart_item.quantity < size_stock.stock_quantity:
+            cart_item.quantity += 1
+            cart_item.save()
+            return redirect('cart')
+        else:
+            error_message = 'Not enough stock available.'
+            return render(request, 'cart.html', {'error_message': error_message})
+    except Product.DoesNotExist:
+        error_message = 'Product does not exist.'
+        return render(request, 'cart.html', {'error_message': error_message})
 
 
 def decrease_cart_item(request, product_id):
@@ -1125,6 +1143,7 @@ def get_cart_count(request):
 
 
 @csrf_exempt
+
 def create_order(request):
     if request.method == 'POST':
         user = request.user
@@ -1136,10 +1155,14 @@ def create_order(request):
         try:
             order = Order.objects.create(user=user, total_amount=total_amount)
             for cart_item in cart_items:
+                # Decrease stock quantity for each size
+                SizeStock.objects.filter(product=cart_item.product, size=cart_item.size).update(stock_quantity=F('stock_quantity') - cart_item.quantity)
+
                 OrderItem.objects.create(
                     order=order,
                     product=cart_item.product,
                     quantity=cart_item.quantity,
+                    size=cart_item.size,
                     item_total=cart_item.product.price * cart_item.quantity
                 )
 
@@ -1159,6 +1182,7 @@ def create_order(request):
         except Exception as e:
             print(str(e))
             return JsonResponse({'error': 'An error occurred. Please try again.'}, status=500)
+
         
         
 @login_required
@@ -1652,3 +1676,38 @@ def returned_product_list(request):
     # Filter returned products based on the current user's ID
     returned_products = ProductReturn.objects.filter(user=request.user)
     return render(request, 'returned_product_list.html', {'returned_products': returned_products})
+
+
+
+# Seminar
+@login_required
+def process_image(request):
+    if request.method == 'POST' and request.FILES['image']:
+        image_file = request.FILES['image']
+        # Save the uploaded image
+        with open(os.path.join(settings.MEDIA_ROOT, 'input_image.jpg'), 'wb') as f:
+            for chunk in image_file.chunks():
+                f.write(chunk)
+        
+        # Process the image
+        img_path = os.path.join(settings.MEDIA_ROOT, 'input_image.jpg')
+        oimg = imread(img_path)
+        preprocessedOimg = preprocess(oimg)
+        clusteredImg = kMeans_cluster(preprocessedOimg)
+        edgedImg = edgeDetection(clusteredImg)
+        boundRect, contours, contours_poly, img = getBoundingBox(edgedImg)
+        croppedImg, pcropedImg = cropOrig(boundRect[1], clusteredImg)
+        newImg = overlayImage(croppedImg, pcropedImg)
+        fedged = edgeDetection(newImg)
+        fboundRect, fcnt, fcntpoly, fimg = getBoundingBox(fedged)
+        foot_size_cm = calcFeetSize(pcropedImg, fboundRect) / 10
+
+        # Assuming you have a known standard foot measurement
+        standard_foot_measurement = 26.0  # Change this to your known standard foot measurement
+        # Calculate accuracy
+
+        # Plotting scatter plot
+
+        return render(request, 'result.html', {'foot_size_cm': foot_size_cm})
+    return render(request, 'upload.html')
+

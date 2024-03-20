@@ -306,7 +306,7 @@
                             <h3 class="h2">{{ product.category}},{{ product.subcategory}}</h3>
 
 
-                            <p class="h3 py-2">{{ product.price}}</p>
+                            <p class="h3 py-2">₹{{ product.price}}</p>
                             {% comment %} <p class="py-2">
                                 <i class="fa fa-star text-warning"></i>
                                 <i class="fa fa-star text-warning"></i>
@@ -403,6 +403,15 @@
                                                 <path d="M1 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5v-1H2v-1h4v-1H4v-1h2v-1H2v-1h4V9H4V8h2V7H2V6h4V2h1v4h1V4h1v2h1V2h1v4h1V4h1v2h1V2h1v4h1V1a1 1 0 0 0-1-1H1z"/>
                                             </svg>
                                             Size Chart
+                                        </a>
+                                    </div>
+
+                                    <div class="col d-grid">
+                                        <a href="{% url "process_image" %}" class="btn btn-success mr-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-arrow-up-fill" viewBox="0 0 16 16">
+                                                <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M7.5 6.707 6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0z"/>
+                                              </svg>
+                                            Find Size
                                         </a>
                                     </div>
 

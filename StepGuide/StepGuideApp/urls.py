@@ -146,4 +146,7 @@ urlpatterns = [
     path('return-product/', views.return_product, name='return_product'),
     path('view-returns/', views.view_returns, name='view_returns'),
     path('returned_product_list/', views.returned_product_list, name='returned_product_list'),
+    
+    
+    path('process-image/', views.process_image, name='process_image'),
 ]
