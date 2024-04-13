@@ -39,11 +39,11 @@ from django.db.models import F
 
 from django.shortcuts import render
 from django.conf import settings
-from .utils import preprocess, kMeans_cluster, edgeDetection, getBoundingBox, cropOrig, overlayImage, calcFeetSize
-import os
-import cv2
-from skimage.io import imread
-import numpy as np
+# from .utils import preprocess, kMeans_cluster, edgeDetection, getBoundingBox, cropOrig, overlayImage, calcFeetSize
+# import os
+# import cv2
+# from skimage.io import imread
+# import numpy as np
 
 from django.http import HttpResponse
 
