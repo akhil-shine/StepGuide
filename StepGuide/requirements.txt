@@ -15,7 +15,7 @@ defusedxml==0.7.1
 distlib==0.3.7
 Django==4.2.6
 django-allauth==0.58.0
-django-jazzmin==2.6.0
+# django-jazzmin==2.6.0
 filelock==3.12.3
 fonttools==4.49.0
 hyperlink==21.0.0

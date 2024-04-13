@@ -1705,8 +1705,6 @@ def process_image(request):
         newImg = overlayImage(croppedImg, pcropedImg)
         fedged = edgeDetection(newImg)
         fboundRect, fcnt, fcntpoly, fimg = getBoundingBox(fedged)
-        foot_size_cm = calcFeetSize(pcropedImg, fboundRect) / 10
-
         # Assuming you have a known standard foot measurement
         standard_foot_measurement = 26.0  # Change this to your known standard foot measurement
         # Calculate accuracy
