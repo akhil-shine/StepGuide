@@ -45,6 +45,11 @@ import cv2
 from skimage.io import imread
 import numpy as np
 
+from django.http import HttpResponse
+
+
+
+
 
 
 
@@ -1711,3 +1716,105 @@ def process_image(request):
         return render(request, 'result.html', {'foot_size_cm': foot_size_cm})
     return render(request, 'upload.html')
 
+
+@login_required
+def order_product(request):
+    # Assuming you have a way to identify the currently logged-in merchant
+    current_merchant = request.user
+
+    # Retrieve products added by the current merchant
+    merchant_products = Product.objects.filter(user=current_merchant)
+
+    # Retrieve successful orders associated with products added by the current merchant
+    successful_orders = Order.objects.filter(payment_status=True, products__in=merchant_products)
+
+    context = {'orders': successful_orders}
+    return render(request, 'order_product.html', context)
+
+
+@login_required
+def order_delivery(request):
+    # Retrieve successful orders
+    successful_orders = Order.objects.filter(payment_status=True).exclude(delivery_status='Delivered')
+    context = {'orders': successful_orders}
+    return render(request, 'order_delivery.html', context)
+
+
+@login_required
+def delivery_details(request, order_id):
+    # Retrieve the order object
+    order = get_object_or_404(Order, id=order_id)
+    
+    # Retrieve the shipping address for the order user
+    shipping_address = ShippingAddress.objects.filter(user=order.user).first()
+    
+    # Create the context dictionary
+    context = {
+        'order': order,
+        'shipping_address': shipping_address
+    }
+    
+    # Render the template with the context
+    return render(request, 'delivery_details.html', context)
+
+@login_required(login_url='login')
+def update_delivery_status(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+
+    if request.method == 'POST':
+        status = request.POST.get('delivery_status')
+
+        # Inside your view function for updating delivery status
+        if status == 'Delivered':
+            # Generate OTP
+            otp = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+
+            # Send OTP to the buyer's email
+            send_mail(
+                'OTP for Delivery Status Verification',
+                f'Your OTP for verifying delivery status is: {otp}',
+                settings.EMAIL_HOST_USER,  # Sender's email
+                [order.user.email],  # Buyer's email
+                fail_silently=False,
+            )
+
+            # Store OTP in session
+            request.session['delivery_status_otp'] = otp
+
+            # Redirect to OTP verification page
+            return redirect('otp_verification', order_id=order_id)
+        else:
+            order.delivery_status = status
+            order.save()
+            return redirect('delivery_details', order_id=order_id)
+    else:
+        pass
+
+@login_required(login_url='login')
+def otp_verification(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+
+    if request.method == 'POST':
+        submitted_otp = request.POST.get('otp')
+        otp_from_session = request.session.get('delivery_status_otp')
+
+        if submitted_otp == otp_from_session:
+            # OTP is correct, update delivery status
+            order.delivery_status = 'Delivered'
+            order.save()
+
+            # Clear OTP from session
+            del request.session['delivery_status_otp']
+
+            # Redirect to a success page
+            return redirect('delivery_success')
+        else:
+            # OTP is incorrect, render the OTP verification page with error message
+            return render(request, 'otp_verification.html', {'error_message': 'Incorrect OTP', 'order_id': order_id})
+
+    # Render the OTP verification page
+    return render(request, 'otp_verification.html', {'order_id': order_id})
+
+@login_required    
+def delivery_success(request):
+    return render(request, 'delivery_success.html')

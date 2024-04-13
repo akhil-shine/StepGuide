@@ -147,6 +147,19 @@ urlpatterns = [
     path('view-returns/', views.view_returns, name='view_returns'),
     path('returned_product_list/', views.returned_product_list, name='returned_product_list'),
     
-    
+    # Seminar
     path('process-image/', views.process_image, name='process_image'),
-]
+    
+    # order details
+    path('order_product/', views.order_product, name='order_product'),
+    
+    # Delivery
+    path('order_delivery/', views.order_delivery, name='order_delivery'),
+    
+    path('delivery_details/<int:order_id>/', views.delivery_details, name='delivery_details'),
+    path('delivery_success/', views.delivery_success, name='delivery_success'),
+    
+    path('otp_verification/<int:order_id>/', views.otp_verification, name='otp_verification'),
+    path('update_delivery_status/<int:order_id>/', views.update_delivery_status, name='update_delivery_status'),
+    
+    ]

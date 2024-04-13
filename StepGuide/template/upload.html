@@ -106,9 +106,9 @@
             height: auto;
         }
         .instructions {
-            text-align: center;
             color: #666;
             margin-bottom: 20px;
+            text-align: left;
         }
         .upload-form form {
             display: flex;
@@ -282,12 +282,23 @@
                 <img src="{% static 'assets/img/Demo.jpg' %}" alt="Demo Image">
             </div>
             <div class="instructions">
-                <p> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
-                    <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
-                  </svg>
-                  
-                  Choose an image file to upload using the form above. Accepted formats: JPEG, PNG, JPG.</p>
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                    </svg>
+                    <b>Choose an image file to upload using the form above. Accepted formats: JPEG, PNG, JPG.</b> <br>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                    </svg>
+                    <b>Click the image from a minimum distance of 15 cm.</b> <br>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                    </svg>
+                    <b>Click the image as shown above.</b>                
+                </p>
+                
             </div>
+            
             <div class="upload-form">
                 <form action="{% url 'process_image' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}

@@ -409,6 +409,10 @@
                                 Admin
                             {% elif user.user_type == 3 %}
                                 Merchant
+                            {% elif user.user_type == 4 %}
+                            Agent    
+                            {% elif user.user_type == null %}
+                            Client    
                             {% endif %}
                         </td>
                         <td>

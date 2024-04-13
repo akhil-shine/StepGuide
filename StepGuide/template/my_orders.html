@@ -248,9 +248,7 @@
                     <div class="col-md-6">
                         <div class="order-item">
                             <!-- Rating Button -->
-
-                            
-                            
+            
                             <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
                             <p><strong>Status:</strong> {% if order.payment_status %}Order Placed{% else %}Pending{% endif %}</p>
                             <h5>Items:</h5>
@@ -271,21 +269,44 @@
                                                 <p><strong>Quantity:</strong> {{ order_item.quantity }}</p>
                                                 <p><strong>Date Ordered:</strong> {{ order.created_at }}</p>
                                                 <a href="{% url 'rating0' product_id=order_item.product.id %}" class="rating-link">
-                                                    <button class="btn btn-primary btn-sm rating-button">Rate Order</button>
+                                                    <button class="btn btn-primary btn-sm rating-button" id="rating1">Rate Order</button>
                                                 </a>
-                                                
-                                                
                                             </div>
                                         </div>
                                     </div>
                                 </li>
                                 {% endfor %}
                             </ul>
+                            
+                            <!-- Add the segmented progress bar for delivery status below -->
+                            <p><strong>Delivery Status:</strong></p>
+                            <div class="progress">
+                                {% if order.delivery_status == 'Pending' %}
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                {% elif order.delivery_status == 'Out_for_delivery' %}
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                {% elif order.delivery_status == 'Shipped' %}
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                {% else %}
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                {% endif %}
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                            <p><strong>Status:</strong> {{ order.delivery_status }}</p>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
             </div>
+            
             
 
 

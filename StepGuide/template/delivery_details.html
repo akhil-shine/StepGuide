@@ -86,9 +86,9 @@
   z-index: 1;
       position: fixed;
       
-      right: 213px;
-      height: 30px;
-      width: 30px;
+      right: 218px;
+      height: 35px;
+      width: 35px;
       border-radius: 100%;
       border: none;
       background-color: #ff0000;
@@ -97,58 +97,110 @@
 
 <style>
 
+
   .container {
-      max-width: 800px;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  }
+    max-width: 1000px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
 
-  h1, h2 {
-      color: #333;
-      text-align: center;
-  }
+.details-section {
+    display: flex;
+    justify-content: space-between;
+}
 
-  .product-details, .shipping-address, .update-status {
-      width: 100%;
-      margin-bottom: 20px;
-  }
+.product-details {
+    flex-basis: 48%; /* Adjust as needed */
+}
 
-  .product-details {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-  }
+.shipping-address {
+    flex-basis: 48%; /* Adjust as needed */
+}
 
-  .shipping-address {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-  }
+.shipping-address,
+.product-details {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
 
-  .update-status {
-      text-align: center;
-  }
+.delivery-status {
+    margin-top: auto; /* Push to bottom */
+}
 
-  .update-status button {
-      margin-top: 10px;
-  }
+form {
+  margin-top: 20px;
+}
 
-  .flex-container {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-  }
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
 
-  .left-content, .right-content {
-      width: 48%;
-  }
+select {
+  width: 30%;
+  padding: 12px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+button {
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Style for alert popup */
+.alert-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f8d7da; /* Red background color */
+    color: #721c24; /* Dark text color */
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #f5c6cb; /* Red border color */
+    z-index: 9999; /* Set a high z-index to ensure it appears above other content */
+}
+
+/* Style for close button */
+.close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #721c24; /* Dark text color */
+}
+
 
 </style>
+
 </head>
 
 <body>
@@ -232,7 +284,7 @@
             </li>
 
             <li class="sidebar-item">
-              <a class="sidebar-link" href={% url "order_product" %} aria-expanded="false">
+              <a class="sidebar-link" href={% url "order_delivery" %} aria-expanded="false">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-border-style" viewBox="0 0 16 16">
                   <path d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5z"/>
                 </svg>
@@ -278,7 +330,7 @@
           </ul>
 
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Merchant!</p>
+            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Agent!</p>
           </div>
           <button id="startButton"><i class="bi bi-mic-mute-fill text-white"></i></button>
 
@@ -314,54 +366,95 @@
           </div>
         </nav>
       </header>
+      <br> <br> <br> <br>
+
       <div class="container">
-        <h1>Order Details</h1>
-    
-        <div class="flex-container">
-            <div class="left-content">
-                <div class="product-details">
-                    <h2>Order Items</h2>
+        <br> 
+        <div class="details-section">
+            <div class="product-details">
+              <h2 style="color: #007bff;">Product Details</h2>
+              <div class="product-details">
+                    <!-- Product details here -->
                     {% for order_item in order.orderitem_set.all %}
-                        <p><strong>Product Name:</strong> {{ order_item.product.brand_name }}</p>
-                        <p><strong>Quantity:</strong> {{ order_item.quantity }}</p>
-                    {% endfor %}
+                    <p><strong>Product Name:</strong> {{ order_item.product.brand_name }}</p>
+                    <p><strong>Quantity:</strong> {{ order_item.quantity }}</p>
+                    <p><strong>Size:</strong> {{ order_item.size }}</p>
+                    <p><strong>Total Amount:</strong> {{ order_item.item_total }}</p>
+                    <p><strong>Date:</strong> {{ order.created_at }}</p>
+                {% endfor %}
                 </div>
             </div>
-    
-            <div class="right-content">
-                <div class="shipping-address">
-                    <h2>Shipping Address</h2>
-                    <p><strong>Name:</strong> {{ shipping_address.name }}</p>
-                    <p><strong>Email:</strong> {{ shipping_address.email }}</p>
-                    <p><strong>Phone 1:</strong> {{ shipping_address.phn1 }}</p>
-                    <p><strong>Phone 2:</strong> {{ shipping_address.phn2 }}</p>
-                    <p><strong>Address:</strong> {{ shipping_address.address }}</p>
-                    <p><strong>Country:</strong> {{ shipping_address.country }}</p>
-                    <p><strong>State:</strong> {{ shipping_address.state }}</p>
-                    <p><strong>District:</strong> {{ shipping_address.district }}</p>
-                    <p><strong>Pin:</strong> {{ shipping_address.pin }}</p>
-                    <p><strong>Landmark:</strong> {{ shipping_address.land }}</p>
-                    <p><strong>City:</strong> {{ shipping_address.city }}</p>
-                </div>
+            <div class="shipping-address">
+                <h2 style="color: #007bff;">Shipping Address</h2>
+                <!-- Shipping address details here -->
+                <p><strong>Name:</strong> {{ shipping_address.name }}</p>
+                <p><strong>Email:</strong> {{ shipping_address.email }}</p>
+                <p><strong>Phone 1:</strong> {{ shipping_address.phn1 }}</p>
+                <p><strong>Phone 2:</strong> {{ shipping_address.phn2 }}</p>
+                <p><strong>Address:</strong> {{ shipping_address.address}}
+                  <br> {{ shipping_address.city }}, {{ shipping_address.district }}, {{ shipping_address.state }}, {{ shipping_address.country }}, {{ shipping_address.pin }}   </p>
+                <p><strong>Landmark:</strong> {{ shipping_address.land }}</p>
             </div>
         </div>
-    
-        <div class="update-status">
-            <h2>Update Delivery Status</h2>
-            <form method="post" action="{% url 'update_delivery_status' order.id %}">
-                {% csrf_token %}
-                <label for="delivery_status">Update Delivery Status:</label>
-                <select id="delivery_status" name="delivery_status">
-                    <option value="Pending" {% if order.delivery_status == 'Pending' %}selected{% endif %}>Pending</option>
-                    <option value="Shipped" {% if order.delivery_status == 'Shipped' %}selected{% endif %}>Shipped</option>
-                    <option value="Out_for_delivery" {% if order.delivery_status == 'Out_for_delivery' %}selected{% endif %}>Out for Delivery</option>
-                    <option value="Delivered" {% if order.delivery_status == 'Delivered' %}selected{% endif %}>Delivered</option>
-                </select>
-                <br>
-                <button type="submit">Update</button>
-            </form>
+        <div class="delivery-status">
+          <form id="updateDeliveryForm" method="post" action="{% url 'update_delivery_status' order.id %}">
+            {% csrf_token %}
+            <label for="delivery_status" style="color: #007bff;">Update Delivery Status:</label>
+            <select id="delivery_status" name="delivery_status">
+                <option value="Pending" {% if order.delivery_status == 'Pending' %}selected{% endif %}>Pending</option>
+                <option value="Out_for_delivery" {% if order.delivery_status == 'Out_for_delivery' %}selected{% endif %}>Out for Delivery</option>
+                <option value="Shipped" {% if order.delivery_status == 'Shipped' %}selected{% endif %}>Shipped</option>
+                <option value="Delivered" {% if order.delivery_status == 'Delivered' %}selected{% endif %}>Delivered</option>
+            </select>
+            <br>
+            <button id="updateButton" type="submit">Update</button> <br>  <br>
+        </form>
         </div>
     </div>
+
+<script>
+  // Add event listener to form submission
+  document.getElementById('updateDeliveryForm').addEventListener('submit', function(event) {
+    // Prevent default form submission
+    event.preventDefault();
+
+    // Display alert popup
+    var alertPopup = document.createElement('div');
+    alertPopup.classList.add('alert-popup');
+    
+    // Get the selected delivery status
+    var deliveryStatus = document.getElementById('delivery_status').value;
+
+    // Set the alert message based on the selected delivery status
+    if (deliveryStatus === 'Delivered') {
+      alertPopup.innerHTML = 'Delivery status updated to Delivered. An OTP has been sent to the buyer for verification.';
+    } else {
+      alertPopup.innerHTML = 'Delivery status updated successfully!';
+    }
+
+    // Add close button
+    var closeButton = document.createElement('span');
+    closeButton.classList.add('close-button');
+    closeButton.innerHTML = '&times;'; // Close icon
+    closeButton.addEventListener('click', function() {
+      alertPopup.remove(); // Remove alert popup when close button is clicked
+    });
+    alertPopup.appendChild(closeButton);
+
+    // Append alert popup to body
+    document.body.appendChild(alertPopup);
+
+    // Set timeout to close the alert after 5 seconds (5000 milliseconds)
+    setTimeout(function() {
+      alertPopup.remove(); // Remove alert popup after timeout
+    }, 5000);
+
+    // Submit the form
+    this.submit();
+  });
+</script>
+
+  
       
   <script>
     const startButton = document.getElementById('startButton');

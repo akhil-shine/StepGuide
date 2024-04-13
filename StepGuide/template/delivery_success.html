@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Step Guide</title>
+  <title>Otp Verification</title>
   <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
   <link rel="stylesheet" href="{% static "dashboard1/css/styles.min.css" %}" />
   {% comment %} <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
@@ -45,28 +45,9 @@
   background-color: #d1d0cf;
 }
 
-/* Style the table */
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
 
-.table th, .table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
 
-/* Style table header */
-.table th {
-  background-color: #f2f2f2;
-}
 
-/* Style table rows */
-.table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
 
 /* Style the buttons */
 .action-button {
@@ -86,9 +67,9 @@
   z-index: 1;
       position: fixed;
       
-      right: 213px;
-      height: 30px;
-      width: 30px;
+      right: 218px;
+      height: 35px;
+      width: 35px;
       border-radius: 100%;
       border: none;
       background-color: #ff0000;
@@ -97,58 +78,26 @@
 
 <style>
 
-  .container {
-      max-width: 800px;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  }
+    .container {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        text-align: center;
+    }
 
-  h1, h2 {
-      color: #333;
-      text-align: center;
-  }
+    h1 {
+        color: #007bff;
+        margin-bottom: 20px;
+    }
 
-  .product-details, .shipping-address, .update-status {
-      width: 100%;
-      margin-bottom: 20px;
-  }
-
-  .product-details {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-  }
-
-  .shipping-address {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-  }
-
-  .update-status {
-      text-align: center;
-  }
-
-  .update-status button {
-      margin-top: 10px;
-  }
-
-  .flex-container {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-  }
-
-  .left-content, .right-content {
-      width: 48%;
-  }
+    p {
+        color: #333;
+        margin-bottom: 40px;
+    }
 
 </style>
+
 </head>
 
 <body>
@@ -188,68 +137,68 @@
           <ul id="sidebarnav">
 
             <li class="sidebar-item">
-              <a class="sidebar-link" href={% url "adashboard" %} aria-expanded="false">
-                <span>
-                  <i class="ti ti-article"></i>
-                </span>
-                <span class="hide-menu">Home</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url "add_new_arrival" %}" aria-expanded="false">
-                <span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-plus-fill" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M8.5 8a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V12a.5.5 0 0 0 1 0v-1.5H10a.5.5 0 0 0 0-1H8.5z"/>
-                      </svg>
-                </span>
-                <span class="hide-menu">Add New Arrival's</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url "new_arrival_list" %}" aria-expanded="false">
-                <span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                <a class="sidebar-link" href={% url "adashboard" %} aria-expanded="false">
+                  <span>
+                    <i class="ti ti-article"></i>
+                  </span>
+                  <span class="hide-menu">Home</span>
+                </a>
+              </li>
+  
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{% url "add_new_arrival" %}" aria-expanded="false">
+                  <span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-plus-fill" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M8.5 8a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V12a.5.5 0 0 0 1 0v-1.5H10a.5.5 0 0 0 0-1H8.5z"/>
+                        </svg>
+                  </span>
+                  <span class="hide-menu">Add New Arrival's</span>
+                </a>
+              </li>
+  
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{% url "new_arrival_list" %}" aria-expanded="false">
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                      <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                      <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                    </svg>
+                  </span>
+                  <span class="hide-menu">Manage Added Arrival's</span>
+                </a>
+              </li>
+  
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{% url "view_returns" %}" aria-expanded="false">
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-kanban" viewBox="0 0 16 16">
+                      <path d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                      <path d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/>
+                    </svg>
+                  </span>
+                  <span class="hide-menu">Returned Products</span>
+                </a>
+              </li>
+  
+              <li class="sidebar-item">
+                <a class="sidebar-link" href={% url "order_delivery" %} aria-expanded="false">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-border-style" viewBox="0 0 16 16">
+                    <path d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5z"/>
                   </svg>
-                </span>
-                <span class="hide-menu">Manage Added Arrival's</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url "view_returns" %}" aria-expanded="false">
-                <span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-kanban" viewBox="0 0 16 16">
-                    <path d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
-                    <path d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/>
-                  </svg>
-                </span>
-                <span class="hide-menu">Returned Products</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href={% url "order_product" %} aria-expanded="false">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-border-style" viewBox="0 0 16 16">
-                  <path d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-4 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm8 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-4-4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5z"/>
-                </svg>
-                <span class="hide-menu">Delivery</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url "messages_page" %}" aria-expanded="false">
-                <span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
-                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
-                  </svg>
-                </span>
-                <span class="hide-menu">Chat</span>
-              </a>
-            </li>
+                  <span class="hide-menu">Delivery</span>
+                </a>
+              </li>
+  
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{% url "messages_page" %}" aria-expanded="false">
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
+                      <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
+                    </svg>
+                  </span>
+                  <span class="hide-menu">Chat</span>
+                </a>
+              </li>
             
           </ul>
         </nav>
@@ -278,7 +227,7 @@
           </ul>
 
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Merchant!</p>
+            <p class="font-weight-bold logo h1 align-self-center text-decoration-none" style="color: #59ab6e;">Welcome Agent!</p>
           </div>
           <button id="startButton"><i class="bi bi-mic-mute-fill text-white"></i></button>
 
@@ -314,54 +263,16 @@
           </div>
         </nav>
       </header>
+      <br> <br> <br> <br> <br> <br>
+
+
+
       <div class="container">
-        <h1>Order Details</h1>
-    
-        <div class="flex-container">
-            <div class="left-content">
-                <div class="product-details">
-                    <h2>Order Items</h2>
-                    {% for order_item in order.orderitem_set.all %}
-                        <p><strong>Product Name:</strong> {{ order_item.product.brand_name }}</p>
-                        <p><strong>Quantity:</strong> {{ order_item.quantity }}</p>
-                    {% endfor %}
-                </div>
-            </div>
-    
-            <div class="right-content">
-                <div class="shipping-address">
-                    <h2>Shipping Address</h2>
-                    <p><strong>Name:</strong> {{ shipping_address.name }}</p>
-                    <p><strong>Email:</strong> {{ shipping_address.email }}</p>
-                    <p><strong>Phone 1:</strong> {{ shipping_address.phn1 }}</p>
-                    <p><strong>Phone 2:</strong> {{ shipping_address.phn2 }}</p>
-                    <p><strong>Address:</strong> {{ shipping_address.address }}</p>
-                    <p><strong>Country:</strong> {{ shipping_address.country }}</p>
-                    <p><strong>State:</strong> {{ shipping_address.state }}</p>
-                    <p><strong>District:</strong> {{ shipping_address.district }}</p>
-                    <p><strong>Pin:</strong> {{ shipping_address.pin }}</p>
-                    <p><strong>Landmark:</strong> {{ shipping_address.land }}</p>
-                    <p><strong>City:</strong> {{ shipping_address.city }}</p>
-                </div>
-            </div>
-        </div>
-    
-        <div class="update-status">
-            <h2>Update Delivery Status</h2>
-            <form method="post" action="{% url 'update_delivery_status' order.id %}">
-                {% csrf_token %}
-                <label for="delivery_status">Update Delivery Status:</label>
-                <select id="delivery_status" name="delivery_status">
-                    <option value="Pending" {% if order.delivery_status == 'Pending' %}selected{% endif %}>Pending</option>
-                    <option value="Shipped" {% if order.delivery_status == 'Shipped' %}selected{% endif %}>Shipped</option>
-                    <option value="Out_for_delivery" {% if order.delivery_status == 'Out_for_delivery' %}selected{% endif %}>Out for Delivery</option>
-                    <option value="Delivered" {% if order.delivery_status == 'Delivered' %}selected{% endif %}>Delivered</option>
-                </select>
-                <br>
-                <button type="submit">Update</button>
-            </form>
-        </div>
+        <h1>Delivery Successful</h1>
+        <p>Your order has been successfully delivered.</p>
     </div>
+
+  
       
   <script>
     const startButton = document.getElementById('startButton');
